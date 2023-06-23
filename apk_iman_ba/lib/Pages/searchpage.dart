@@ -61,6 +61,7 @@ class _SearchPageState extends State<SearchPage> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
         bottomNavigationBar: SafeArea(
           child: Padding(
