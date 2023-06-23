@@ -1,17 +1,67 @@
+import 'package:apk_iman_ba/Pages/homepage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class SearchPage extends StatelessWidget {
-  const SearchPage({super.key});
+List<Map<String, String>> qaList = [
+  {
+    'question': "Sta je Kur'an?",
+    'answer':
+        "Kur'an je posljednja objava našeg Gospodara. Objavljen je na čistom arapskom jeziku poslaniku Muhammedu s.a.w.s.",
+  },
+  {
+    'question': "Koja je vrijednost okupljanja radi učenja Kur’ana?",
+    'answer':
+        "Ebu Hurejre prenosi da je Poslanik, sallallahu alejhi ve sellem, kazao: „ Kada god se okupi grupa ljudi u nekoj Allahovoj kući radi učenja i proučavanja Kur’ana, na njih se spusti smirenost, obaspe ih milost, okruže ih meleki i Allah ih spomene kod onih koji su kod Njega. Ko zaostaje zbog svojih dijela, njegovo porijeklo mu neće pomoći da napreduje.“ (Bilježi Muslim)",
+  },
+  {
+    'question': "Šta je Kur’an?",
+    'answer':
+        "Kur'an je posljednja objava našeg Gospodara. Objavljen je na čistom arapskom jeziku poslaniku Muhammedu s.a.w.s.",
+  },
+  {
+    'question': 'Question 4',
+    'answer': 'Answer 4',
+  },
+  {
+    'question': 'Question 5',
+    'answer': 'Answer 5',
+  },
+];
+
+class SearchPage extends StatefulWidget {
+  const SearchPage({Key? key}) : super(key: key);
+
+  @override
+  State<SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+  final TextEditingController searchController = TextEditingController();
+  ValueNotifier<bool> isTextFieldEmptyNotifier = ValueNotifier<bool>(true);
+  bool isTextFieldEmpty = true;
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    isTextFieldEmptyNotifier.dispose();
+    super.dispose();
+  }
+
+  void clearTextFormField() {
+    setState(() {
+      searchController.clear();
+      isTextFieldEmptyNotifier.value = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController searchController = TextEditingController();
-
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
+        backgroundColor: Colors.white,
         bottomNavigationBar: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -35,7 +85,13 @@ class SearchPage extends StatelessWidget {
                     child: Opacity(
                       opacity: 0.5,
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const HomePage(),
+                            ),
+                          );
+                        },
                         icon: const Icon(Icons.home_outlined),
                         color: Colors.white,
                       ),
@@ -44,13 +100,7 @@ class SearchPage extends StatelessWidget {
                   Material(
                     color: Colors.transparent,
                     child: IconButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => const SearchPage(),
-                          ),
-                        );
-                      },
+                      onPressed: () {},
                       icon: const Icon(Icons.search_outlined),
                       color: Colors.white,
                     ),
@@ -91,8 +141,16 @@ class SearchPage extends StatelessWidget {
                   child: Row(
                     children: [
                       Expanded(
-                        child: TextField(
+                        child: TextFormField(
                           controller: searchController,
+                          onChanged: (value) {
+                            isTextFieldEmptyNotifier.value = value.isEmpty;
+                          },
+                          onFieldSubmitted: (value) {
+                            if (value.isNotEmpty) {
+                              isTextFieldEmptyNotifier.value = false;
+                            }
+                          },
                           decoration: InputDecoration(
                             fillColor: const Color(0xffeff2f8),
                             filled: true,
@@ -126,7 +184,9 @@ class SearchPage extends StatelessWidget {
                           left: 8.0,
                         ),
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            clearTextFormField();
+                          },
                           style: TextButton.styleFrom(),
                           child: Container(
                             padding: const EdgeInsets.all(10),
@@ -146,10 +206,97 @@ class SearchPage extends StatelessWidget {
                   ),
                 ),
               ),
-              Expanded(
-                  child: Container(
-                color: Colors.blue,
-              )),
+              ValueListenableBuilder<bool>(
+                valueListenable: isTextFieldEmptyNotifier,
+                builder: (context, isTextFieldEmpty, _) {
+                  return Visibility(
+                    visible: isTextFieldEmpty,
+                    child: Container(
+                      margin: const EdgeInsets.all(25.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            "Trazite neko od vec postavljenih pitanja?",
+                            style: GoogleFonts.poppins(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFFA7A7AD),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          Image.asset(
+                            "lib/Images/Compass.png",
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+              ValueListenableBuilder<bool>(
+                valueListenable: isTextFieldEmptyNotifier,
+                builder: (context, isTextFieldEmpty, _) {
+                  if (!isTextFieldEmpty) {
+                    return Expanded(
+                      child: ListView(
+                        children: [
+                          for (Map<String, String> qa in qaList)
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(30.0),
+                                child: InkWell(
+                                  onTap: () {
+                                    // Handle the tap event here
+                                  },
+                                  splashColor: Colors.blue.withOpacity(
+                                      0.5), // Customize the splash color
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Card(
+                                    child: ListTile(
+                                      title: qa['question'] != null
+                                          ? Container(
+                                              margin: const EdgeInsets.fromLTRB(
+                                                  0, 5, 0, 5),
+                                              child: Text(
+                                                qa['question']!,
+                                                style: GoogleFonts.poppins(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 16,
+                                                  letterSpacing: 0.32,
+                                                  color:
+                                                      const Color(0xff201d22),
+                                                ),
+                                              ),
+                                            )
+                                          : Container(),
+                                      subtitle: qa['answer'] != null
+                                          ? Text(
+                                              qa['answer']!,
+                                              maxLines: 5,
+                                              overflow: TextOverflow.fade,
+                                              style: GoogleFonts.poppins(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 14,
+                                                letterSpacing: 0.28,
+                                                color: const Color(0xff626164),
+                                              ),
+                                            )
+                                          : Container(),
+                                      tileColor: const Color(0xffeff2f8),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                },
+              ),
             ],
           ),
         ),
