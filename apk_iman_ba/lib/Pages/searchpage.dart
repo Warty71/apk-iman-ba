@@ -83,19 +83,16 @@ class _SearchPageState extends State<SearchPage> {
                 children: [
                   Material(
                     color: Colors.transparent,
-                    child: Opacity(
-                      opacity: 0.5,
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => const HomePage(),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.home_outlined),
-                        color: Colors.white,
-                      ),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const HomePage(),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.home_outlined),
+                      color: Colors.white54,
                     ),
                   ),
                   Material(
@@ -108,24 +105,18 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                   Material(
                     color: Colors.transparent,
-                    child: Opacity(
-                      opacity: 0.5,
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.favorite_outline),
-                        color: Colors.white,
-                      ),
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.favorite_outline),
+                      color: Colors.white54,
                     ),
                   ),
                   Material(
                     color: Colors.transparent,
-                    child: Opacity(
-                      opacity: 0.5,
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.person_2_outlined),
-                        color: Colors.white,
-                      ),
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.person_2_outlined),
+                      color: Colors.white54,
                     ),
                   ),
                 ],

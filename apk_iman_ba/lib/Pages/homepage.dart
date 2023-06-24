@@ -1,3 +1,4 @@
+import 'package:apk_iman_ba/Pages/detailspage.dart';
 import 'package:apk_iman_ba/Pages/searchpage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -179,7 +180,11 @@ class HomePage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30.0),
                         child: InkWell(
                           onTap: () {
-                            // Handle the tap event here
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => const DetailsPage(),
+                              ),
+                            );
                           },
                           splashColor: Colors.blue
                               .withOpacity(0.5), // Customize the splash color
