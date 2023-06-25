@@ -1,5 +1,7 @@
 import 'package:apk_iman_ba/Pages/detailspage.dart';
+import 'package:apk_iman_ba/Pages/favoritespage.dart';
 import 'package:apk_iman_ba/Pages/searchpage.dart';
+import 'package:apk_iman_ba/Pages/userpage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -9,6 +11,14 @@ List<String> topics = [
   "🧎Namaz",
   "🍽️Post",
   "Zekat",
+  "Hadz i Umra",
+  "Bracno Pravo",
+  "Nasljedno Pravo",
+  "Lijecenje Kur'anom",
+  "Trgovina",
+  "Islamsko Vjerovanje",
+  "Hadis",
+  "Ostalo",
 ];
 
 List<Map<String, String>> qaList = [
@@ -20,7 +30,7 @@ List<Map<String, String>> qaList = [
   {
     'question': "Koja je vrijednost okupljanja radi učenja Kur’ana?",
     'answer':
-        "Ebu Hurejre prenosi da je Poslanik, sallallahu alejhi ve sellem, kazao: „ Kada god se okupi grupa ljudi u nekoj Allahovoj kući radi učenja i proučavanja Kur’ana, na njih se spusti smirenost, obaspe ih milost, okruže ih meleki i Allah ih spomene kod onih koji su kod Njega. Ko zaostaje zbog svojih dijela, njegovo porijeklo mu neće pomoći da napreduje.“ (Bilježi Muslim)",
+        "Ebu Hurejre prenosi da je Poslanik, sallallahu alejhi ve sellem, kazao: „ Kada god se okupi grupa ljudi u nekoj Allahovoj kući radi učenja i proučavanja Kur’ana, na njih se spusti smirenost, obaspe ih milost, okruže ih meleki i Allah ih spomene kod onih koji su kod Njega. Ko zaostaje zbog svojih dijela, njegovo porijeklo mu neće pomoći da napreduje.“ (Bilježi Muslim). Ebu Hurejre prenosi da je Poslanik, sallallahu alejhi ve sellem, kazao: „ Kada god se okupi grupa ljudi u nekoj Allahovoj kući radi učenja i proučavanja Kur’ana, na njih se spusti smirenost, obaspe ih milost, okruže ih meleki i Allah ih spomene kod onih koji su kod Njega. Ko zaostaje zbog svojih dijela, njegovo porijeklo mu neće pomoći da napreduje.“ (Bilježi Muslim). Ebu Hurejre prenosi da je Poslanik, sallallahu alejhi ve sellem, kazao: „ Kada god se okupi grupa ljudi u nekoj Allahovoj kući radi učenja i proučavanja Kur’ana, na njih se spusti smirenost, obaspe ih milost, okruže ih meleki i Allah ih spomene kod onih koji su kod Njega. Ko zaostaje zbog svojih dijela, njegovo porijeklo mu neće pomoći da napreduje.“ (Bilježi Muslim).",
   },
   {
     'question': "Šta je Kur’an?",
@@ -78,41 +88,44 @@ class HomePage extends StatelessWidget {
                 ),
                 Material(
                   color: Colors.transparent,
-                  child: Opacity(
-                    opacity: 0.5,
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => const SearchPage(),
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.search_outlined),
-                      color: Colors.white,
-                    ),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const SearchPage(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.search_outlined),
+                    color: Colors.white54,
                   ),
                 ),
                 Material(
                   color: Colors.transparent,
-                  child: Opacity(
-                    opacity: 0.5,
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.favorite_outline),
-                      color: Colors.white,
-                    ),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const FavoritesPage(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.favorite_outline),
+                    color: Colors.white54,
                   ),
                 ),
                 Material(
                   color: Colors.transparent,
-                  child: Opacity(
-                    opacity: 0.5,
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.person_2_outlined),
-                      color: Colors.white,
-                    ),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const UserPage(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.person_2_outlined),
+                    color: Colors.white54,
                   ),
                 ),
               ],
@@ -182,7 +195,10 @@ class HomePage extends StatelessWidget {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (_) => const DetailsPage(),
+                                builder: (_) => DetailsPage(
+                                  answer: qa['answer'] ?? '',
+                                  title: qa['question'] ?? '',
+                                ),
                               ),
                             );
                           },

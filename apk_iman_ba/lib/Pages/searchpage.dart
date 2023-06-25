@@ -1,6 +1,9 @@
 import 'package:apk_iman_ba/Pages/homepage.dart';
+import 'package:apk_iman_ba/Pages/userpage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'favoritespage.dart';
 
 List<Map<String, String>> qaList = [
   {
@@ -106,7 +109,13 @@ class _SearchPageState extends State<SearchPage> {
                   Material(
                     color: Colors.transparent,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const FavoritesPage(),
+                          ),
+                        );
+                      },
                       icon: const Icon(Icons.favorite_outline),
                       color: Colors.white54,
                     ),
@@ -114,7 +123,13 @@ class _SearchPageState extends State<SearchPage> {
                   Material(
                     color: Colors.transparent,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const UserPage(),
+                          ),
+                        );
+                      },
                       icon: const Icon(Icons.person_2_outlined),
                       color: Colors.white54,
                     ),
