@@ -1,3 +1,4 @@
+import 'package:apk_iman_ba/Pages/historypage.dart';
 import 'package:apk_iman_ba/Pages/myquestionspage.dart';
 import 'package:apk_iman_ba/Pages/searchpage.dart';
 import 'package:flutter/material.dart';
@@ -276,7 +277,13 @@ class UserPage extends StatelessWidget {
                         icon: const Icon(
                           Icons.arrow_forward_ios,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const HistoryPage(),
+                            ),
+                          );
+                        },
                       )
                     ],
                   ),
@@ -343,7 +350,9 @@ class UserPage extends StatelessWidget {
                         icon: const Icon(
                           Icons.arrow_forward_ios,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          _showDialog(context);
+                        },
                       )
                     ],
                   ),
@@ -388,7 +397,9 @@ class UserPage extends StatelessWidget {
                         icon: const Icon(
                           Icons.arrow_forward_ios,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          _showDialog(context);
+                        },
                       )
                     ],
                   ),
@@ -400,4 +411,23 @@ class UserPage extends StatelessWidget {
       ),
     );
   }
+}
+
+void _showDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text("Nema nista."),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text("Close"),
+          ),
+        ],
+      );
+    },
+  );
 }
