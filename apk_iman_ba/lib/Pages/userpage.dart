@@ -1,3 +1,4 @@
+import 'package:apk_iman_ba/Pages/myquestionspage.dart';
 import 'package:apk_iman_ba/Pages/searchpage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -224,7 +225,13 @@ class UserPage extends StatelessWidget {
                         icon: const Icon(
                           Icons.arrow_forward_ios,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const MyQuestionsPage(),
+                            ),
+                          );
+                        },
                       )
                     ],
                   ),
