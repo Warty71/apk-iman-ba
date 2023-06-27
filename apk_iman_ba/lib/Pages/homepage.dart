@@ -1,3 +1,4 @@
+import 'package:apk_iman_ba/Pages/askpage.dart';
 import 'package:apk_iman_ba/Pages/detailspage.dart';
 import 'package:apk_iman_ba/Pages/favoritespage.dart';
 import 'package:apk_iman_ba/Pages/searchpage.dart';
@@ -54,7 +55,13 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => AskPage(),
+            ),
+          );
+        },
         label: const Text("Postavi pitanje"),
         backgroundColor: const Color(0xff5449d2),
         extendedPadding: const EdgeInsets.all(55),
