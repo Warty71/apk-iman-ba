@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "43835481855",
+    "project_id": "iman-ba",
+    "storage_bucket": "iman-ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43835481855:android:a4e34a37cfdda53a4db6ca",
+        "android_client_info": {
+          "package_name": "com.example.apk_iman_ba"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "43835481855-bap2hb09pmupn791ouki3mra5lek9q15.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbd7UCaNnLWAW74o0fOx1x0fIG7A7_hfQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "43835481855-bap2hb09pmupn791ouki3mra5lek9q15.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

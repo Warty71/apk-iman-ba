@@ -38,6 +38,7 @@ class FavoritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {},
         label: const Text("Postavi pitanje"),
@@ -123,7 +124,7 @@ class FavoritesPage extends StatelessWidget {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(25.0),
+                padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

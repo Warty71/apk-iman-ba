@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AskPage extends StatefulWidget {
-  const AskPage({Key? key});
+  const AskPage({
+    super.key,
+  });
 
   @override
   State<AskPage> createState() => _AskPageState();

@@ -6,18 +6,25 @@ class CustomTextField extends StatefulWidget {
   final bool obscureText;
   final String hintText;
 
-  const CustomTextField(
-      {super.key,
-      required this.hintText,
-      required this.controller,
-      required this.obscureText});
+  const CustomTextField({
+    super.key,
+    required this.hintText,
+    required this.controller,
+    required this.obscureText,
+  });
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-  bool isPasswordVisible = false;
+  late bool isPasswordVisible;
+
+  @override
+  void initState() {
+    super.initState();
+    isPasswordVisible = widget.obscureText;
+  }
 
   @override
   Widget build(BuildContext context) {

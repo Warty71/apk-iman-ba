@@ -1,4 +1,4 @@
-import 'package:apk_iman_ba/Pages/homepage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -9,6 +9,40 @@ class LoginPage extends StatelessWidget {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  Future<void> signUserIn(BuildContext context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevents dismissal by tapping outside
+      builder: (BuildContext context) {
+        return Center(
+          child: Container(
+            width: 80.0,
+            height: 80.0,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: const CircularProgressIndicator(),
+          ),
+        );
+      },
+    );
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      // ignore: avoid_print
+      print("Signed in successfully.");
+    } catch (e) {
+      // ignore: avoid_print
+      print("Sign-in failed: $e");
+    }
+    // ignore: use_build_context_synchronously
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,9 +135,10 @@ class LoginPage extends StatelessWidget {
                         ),
                       ),
                       CustomTextField(
-                          hintText: "**********",
-                          controller: passwordController,
-                          obscureText: true)
+                        hintText: "**********",
+                        controller: passwordController,
+                        obscureText: true,
+                      )
                     ],
                   ),
                 ),
@@ -129,11 +164,9 @@ class LoginPage extends StatelessWidget {
 
                 // "Prijavi se - button"
                 GestureDetector(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => const HomePage(),
-                    ),
-                  ),
+                  onTap: () {
+                    signUserIn(context);
+                  },
                   child: Container(
                     margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
                     width: 325,

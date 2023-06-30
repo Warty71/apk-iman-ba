@@ -1,5 +1,6 @@
-import 'package:apk_iman_ba/Pages/login.dart';
 import 'package:flutter/material.dart';
+
+import 'Extra/authpage.dart';
 
 class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key});
@@ -61,7 +62,7 @@ class OnboardingPage extends StatelessWidget {
                   GestureDetector(
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => LoginPage(),
+                        builder: (_) => const AuthPage(),
                       ),
                     ),
                     child: Container(
