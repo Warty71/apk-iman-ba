@@ -1,86 +1,40 @@
-import 'package:apk_iman_ba/Pages/registrationpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../Components/custom_textfield.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class RegistrationPage extends StatelessWidget {
+  RegistrationPage({super.key});
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmController = TextEditingController();
 
-  void wrongEmailMessage(BuildContext context) {
+  //SignUp method
+  Future signUserUp(BuildContext context) async {
+    //Show dialog
     showDialog(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Pogresan email"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text("Zatvori"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void wrongPasswordMessage(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Pogresna sifra"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text("Zatvori"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> signUserIn(BuildContext context) async {
-    showDialog(
-      context: context,
-      barrierDismissible: false, // Prevents dismissal by tapping outside
-      builder: (BuildContext context) {
-        return Center(
-          child: Container(
-            width: 80.0,
-            height: 80.0,
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: const CircularProgressIndicator(),
-          ),
-        );
-      },
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
     );
 
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
-      // ignore: use_build_context_synchronously
-      Navigator.pop(context);
-    } on FirebaseAuthException catch (e) {
-      Navigator.pop(context);
-      if (e.code == 'user-not-found') {
-        wrongEmailMessage(context);
-      } else if (e.code == 'wrong-password') {
-        wrongPasswordMessage(context);
+    //Try to sign up. I need to add an error MSG in case the passwords don't match
+    if (passwordController.text == confirmController.text) {
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+        // ignore: use_build_context_synchronously
+        Navigator.pop(context);
+      } on Exception catch (e) {
+        Navigator.pop(context);
+        // ignore: avoid_print
+        print(e);
       }
     }
   }
@@ -110,11 +64,11 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
 
-                  // Dobrodosli na IMAN
+                  // Text - Registracija
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: Text(
-                      "Dobrodosli na IMAN",
+                      "Registracija",
                       style: GoogleFonts.poppins(
                         color: const Color(0xff190c3f),
                         fontSize: 28,
@@ -123,11 +77,11 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
 
-                  // Prijavite se na svoj IMAN racun ili kreirajte novi
+                  // Text - Napravite novi racun
                   Padding(
                     padding: const EdgeInsets.only(top: 5.0),
                     child: Text(
-                      "Prijavite se na svoj IMAN racun\n ili kreirajte novi",
+                      "Napravite novi racun",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
                         color: const Color(0xff626164),
@@ -138,7 +92,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
 
-                  // E-mail text i field za unos e-maila
+                  // Text - Email + TextField
                   Container(
                     margin: const EdgeInsets.fromLTRB(25, 10, 25, 5),
                     width: double.infinity,
@@ -162,7 +116,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
 
-                  // Sifra i textfield za unos sifre
+                  // Text - Sifra + TextField
                   Container(
                     margin: const EdgeInsets.fromLTRB(25, 5, 25, 10),
                     width: double.infinity,
@@ -186,52 +140,37 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
 
-                  // Zaboravili ste sifru?
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 25.0),
-                        child: GestureDetector(
-                          onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => RegistrationPage(),
-                            ),
-                          ),
-                          child: Text(
-                            "Registracija",
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: const Color(0xff5449d2),
-                            ),
+                  // Text - Potvrda + TextField
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(25, 5, 25, 10),
+                    width: double.infinity,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Potvrda",
+                          style: GoogleFonts.poppins(
+                            color: const Color(0xff201d22),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 25.0),
-                        child: GestureDetector(
-                          onTap: () {},
-                          child: Text(
-                            "Zaboravili ste sifru?",
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: const Color(0xff5449d2),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                        CustomTextField(
+                          hintText: "**********",
+                          controller: confirmController,
+                          obscureText: true,
+                        )
+                      ],
+                    ),
                   ),
 
-                  // "Prijavi se - button"
+                  // Button - Registracija
                   GestureDetector(
                     onTap: () {
-                      signUserIn(context);
+                      signUserUp(context);
                     },
                     child: Container(
-                      margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                      margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
                       width: 325,
                       height: 64,
                       decoration: BoxDecoration(
@@ -245,7 +184,7 @@ class LoginPage extends StatelessWidget {
                       ),
                       child: const Center(
                         child: Text(
-                          "Prijavi se",
+                          "Registruj se",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
@@ -259,11 +198,11 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
 
-                  // Text - Prijavite se preko Google racuna
+                  // Text - Registrujte se sa Google racunom
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: Text(
-                      "Prijavite se preko Google racuna",
+                      "Registrujte se sa Google racunom",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
                         color: const Color(0xff626164),
@@ -274,7 +213,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
 
-                  // Button - Google Login
+                  // Button - Google Register
                   Container(
                     margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
                     width: 325,
@@ -296,7 +235,7 @@ class LoginPage extends StatelessWidget {
                           child: Image.asset("lib/Images/google.png"),
                         ),
                         const Text(
-                          "Google Login",
+                          "Google",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Color(0xff24195b),
