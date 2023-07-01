@@ -11,7 +11,7 @@ class RegistrationPage extends StatelessWidget {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmController = TextEditingController();
 
-  //SignUp method
+  // SignUp method
   Future signUserUp(BuildContext context) async {
     //Show dialog
     showDialog(
@@ -22,7 +22,7 @@ class RegistrationPage extends StatelessWidget {
       ),
     );
 
-    //Try to sign up. I need to add an error MSG in case the passwords don't match
+    // Try to sign up. I need to add an error MSG in case the passwords don't match
     if (passwordController.text == confirmController.text) {
       try {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -36,6 +36,24 @@ class RegistrationPage extends StatelessWidget {
         // ignore: avoid_print
         print(e);
       }
+    } else {
+      Navigator.pop(context);
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Sifre nisu iste."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("Zatvori"),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -47,7 +65,6 @@ class RegistrationPage extends StatelessWidget {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Center(
             child: SingleChildScrollView(
@@ -195,57 +212,6 @@ class RegistrationPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ),
-                  ),
-
-                  // Text - Registrujte se sa Google racunom
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: Text(
-                      "Registrujte se sa Google racunom",
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
-                        color: const Color(0xff626164),
-                        letterSpacing: 0.32,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-
-                  // Button - Google Register
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
-                    width: 325,
-                    height: 64,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const Color(0xff626164),
-                      ),
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 10.0, 0),
-                          width: 24,
-                          height: 24,
-                          child: Image.asset("lib/Images/google.png"),
-                        ),
-                        const Text(
-                          "Google",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color(0xff24195b),
-                            fontSize: 18,
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w500,
-                            letterSpacing: 0.36,
-                          ),
-                        ),
-                      ],
                     ),
                   ),
                 ],

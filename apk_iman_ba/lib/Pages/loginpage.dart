@@ -1,4 +1,5 @@
 import 'package:apk_iman_ba/Pages/registrationpage.dart';
+import 'package:apk_iman_ba/Services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -93,7 +94,6 @@ class LoginPage extends StatelessWidget {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Center(
             child: SingleChildScrollView(
@@ -275,38 +275,41 @@ class LoginPage extends StatelessWidget {
                   ),
 
                   // Button - Google Login
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
-                    width: 325,
-                    height: 64,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const Color(0xff626164),
+                  GestureDetector(
+                    onTap: () => AuthService().signInWithGoogle(),
+                    child: Container(
+                      margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
+                      width: 325,
+                      height: 64,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: const Color(0xff626164),
+                        ),
+                        borderRadius: BorderRadius.circular(24),
                       ),
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 10.0, 0),
-                          width: 24,
-                          height: 24,
-                          child: Image.asset("lib/Images/google.png"),
-                        ),
-                        const Text(
-                          "Google Login",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color(0xff24195b),
-                            fontSize: 18,
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w500,
-                            letterSpacing: 0.36,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(0, 0, 10.0, 0),
+                            width: 24,
+                            height: 24,
+                            child: Image.asset("lib/Images/google.png"),
                           ),
-                        ),
-                      ],
+                          const Text(
+                            "Google Login",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Color(0xff24195b),
+                              fontSize: 18,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 0.36,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
