@@ -120,96 +120,94 @@ class FavoritesPage extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: Center(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.favorite,
-                      color: Colors.black,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        "Sacuvana pitanja",
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 0.32,
-                          color: const Color(0xFF201E22),
-                        ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.favorite,
+                    color: Colors.black,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Text(
+                      "Sacuvana pitanja",
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.32,
+                        color: const Color(0xFF201E22),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Expanded(
-                child: ListView(
-                  children: [
-                    for (Map<String, String> qa in qaList)
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(30.0),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => DetailsPage(
-                                    answer: qa['answer'] ?? '',
-                                    title: qa['question'] ?? '',
-                                  ),
+            ),
+            Expanded(
+              child: ListView(
+                children: [
+                  for (Map<String, String> qa in qaList)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30.0),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => DetailsPage(
+                                  answer: qa['answer'] ?? '',
+                                  title: qa['question'] ?? '',
                                 ),
-                              );
-                            },
-                            splashColor: Colors.blue
-                                .withOpacity(0.5), // Customize the splash color
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Card(
-                              child: ListTile(
-                                title: qa['question'] != null
-                                    ? Container(
-                                        margin: const EdgeInsets.fromLTRB(
-                                            0, 5, 0, 5),
-                                        child: Text(
-                                          qa['question']!,
-                                          style: GoogleFonts.poppins(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16,
-                                            letterSpacing: 0.32,
-                                            color: const Color(0xff201d22),
-                                          ),
-                                        ),
-                                      )
-                                    : Container(),
-                                subtitle: qa['answer'] != null
-                                    ? Text(
-                                        qa['answer']!,
-                                        maxLines: 5,
-                                        overflow: TextOverflow.fade,
-                                        style: GoogleFonts.poppins(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 14,
-                                          letterSpacing: 0.28,
-                                          color: const Color(0xff626164),
-                                        ),
-                                      )
-                                    : Container(),
-                                tileColor: const Color(0xffeff2f8),
                               ),
+                            );
+                          },
+                          splashColor: Colors.blue
+                              .withOpacity(0.5), // Customize the splash color
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Card(
+                            child: ListTile(
+                              title: qa['question'] != null
+                                  ? Container(
+                                      margin:
+                                          const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                      child: Text(
+                                        qa['question']!,
+                                        style: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                          letterSpacing: 0.32,
+                                          color: const Color(0xff201d22),
+                                        ),
+                                      ),
+                                    )
+                                  : Container(),
+                              subtitle: qa['answer'] != null
+                                  ? Text(
+                                      qa['answer']!,
+                                      maxLines: 5,
+                                      overflow: TextOverflow.fade,
+                                      style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14,
+                                        letterSpacing: 0.28,
+                                        color: const Color(0xff626164),
+                                      ),
+                                    )
+                                  : Container(),
+                              tileColor: const Color(0xffeff2f8),
                             ),
                           ),
                         ),
                       ),
-                  ],
-                ),
+                    ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
