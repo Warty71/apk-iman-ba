@@ -26,8 +26,8 @@ class RegistrationPage extends StatelessWidget {
     if (passwordController.text == confirmController.text) {
       try {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text,
-          password: passwordController.text,
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
         );
         // ignore: use_build_context_synchronously
         Navigator.pop(context);

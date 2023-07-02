@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../Components/custom_textfield.dart';
+import 'forgotpasswordpage.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -211,7 +212,11 @@ class LoginPage extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(right: 25.0),
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => ForgotPasswordPage(),
+                            ),
+                          ),
                           child: Text(
                             "Zaboravili ste sifru?",
                             style: GoogleFonts.poppins(
