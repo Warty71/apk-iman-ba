@@ -1,10 +1,12 @@
 import 'package:apk_iman_ba/Pages/registrationpage.dart';
-import 'package:apk_iman_ba/Services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
-import '../Components/custom_textfield.dart';
+import '../Services/auth_service.dart';
+import '../State Management/user_state.dart';
+import '../components/custom_textfield.dart';
 import 'forgotpasswordpage.dart';
 
 class LoginPage extends StatelessWidget {
@@ -54,29 +56,27 @@ class LoginPage extends StatelessWidget {
   Future<void> signUserIn(BuildContext context) async {
     showDialog(
       context: context,
-      barrierDismissible: false, // Prevents dismissal by tapping outside
+      barrierDismissible: false,
       builder: (BuildContext context) {
-        return Center(
-          child: Container(
-            width: 80.0,
-            height: 80.0,
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: const CircularProgressIndicator(),
-          ),
+        return const Center(
+          child: CircularProgressIndicator(),
         );
       },
     );
 
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final userState = Provider.of<UserState>(context, listen: false);
+      final userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
-      // ignore: use_build_context_synchronously
-      Navigator.pop(context);
+      final loggedInUser = userCredential.user;
+      if (loggedInUser != null) {
+        userState.updateUser(loggedInUser);
+        // ignore: use_build_context_synchronously
+        Navigator.pop(context);
+      }
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
       if (e.code == 'user-not-found') {

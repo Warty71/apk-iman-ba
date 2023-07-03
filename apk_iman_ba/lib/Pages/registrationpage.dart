@@ -1,3 +1,4 @@
+import 'package:apk_iman_ba/Services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -184,7 +185,8 @@ class RegistrationPage extends StatelessWidget {
                   // Button - Registracija
                   GestureDetector(
                     onTap: () {
-                      signUserUp(context);
+                      AuthService.signUpEmail(context, passwordController,
+                          confirmController, emailController);
                     },
                     child: Container(
                       margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
