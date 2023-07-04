@@ -1,6 +1,5 @@
 # Iman.ba
 
-Briefly introduce your project and provide a concise overview of what it does.
 The idea of the app is to allow people a fast and reliable source of expanding their knowledge about islam, be it questions from people of other religions, atheistic, or students of islam wishing to learn more.
 
 At this early stage, the app is intended to be **in Bosnian language only**. We have the intention to go global eventually.

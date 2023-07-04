@@ -1,3 +1,4 @@
+import 'package:apk_iman_ba/Pages/Extra/authpage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -41,7 +42,11 @@ class AuthService {
           password: passwordController.text.trim(),
         );
         // ignore: use_build_context_synchronously
-        Navigator.pop(context);
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => const AuthPage()),
+          (route) => false,
+        );
       } on Exception catch (e) {
         Navigator.pop(context);
         // ignore: avoid_print

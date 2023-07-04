@@ -1,11 +1,11 @@
 import 'package:apk_iman_ba/Pages/historypage.dart';
 import 'package:apk_iman_ba/Pages/myquestionspage.dart';
 import 'package:apk_iman_ba/Pages/searchpage.dart';
+import 'package:apk_iman_ba/State%20Management/user_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'Extra/authpage.dart';
+import 'package:provider/provider.dart';
 import 'favoritespage.dart';
 import 'homepage.dart';
 
@@ -15,11 +15,15 @@ class UserPage extends StatelessWidget {
   void signUserOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     // ignore: use_build_context_synchronously
-    Navigator.pushAndRemoveUntil(
+    Provider.of<UserState>(context, listen: false).updateUser(null);
+    // ignore: use_build_context_synchronously
+    Navigator.pop(context);
+    // ignore: use_build_context_synchronously
+    /* Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (_) => const AuthPage()),
       (route) => false,
-    );
+    ); */
   }
 
   @override

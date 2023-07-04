@@ -1,5 +1,4 @@
 import 'package:apk_iman_ba/Services/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,52 +10,6 @@ class RegistrationPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmController = TextEditingController();
-
-  // SignUp method
-  Future signUserUp(BuildContext context) async {
-    //Show dialog
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => const Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
-
-    // Try to sign up. I need to add an error MSG in case the passwords don't match
-    if (passwordController.text == confirmController.text) {
-      try {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim(),
-        );
-        // ignore: use_build_context_synchronously
-        Navigator.pop(context);
-      } on Exception catch (e) {
-        Navigator.pop(context);
-        // ignore: avoid_print
-        print(e);
-      }
-    } else {
-      Navigator.pop(context);
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text("Sifre nisu iste."),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text("Zatvori"),
-              ),
-            ],
-          );
-        },
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
