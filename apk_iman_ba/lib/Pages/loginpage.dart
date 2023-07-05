@@ -32,7 +32,7 @@ class LoginPage extends StatelessWidget {
                     child: SizedBox(
                       height: 100,
                       width: 100,
-                      child: Image.asset("lib/Images/Logo.jpg"),
+                      child: Image.asset("assets/images/Logo.jpg"),
                     ),
                   ),
 
@@ -226,7 +226,7 @@ class LoginPage extends StatelessWidget {
                             margin: const EdgeInsets.fromLTRB(0, 0, 10.0, 0),
                             width: 24,
                             height: 24,
-                            child: Image.asset("lib/Images/google.png"),
+                            child: Image.asset("assets/images/google.png"),
                           ),
                           const Text(
                             "Google Login",

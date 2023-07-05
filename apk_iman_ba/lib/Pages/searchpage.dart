@@ -204,7 +204,7 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                             height: 48,
                             child: Image.asset(
-                              "lib/Images/close.png",
+                              "assets/images/close.png",
                               height: 4,
                             ),
                           ),
@@ -233,7 +233,7 @@ class _SearchPageState extends State<SearchPage> {
                             textAlign: TextAlign.center,
                           ),
                           Image.asset(
-                            "lib/Images/Compass.png",
+                            "assets/images/Compass.png",
                           ),
                         ],
                       ),
