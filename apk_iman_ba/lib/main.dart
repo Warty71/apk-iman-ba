@@ -1,4 +1,3 @@
-import 'package:apk_iman_ba/Pages/Extra/authpage.dart';
 import 'package:apk_iman_ba/Pages/onboarding.dart';
 import 'package:apk_iman_ba/firebase_options.dart';
 import 'package:flutter/material.dart';

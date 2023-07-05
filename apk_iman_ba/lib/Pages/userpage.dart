@@ -1,3 +1,4 @@
+import 'package:apk_iman_ba/Pages/Extra/authpage.dart';
 import 'package:apk_iman_ba/Pages/historypage.dart';
 import 'package:apk_iman_ba/Pages/myquestionspage.dart';
 import 'package:apk_iman_ba/Pages/searchpage.dart';
@@ -16,14 +17,13 @@ class UserPage extends StatelessWidget {
     await FirebaseAuth.instance.signOut();
     // ignore: use_build_context_synchronously
     Provider.of<UserState>(context, listen: false).updateUser(null);
+
     // ignore: use_build_context_synchronously
-    Navigator.pop(context);
-    // ignore: use_build_context_synchronously
-    /* Navigator.pushAndRemoveUntil(
+    Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (_) => const AuthPage()),
       (route) => false,
-    ); */
+    );
   }
 
   @override

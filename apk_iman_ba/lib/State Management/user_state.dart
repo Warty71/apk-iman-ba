@@ -16,7 +16,6 @@ class UserState with ChangeNotifier {
 //This notifies all the listeners (widgets) that are dependent on UserState that a change has occurred, so they can update accordingly.
   void updateUser(User? newUser) {
     _user = newUser;
-    print(_user);
     notifyListeners();
   }
 }
