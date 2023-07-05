@@ -1,3 +1,4 @@
+import 'package:apk_iman_ba/Pages/detailspage.dart';
 import 'package:apk_iman_ba/Pages/homepage.dart';
 import 'package:apk_iman_ba/Pages/userpage.dart';
 import 'package:flutter/material.dart';
@@ -254,7 +255,14 @@ class _SearchPageState extends State<SearchPage> {
                                 borderRadius: BorderRadius.circular(30.0),
                                 child: InkWell(
                                   onTap: () {
-                                    // Handle the tap event here
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (_) => DetailsPage(
+                                          answer: qa['answer'] ?? '',
+                                          title: qa['question'] ?? '',
+                                        ),
+                                      ),
+                                    );
                                   },
                                   splashColor: Colors.blue.withOpacity(
                                       0.5), // Customize the splash color

@@ -1,10 +1,13 @@
 import 'package:apk_iman_ba/Pages/Extra/authpage.dart';
+import 'package:apk_iman_ba/Services/alert_service.dart';
+import 'package:apk_iman_ba/State%20Management/user_state.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 
 class AuthService {
-// Google Sign In
+// Sign-In (Google)
   signInWithGoogle() async {
     // Begin the process
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
@@ -19,10 +22,49 @@ class AuthService {
     return await FirebaseAuth.instance.signInWithCredential(credentials);
   }
 
-// Sign Up (using E-mail and PW)
+// Sign-In (Traditional)
+  static Future<void> signUserIn(
+    BuildContext context,
+    TextEditingController emailController,
+    TextEditingController passwordController,
+  ) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
+    try {
+      final userState = Provider.of<UserState>(context, listen: false);
+      final userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      final loggedInUser = userCredential.user;
+      if (loggedInUser != null) {
+        userState.updateUser(loggedInUser);
+        // ignore: use_build_context_synchronously
+        Navigator.pop(context);
+      }
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      if (e.code == 'user-not-found') {
+        AlertService.showWrongEmailMessage(context);
+      } else if (e.code == 'wrong-password') {
+        AlertService.showWrongPasswordMessage(context);
+      }
+    }
+  }
+
+// Sign-Up (Traditional)
   static Future<void> signUpEmail(
     BuildContext context,
-    passwordController,
+    TextEditingController passwordController,
     TextEditingController confirmController,
     TextEditingController emailController,
   ) async {

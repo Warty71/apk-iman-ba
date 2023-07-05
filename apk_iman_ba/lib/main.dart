@@ -1,3 +1,4 @@
+import 'package:apk_iman_ba/Pages/Extra/authpage.dart';
 import 'package:apk_iman_ba/Pages/onboarding.dart';
 import 'package:apk_iman_ba/firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +12,15 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
   runApp(
-    const MyApp(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<UserState>(
+          create: (_) => UserState(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
   );
 }
 
@@ -22,12 +29,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => UserState(),
-      child: const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: OnboardingPage(),
-      ),
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: OnboardingPage(),
     );
   }
 }

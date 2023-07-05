@@ -1,11 +1,8 @@
 import 'package:apk_iman_ba/Pages/registrationpage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 import '../Services/auth_service.dart';
-import '../State Management/user_state.dart';
 import '../components/custom_textfield.dart';
 import 'forgotpasswordpage.dart';
 
@@ -14,78 +11,6 @@ class LoginPage extends StatelessWidget {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  void wrongEmailMessage(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Pogresan email"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text("Zatvori"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void wrongPasswordMessage(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Pogresna sifra"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text("Zatvori"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> signUserIn(BuildContext context) async {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
-
-    try {
-      final userState = Provider.of<UserState>(context, listen: false);
-      final userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
-      final loggedInUser = userCredential.user;
-      if (loggedInUser != null) {
-        userState.updateUser(loggedInUser);
-        // ignore: use_build_context_synchronously
-        Navigator.pop(context);
-      }
-    } on FirebaseAuthException catch (e) {
-      Navigator.pop(context);
-      if (e.code == 'user-not-found') {
-        wrongEmailMessage(context);
-      } else if (e.code == 'wrong-password') {
-        wrongPasswordMessage(context);
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -233,7 +158,8 @@ class LoginPage extends StatelessWidget {
                   // "Prijavi se - button"
                   GestureDetector(
                     onTap: () {
-                      signUserIn(context);
+                      AuthService.signUserIn(
+                          context, emailController, passwordController);
                     },
                     child: Container(
                       margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
