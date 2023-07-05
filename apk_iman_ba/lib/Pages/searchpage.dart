@@ -233,7 +233,7 @@ class _SearchPageState extends State<SearchPage> {
                             textAlign: TextAlign.center,
                           ),
                           Image.asset(
-                            "assets/images/Compass.png",
+                            "assets/images/compass.png",
                           ),
                         ],
                       ),
