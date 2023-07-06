@@ -1,4 +1,5 @@
-import 'package:apk_iman_ba/Services/database_service.dart';
+import 'package:apk_iman_ba/models/question_model.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -19,13 +20,31 @@ class _SearchPageState extends State<SearchPage> {
   ValueNotifier<bool> isTextFieldEmptyNotifier = ValueNotifier<bool>(true);
   bool isTextFieldEmpty = true;
 
-  DatabaseService databaseService = DatabaseService();
-  List<Map<String, String>> searchResults = [];
+  DatabaseReference dbRef = FirebaseDatabase.instance.ref().child("Baza");
 
-  void performSearch(String searchQuery) async {
-    final results = await databaseService.searchQuestions(searchQuery);
-    setState(() {
-      searchResults = results;
+  List<Question> questionList = [];
+
+  void getQuestionsFromDatabase(String searchText) {
+    dbRef.child('Questions').once().then((DatabaseEvent event) {
+      DataSnapshot snapshot = event.snapshot;
+      // Clear the existing list before populating with new data
+      setState(() {
+        questionList.clear();
+        Map? data = snapshot.value as Map<dynamic, dynamic>?;
+        if (data != null) {
+          data.forEach((key, value) {
+            Question question = Question.fromJson(value);
+            if ((question.question
+                    .toLowerCase()
+                    .contains(searchText.toLowerCase())) &
+                (searchText.length >= 3)) {
+              questionList.add(question);
+            }
+          });
+        }
+      });
+    }).catchError((error) {
+      print('Failed to retrieve questions: $error');
     });
   }
 
@@ -138,11 +157,11 @@ class _SearchPageState extends State<SearchPage> {
                           controller: searchController,
                           onChanged: (value) {
                             isTextFieldEmptyNotifier.value = value.isEmpty;
+                            getQuestionsFromDatabase(value);
                           },
                           onFieldSubmitted: (value) {
                             if (value.isNotEmpty) {
                               isTextFieldEmptyNotifier.value = false;
-                              performSearch(value);
                             }
                           },
                           decoration: InputDecoration(
@@ -234,7 +253,7 @@ class _SearchPageState extends State<SearchPage> {
                     return Expanded(
                       child: ListView(
                         children: [
-                          for (Map<String, String> qa in searchResults)
+                          for (Question question in questionList)
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ClipRRect(
@@ -244,46 +263,36 @@ class _SearchPageState extends State<SearchPage> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (_) => DetailsPage(
-                                          answer: qa['answer'] ?? '',
-                                          title: qa['question'] ?? '',
+                                          answer: question.answer,
+                                          title: question.question,
                                         ),
                                       ),
                                     );
                                   },
-                                  splashColor: Colors.blue.withOpacity(
-                                      0.5), // Customize the splash color
+                                  splashColor: Colors.blue.withOpacity(0.5),
                                   borderRadius: BorderRadius.circular(8.0),
                                   child: Card(
                                     child: ListTile(
-                                      title: qa['question'] != null
-                                          ? Container(
-                                              margin: const EdgeInsets.fromLTRB(
-                                                  0, 5, 0, 5),
-                                              child: Text(
-                                                qa['question']!,
-                                                style: GoogleFonts.poppins(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 16,
-                                                  letterSpacing: 0.32,
-                                                  color:
-                                                      const Color(0xff201d22),
-                                                ),
-                                              ),
-                                            )
-                                          : Container(),
-                                      subtitle: qa['answer'] != null
-                                          ? Text(
-                                              qa['answer']!,
-                                              maxLines: 5,
-                                              overflow: TextOverflow.fade,
-                                              style: GoogleFonts.poppins(
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 14,
-                                                letterSpacing: 0.28,
-                                                color: const Color(0xff626164),
-                                              ),
-                                            )
-                                          : Container(),
+                                      title: Text(
+                                        question.question,
+                                        style: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                          letterSpacing: 0.32,
+                                          color: const Color(0xff201d22),
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        question.answer,
+                                        maxLines: 5,
+                                        overflow: TextOverflow.fade,
+                                        style: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 14,
+                                          letterSpacing: 0.28,
+                                          color: const Color(0xff626164),
+                                        ),
+                                      ),
                                       tileColor: const Color(0xffeff2f8),
                                     ),
                                   ),

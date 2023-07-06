@@ -1,24 +1,28 @@
 class Question {
-  String? key;
-  String? pitanje;
-  String? odgovor;
-  String? pitao;
-  String? odgovorio;
-  String? datum;
+  final String question;
+  final String answer;
+  final String askedBy;
+  final String answeredBy;
+  final DateTime date;
 
-  Question(
-      {this.key,
-      this.pitanje,
-      this.odgovor,
-      this.pitao,
-      this.odgovorio,
-      this.datum});
+  Question({
+    required this.question,
+    required this.answer,
+    required this.askedBy,
+    required this.answeredBy,
+    required this.date,
+  });
 
-  Question.fromJson(Map<dynamic, dynamic> json) {
-    pitanje = json["pitanje"];
-    odgovor = json["odgovor"];
-    pitao = json["pitao"];
-    odgovorio = json["odgovorio"];
-    datum = json["datum"];
+  factory Question.fromJson(Map<dynamic, dynamic> json) {
+    // Parse the JSON data and create a Question object
+    return Question(
+      question: json['pitanje'] ?? '',
+      answer: json['odgovor'] ?? '',
+      askedBy: json['pitao'] ?? '',
+      answeredBy: json['odgovorio'] ?? '',
+      date: json['datum'] != null
+          ? DateTime.parse(json['datum'])
+          : DateTime.now(),
+    );
   }
 }
