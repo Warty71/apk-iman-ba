@@ -49,6 +49,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '43835481855',
     projectId: 'iman-ba',
     authDomain: 'iman-ba.firebaseapp.com',
+    databaseURL: 'https://iman-ba-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'iman-ba.appspot.com',
     measurementId: 'G-0F2QYDS6TW',
   );
@@ -58,6 +59,7 @@ class DefaultFirebaseOptions {
     appId: '1:43835481855:android:a4e34a37cfdda53a4db6ca',
     messagingSenderId: '43835481855',
     projectId: 'iman-ba',
+    databaseURL: 'https://iman-ba-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'iman-ba.appspot.com',
   );
 
@@ -66,7 +68,9 @@ class DefaultFirebaseOptions {
     appId: '1:43835481855:ios:41c3a0aac9bd97604db6ca',
     messagingSenderId: '43835481855',
     projectId: 'iman-ba',
+    databaseURL: 'https://iman-ba-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'iman-ba.appspot.com',
+    androidClientId: '43835481855-oj8lfsr3q3g32ib876a8bsc02e0im3fb.apps.googleusercontent.com',
     iosClientId: '43835481855-3sln3aghq2g905lgm3dgj6cdhjgfaj93.apps.googleusercontent.com',
     iosBundleId: 'com.example.apkImanBa',
   );
@@ -76,7 +80,9 @@ class DefaultFirebaseOptions {
     appId: '1:43835481855:ios:5af411c0300957144db6ca',
     messagingSenderId: '43835481855',
     projectId: 'iman-ba',
+    databaseURL: 'https://iman-ba-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'iman-ba.appspot.com',
+    androidClientId: '43835481855-oj8lfsr3q3g32ib876a8bsc02e0im3fb.apps.googleusercontent.com',
     iosClientId: '43835481855-bju3ni3cb0r222uj6rjnk7ba2d39rjhg.apps.googleusercontent.com',
     iosBundleId: 'com.example.apkImanBa.RunnerTests',
   );

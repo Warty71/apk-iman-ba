@@ -1,36 +1,11 @@
-import 'package:apk_iman_ba/Pages/detailspage.dart';
-import 'package:apk_iman_ba/Pages/homepage.dart';
-import 'package:apk_iman_ba/Pages/userpage.dart';
+import 'package:apk_iman_ba/Services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'detailspage.dart';
+import 'homepage.dart';
+import 'userpage.dart';
 import 'favoritespage.dart';
-
-List<Map<String, String>> qaList = [
-  {
-    'question': "Sta je Kur'an?",
-    'answer':
-        "Kur'an je posljednja objava našeg Gospodara. Objavljen je na čistom arapskom jeziku poslaniku Muhammedu s.a.w.s.",
-  },
-  {
-    'question': "Koja je vrijednost okupljanja radi učenja Kur’ana?",
-    'answer':
-        "Ebu Hurejre prenosi da je Poslanik, sallallahu alejhi ve sellem, kazao: „ Kada god se okupi grupa ljudi u nekoj Allahovoj kući radi učenja i proučavanja Kur’ana, na njih se spusti smirenost, obaspe ih milost, okruže ih meleki i Allah ih spomene kod onih koji su kod Njega. Ko zaostaje zbog svojih dijela, njegovo porijeklo mu neće pomoći da napreduje.“ (Bilježi Muslim)",
-  },
-  {
-    'question': "Šta je Kur’an?",
-    'answer':
-        "Kur'an je posljednja objava našeg Gospodara. Objavljen je na čistom arapskom jeziku poslaniku Muhammedu s.a.w.s.",
-  },
-  {
-    'question': 'Question 4',
-    'answer': 'Answer 4',
-  },
-  {
-    'question': 'Question 5',
-    'answer': 'Answer 5',
-  },
-];
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -43,6 +18,16 @@ class _SearchPageState extends State<SearchPage> {
   final TextEditingController searchController = TextEditingController();
   ValueNotifier<bool> isTextFieldEmptyNotifier = ValueNotifier<bool>(true);
   bool isTextFieldEmpty = true;
+
+  DatabaseService databaseService = DatabaseService();
+  List<Map<String, String>> searchResults = [];
+
+  void performSearch(String searchQuery) async {
+    final results = await databaseService.searchQuestions(searchQuery);
+    setState(() {
+      searchResults = results;
+    });
+  }
 
   @override
   void dispose() {
@@ -157,6 +142,7 @@ class _SearchPageState extends State<SearchPage> {
                           onFieldSubmitted: (value) {
                             if (value.isNotEmpty) {
                               isTextFieldEmptyNotifier.value = false;
+                              performSearch(value);
                             }
                           },
                           decoration: InputDecoration(
@@ -248,7 +234,7 @@ class _SearchPageState extends State<SearchPage> {
                     return Expanded(
                       child: ListView(
                         children: [
-                          for (Map<String, String> qa in qaList)
+                          for (Map<String, String> qa in searchResults)
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ClipRRect(

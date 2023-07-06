@@ -1,5 +1,7 @@
 import 'package:apk_iman_ba/Pages/onboarding.dart';
 import 'package:apk_iman_ba/firebase_options.dart';
+// ignore: unused_import
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +13,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(
     MultiProvider(
       providers: [
