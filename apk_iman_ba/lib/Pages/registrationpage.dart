@@ -2,7 +2,7 @@ import 'package:apk_iman_ba/Services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../Components/custom_textfield.dart';
+import '../components/custom_textfield.dart';
 
 class RegistrationPage extends StatelessWidget {
   RegistrationPage({super.key});

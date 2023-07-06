@@ -1,8 +1,8 @@
-import 'package:apk_iman_ba/Pages/askpage.dart';
-import 'package:apk_iman_ba/Pages/detailspage.dart';
-import 'package:apk_iman_ba/Pages/favoritespage.dart';
-import 'package:apk_iman_ba/Pages/searchpage.dart';
-import 'package:apk_iman_ba/Pages/userpage.dart';
+import 'package:apk_iman_ba/pages/askpage.dart';
+import 'package:apk_iman_ba/pages/detailspage.dart';
+import 'package:apk_iman_ba/pages/favoritespage.dart';
+import 'package:apk_iman_ba/pages/searchpage.dart';
+import 'package:apk_iman_ba/pages/userpage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

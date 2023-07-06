@@ -1,7 +1,7 @@
-import 'package:apk_iman_ba/Pages/Extra/authpage.dart';
-import 'package:apk_iman_ba/Pages/historypage.dart';
-import 'package:apk_iman_ba/Pages/myquestionspage.dart';
-import 'package:apk_iman_ba/Pages/searchpage.dart';
+import 'package:apk_iman_ba/pages/extra/authpage.dart';
+import 'package:apk_iman_ba/pages/historypage.dart';
+import 'package:apk_iman_ba/pages/myquestionspage.dart';
+import 'package:apk_iman_ba/pages/searchpage.dart';
 import 'package:apk_iman_ba/State%20Management/user_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

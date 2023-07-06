@@ -1,4 +1,4 @@
-import 'package:apk_iman_ba/Pages/registrationpage.dart';
+import 'package:apk_iman_ba/pages/registrationpage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
