@@ -1,4 +1,5 @@
 import 'package:apk_iman_ba/models/question_model.dart';
+import 'package:apk_iman_ba/services/database_service.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,32 +22,9 @@ class _SearchPageState extends State<SearchPage> {
   bool isTextFieldEmpty = true;
 
   DatabaseReference dbRef = FirebaseDatabase.instance.ref().child("Baza");
+  final DatabaseService _database = DatabaseService();
 
   List<Question> questionList = [];
-
-  void getQuestionsFromDatabase(String searchText) {
-    dbRef.child('Questions').once().then((DatabaseEvent event) {
-      DataSnapshot snapshot = event.snapshot;
-      // Clear the existing list before populating with new data
-      setState(() {
-        questionList.clear();
-        Map? data = snapshot.value as Map<dynamic, dynamic>?;
-        if (data != null) {
-          data.forEach((key, value) {
-            Question question = Question.fromJson(value);
-            if ((question.question
-                    .toLowerCase()
-                    .contains(searchText.toLowerCase())) &
-                (searchText.length >= 3)) {
-              questionList.add(question);
-            }
-          });
-        }
-      });
-    }).catchError((error) {
-      print('Failed to retrieve questions: $error');
-    });
-  }
 
   @override
   void dispose() {
@@ -155,9 +133,13 @@ class _SearchPageState extends State<SearchPage> {
                       Expanded(
                         child: TextFormField(
                           controller: searchController,
-                          onChanged: (value) {
+                          onChanged: (value) async {
                             isTextFieldEmptyNotifier.value = value.isEmpty;
-                            getQuestionsFromDatabase(value);
+                            final result =
+                                await _database.searchPageIndex(value);
+                            setState(() {
+                              questionList = result;
+                            });
                           },
                           onFieldSubmitted: (value) {
                             if (value.isNotEmpty) {
@@ -274,6 +256,8 @@ class _SearchPageState extends State<SearchPage> {
                                   child: Card(
                                     child: ListTile(
                                       title: Text(
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
                                         question.question,
                                         style: GoogleFonts.poppins(
                                           fontWeight: FontWeight.w500,

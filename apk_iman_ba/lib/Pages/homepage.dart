@@ -3,6 +3,9 @@ import 'package:apk_iman_ba/Pages/detailspage.dart';
 import 'package:apk_iman_ba/Pages/favoritespage.dart';
 import 'package:apk_iman_ba/Pages/searchpage.dart';
 import 'package:apk_iman_ba/Pages/userpage.dart';
+import 'package:apk_iman_ba/models/question_model.dart';
+import 'package:apk_iman_ba/services/database_service.dart';
+import 'package:apk_iman_ba/utility/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -22,34 +25,42 @@ List<String> topics = [
   "Ostalo",
 ];
 
-List<Map<String, String>> qaList = [
-  {
-    'question': "Sta je Kur'an?",
-    'answer':
-        "Kur'an je posljednja objava našeg Gospodara. Objavljen je na čistom arapskom jeziku poslaniku Muhammedu s.a.w.s.",
-  },
-  {
-    'question': "Koja je vrijednost okupljanja radi učenja Kur’ana?",
-    'answer':
-        "Ebu Hurejre prenosi da je Poslanik, sallallahu alejhi ve sellem, kazao: „ Kada god se okupi grupa ljudi u nekoj Allahovoj kući radi učenja i proučavanja Kur’ana, na njih se spusti smirenost, obaspe ih milost, okruže ih meleki i Allah ih spomene kod onih koji su kod Njega. Ko zaostaje zbog svojih dijela, njegovo porijeklo mu neće pomoći da napreduje.“ (Bilježi Muslim). Ebu Hurejre prenosi da je Poslanik, sallallahu alejhi ve sellem, kazao: „ Kada god se okupi grupa ljudi u nekoj Allahovoj kući radi učenja i proučavanja Kur’ana, na njih se spusti smirenost, obaspe ih milost, okruže ih meleki i Allah ih spomene kod onih koji su kod Njega. Ko zaostaje zbog svojih dijela, njegovo porijeklo mu neće pomoći da napreduje.“ (Bilježi Muslim). Ebu Hurejre prenosi da je Poslanik, sallallahu alejhi ve sellem, kazao: „ Kada god se okupi grupa ljudi u nekoj Allahovoj kući radi učenja i proučavanja Kur’ana, na njih se spusti smirenost, obaspe ih milost, okruže ih meleki i Allah ih spomene kod onih koji su kod Njega. Ko zaostaje zbog svojih dijela, njegovo porijeklo mu neće pomoći da napreduje.“ (Bilježi Muslim).",
-  },
-  {
-    'question': "Šta je Kur’an?",
-    'answer':
-        "Kur'an je posljednja objava našeg Gospodara. Objavljen je na čistom arapskom jeziku poslaniku Muhammedu s.a.w.s.",
-  },
-  {
-    'question': 'Question 4',
-    'answer': 'Answer 4',
-  },
-  {
-    'question': 'Question 5',
-    'answer': 'Answer 5',
-  },
-];
-
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  // ignore: unused_field
+  final DatabaseService _database = DatabaseService();
+
+  String currentTopic = "Kur'an";
+
+  List<Question> questionList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    currentTopic = "Kur'an";
+    _fetchQuestions(currentTopic);
+  }
+
+  Future<void> _fetchQuestions(String topic) async {
+    final List<Question> questions = await _database.homePageIndex(topic);
+    setState(() {
+      questionList = questions;
+    });
+  }
+
+// I DID THIS TO SOLVE AN ISSUE. NEVER CALLBACK A SETSTATE AND AN ASYNC AT ONCE.
+  void _updateCurrentTopic(String topic) {
+    setState(() {
+      currentTopic = Utils().removeEmojis(topic);
+    });
+    _fetchQuestions(currentTopic);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,34 +162,33 @@ class HomePage extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemCount: topics.length,
                   itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-                        decoration: BoxDecoration(
+                    return Container(
+                      margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                      decoration: BoxDecoration(
+                          color: const Color(0xff190c3f),
+                          borderRadius: BorderRadius.circular(14.0)),
+                      child: Material(
+                        child: Ink(
+                          decoration: BoxDecoration(
                             color: const Color(0xff190c3f),
-                            borderRadius: BorderRadius.circular(14.0)),
-                        child: Material(
-                          child: Ink(
-                            decoration: BoxDecoration(
-                              color: const Color(0xff190c3f),
-                              borderRadius: BorderRadius.circular(14.0),
-                            ),
-                            child: InkWell(
-                              onTap: () {},
-                              splashColor: Colors.white.withOpacity(
-                                  0.3), // Customize the splash color
-                              borderRadius: BorderRadius.circular(14.0),
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10.0),
-                                  child: Text(
-                                    topics[index],
-                                    style: GoogleFonts.poppins(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w500),
-                                  ),
+                            borderRadius: BorderRadius.circular(14.0),
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              _updateCurrentTopic(topics[index]);
+                            },
+                            splashColor: Colors.white
+                                .withOpacity(0.3), // Customize the splash color
+                            borderRadius: BorderRadius.circular(14.0),
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0),
+                                child: Text(
+                                  topics[index],
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500),
                                 ),
                               ),
                             ),
@@ -193,7 +203,7 @@ class HomePage extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  for (Map<String, String> qa in qaList)
+                  for (Question question in questionList)
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ClipRRect(
@@ -203,8 +213,8 @@ class HomePage extends StatelessWidget {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (_) => DetailsPage(
-                                  answer: qa['answer'] ?? '',
-                                  title: qa['question'] ?? '',
+                                  answer: question.answer,
+                                  title: question.question,
                                 ),
                               ),
                             );
@@ -214,34 +224,29 @@ class HomePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8.0),
                           child: Card(
                             child: ListTile(
-                              title: qa['question'] != null
-                                  ? Container(
-                                      margin:
-                                          const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                      child: Text(
-                                        qa['question']!,
-                                        style: GoogleFonts.poppins(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16,
-                                          letterSpacing: 0.32,
-                                          color: const Color(0xff201d22),
-                                        ),
-                                      ),
-                                    )
-                                  : Container(),
-                              subtitle: qa['answer'] != null
-                                  ? Text(
-                                      qa['answer']!,
-                                      maxLines: 5,
-                                      overflow: TextOverflow.fade,
-                                      style: GoogleFonts.poppins(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 14,
-                                        letterSpacing: 0.28,
-                                        color: const Color(0xff626164),
-                                      ),
-                                    )
-                                  : Container(),
+                              title: Container(
+                                margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                child: Text(
+                                  question.question,
+                                  style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                    letterSpacing: 0.32,
+                                    color: const Color(0xff201d22),
+                                  ),
+                                ),
+                              ),
+                              subtitle: Text(
+                                question.answer,
+                                maxLines: 5,
+                                overflow: TextOverflow.fade,
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                  letterSpacing: 0.28,
+                                  color: const Color(0xff626164),
+                                ),
+                              ),
                               tileColor: const Color(0xffeff2f8),
                             ),
                           ),
