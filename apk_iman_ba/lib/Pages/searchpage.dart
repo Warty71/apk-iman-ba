@@ -1,36 +1,13 @@
-import 'package:apk_iman_ba/Pages/detailspage.dart';
-import 'package:apk_iman_ba/Pages/homepage.dart';
-import 'package:apk_iman_ba/Pages/userpage.dart';
+import 'package:apk_iman_ba/models/question_model.dart';
+import 'package:apk_iman_ba/services/database_service.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'detailspage.dart';
+import 'homepage.dart';
+import 'userpage.dart';
 import 'favoritespage.dart';
-
-List<Map<String, String>> qaList = [
-  {
-    'question': "Sta je Kur'an?",
-    'answer':
-        "Kur'an je posljednja objava našeg Gospodara. Objavljen je na čistom arapskom jeziku poslaniku Muhammedu s.a.w.s.",
-  },
-  {
-    'question': "Koja je vrijednost okupljanja radi učenja Kur’ana?",
-    'answer':
-        "Ebu Hurejre prenosi da je Poslanik, sallallahu alejhi ve sellem, kazao: „ Kada god se okupi grupa ljudi u nekoj Allahovoj kući radi učenja i proučavanja Kur’ana, na njih se spusti smirenost, obaspe ih milost, okruže ih meleki i Allah ih spomene kod onih koji su kod Njega. Ko zaostaje zbog svojih dijela, njegovo porijeklo mu neće pomoći da napreduje.“ (Bilježi Muslim)",
-  },
-  {
-    'question': "Šta je Kur’an?",
-    'answer':
-        "Kur'an je posljednja objava našeg Gospodara. Objavljen je na čistom arapskom jeziku poslaniku Muhammedu s.a.w.s.",
-  },
-  {
-    'question': 'Question 4',
-    'answer': 'Answer 4',
-  },
-  {
-    'question': 'Question 5',
-    'answer': 'Answer 5',
-  },
-];
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -43,6 +20,11 @@ class _SearchPageState extends State<SearchPage> {
   final TextEditingController searchController = TextEditingController();
   ValueNotifier<bool> isTextFieldEmptyNotifier = ValueNotifier<bool>(true);
   bool isTextFieldEmpty = true;
+
+  DatabaseReference dbRef = FirebaseDatabase.instance.ref().child("Baza");
+  final DatabaseService _database = DatabaseService();
+
+  List<Question> questionList = [];
 
   @override
   void dispose() {
@@ -151,8 +133,13 @@ class _SearchPageState extends State<SearchPage> {
                       Expanded(
                         child: TextFormField(
                           controller: searchController,
-                          onChanged: (value) {
+                          onChanged: (value) async {
                             isTextFieldEmptyNotifier.value = value.isEmpty;
+                            final result =
+                                await _database.searchPageIndex(value);
+                            setState(() {
+                              questionList = result;
+                            });
                           },
                           onFieldSubmitted: (value) {
                             if (value.isNotEmpty) {
@@ -248,7 +235,7 @@ class _SearchPageState extends State<SearchPage> {
                     return Expanded(
                       child: ListView(
                         children: [
-                          for (Map<String, String> qa in qaList)
+                          for (Question question in questionList)
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ClipRRect(
@@ -258,46 +245,38 @@ class _SearchPageState extends State<SearchPage> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (_) => DetailsPage(
-                                          answer: qa['answer'] ?? '',
-                                          title: qa['question'] ?? '',
+                                          answer: question.answer,
+                                          title: question.question,
                                         ),
                                       ),
                                     );
                                   },
-                                  splashColor: Colors.blue.withOpacity(
-                                      0.5), // Customize the splash color
+                                  splashColor: Colors.blue.withOpacity(0.5),
                                   borderRadius: BorderRadius.circular(8.0),
                                   child: Card(
                                     child: ListTile(
-                                      title: qa['question'] != null
-                                          ? Container(
-                                              margin: const EdgeInsets.fromLTRB(
-                                                  0, 5, 0, 5),
-                                              child: Text(
-                                                qa['question']!,
-                                                style: GoogleFonts.poppins(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 16,
-                                                  letterSpacing: 0.32,
-                                                  color:
-                                                      const Color(0xff201d22),
-                                                ),
-                                              ),
-                                            )
-                                          : Container(),
-                                      subtitle: qa['answer'] != null
-                                          ? Text(
-                                              qa['answer']!,
-                                              maxLines: 5,
-                                              overflow: TextOverflow.fade,
-                                              style: GoogleFonts.poppins(
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 14,
-                                                letterSpacing: 0.28,
-                                                color: const Color(0xff626164),
-                                              ),
-                                            )
-                                          : Container(),
+                                      title: Text(
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                        question.question,
+                                        style: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                          letterSpacing: 0.32,
+                                          color: const Color(0xff201d22),
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        question.answer,
+                                        maxLines: 5,
+                                        overflow: TextOverflow.fade,
+                                        style: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 14,
+                                          letterSpacing: 0.28,
+                                          color: const Color(0xff626164),
+                                        ),
+                                      ),
                                       tileColor: const Color(0xffeff2f8),
                                     ),
                                   ),

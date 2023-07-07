@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "43835481855",
+    "firebase_url": "https://iman-ba-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "iman-ba",
     "storage_bucket": "iman-ba.appspot.com"
   },
@@ -14,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "43835481855-bap2hb09pmupn791ouki3mra5lek9q15.apps.googleusercontent.com",
+          "client_id": "43835481855-oj8lfsr3q3g32ib876a8bsc02e0im3fb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.apk_iman_ba",
+            "certificate_hash": "addd448f8ccf2b4fd361f1ef940911e8bbec2067"
+          }
+        },
+        {
+          "client_id": "43835481855-0o8mlr32v178lp89q248dlig29qmr51e.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +36,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "43835481855-bap2hb09pmupn791ouki3mra5lek9q15.apps.googleusercontent.com",
+              "client_id": "43835481855-0o8mlr32v178lp89q248dlig29qmr51e.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "43835481855-3sln3aghq2g905lgm3dgj6cdhjgfaj93.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.apkImanBa"
+              }
             }
           ]
         }
