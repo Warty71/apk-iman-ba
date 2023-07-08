@@ -1,14 +1,36 @@
 import 'package:apk_iman_ba/Pages/searchpage.dart';
+import 'package:apk_iman_ba/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'homepage.dart';
 
-class DetailsPage extends StatelessWidget {
+class DetailsPage extends StatefulWidget {
   final String title;
   final String answer;
+  final int views;
 
-  const DetailsPage({super.key, required this.title, required this.answer});
+  const DetailsPage(
+      {super.key,
+      required this.title,
+      required this.answer,
+      required this.views});
+
+  @override
+  State<DetailsPage> createState() => _DetailsPageState();
+}
+
+class _DetailsPageState extends State<DetailsPage> {
+  @override
+  void initState() {
+    super.initState();
+    increaseViewCount();
+  }
+
+  void increaseViewCount() async {
+    await DatabaseService()
+        .updateViews("pitanje", widget.title, "pregledi", widget.views);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +172,7 @@ class DetailsPage extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Text(
-                    title,
+                    widget.title,
                     style: GoogleFonts.poppins(
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
@@ -178,7 +200,7 @@ class DetailsPage extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                   child: Text(
-                    answer,
+                    widget.answer,
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,

@@ -4,7 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 class DatabaseService {
   DatabaseReference dbRef = FirebaseDatabase.instance.ref().child("Baza");
 
-  Future<List<Question>> searchPageIndex(String searchText) async {
+  Future<List<Question>> filterBySearch(String searchText) async {
     try {
       List<Question> questionList = [];
       DatabaseEvent event = await dbRef.child('Questions').once();
@@ -29,7 +29,7 @@ class DatabaseService {
     }
   }
 
-  Future<List<Question>> homePageIndex(String topic) async {
+  Future<List<Question>> filterByTopic(String topic) async {
     try {
       DatabaseEvent event = await dbRef
           .child("Questions")
@@ -57,5 +57,44 @@ class DatabaseService {
     }
   }
 
-  void increaseViewCount() async {}
+  Future<List<Question>> filterByViews() async {
+    try {
+      final DatabaseEvent event = await dbRef
+          .child("Questions")
+          .orderByChild("pregledi")
+          .limitToLast(10)
+          .once();
+      final DataSnapshot snapshot = event.snapshot;
+      final dynamic data = snapshot.value;
+      if (data != null && data is Map<dynamic, dynamic>) {
+        final List<Question> popularQuestions = data.entries.map((entry) {
+          final Question question = Question.fromJson(entry.value);
+          return question;
+        }).toList();
+        return popularQuestions;
+      } else {
+        return [];
+      }
+    } catch (error) {
+      return [];
+    }
+  }
+
+  Future<void> updateViews(String fieldToMatch, dynamic valueToMatch,
+      String fieldToUpdate, dynamic newValue) async {
+    final Query query = dbRef
+        .child("Questions")
+        .orderByChild(fieldToMatch)
+        .equalTo(valueToMatch);
+    final DatabaseEvent event = await query.once();
+    final DataSnapshot snapshot = event.snapshot;
+    final Map<dynamic, dynamic> entries =
+        snapshot.value as Map<dynamic, dynamic>;
+    if (entries.isNotEmpty) {
+      final String entryKey = entries.keys.first;
+      final DatabaseReference entryRef =
+          dbRef.child("Questions").child(entryKey);
+      await entryRef.child(fieldToUpdate).set(newValue + 1);
+    } else {}
+  }
 }
