@@ -207,7 +207,9 @@ class LoginPage extends StatelessWidget {
 
                   // Button - Google Login
                   GestureDetector(
-                    onTap: () => AuthService().signInWithGoogle(),
+                    onTap: () {
+                      AuthService().signInWithGoogle(context);
+                    },
                     child: Container(
                       margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
                       width: 325,

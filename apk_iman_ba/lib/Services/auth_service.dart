@@ -8,18 +8,35 @@ import 'package:provider/provider.dart';
 
 class AuthService {
 // Sign-In (Google)
-  signInWithGoogle() async {
-    // Begin the process
-    final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
-    // Obtain details from the request
-    final GoogleSignInAuthentication gAuth = await gUser!.authentication;
-    // Create new credentials for the user
-    final credentials = GoogleAuthProvider.credential(
-      accessToken: gAuth.accessToken,
-      idToken: gAuth.idToken,
-    );
-    // Sign in
-    return await FirebaseAuth.instance.signInWithCredential(credentials);
+  signInWithGoogle(BuildContext context) async {
+    try {
+      // Begin the process
+      final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+      // Obtain details from the request
+      final GoogleSignInAuthentication gAuth = await gUser!.authentication;
+      // Create new credentials for the user
+      final credentials = GoogleAuthProvider.credential(
+        accessToken: gAuth.accessToken,
+        idToken: gAuth.idToken,
+      );
+
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credentials);
+
+      final User? user = userCredential.user;
+      if (user != null) {
+        // Update the user state using the provider
+        // ignore: use_build_context_synchronously
+        Provider.of<UserState>(context, listen: false).updateUser(user);
+      }
+      // Sign in
+      return userCredential;
+    } catch (e, stackTrace) {
+      // Handle and log the error
+      debugPrint('Failed to sign in with Google: $e');
+      debugPrintStack(label: 'StackTrace: ', stackTrace: stackTrace);
+      return null;
+    }
   }
 
 // Sign-In (Traditional)
