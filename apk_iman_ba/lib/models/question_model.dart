@@ -4,6 +4,7 @@ class Question {
   final String askedBy;
   final String answeredBy;
   final DateTime date;
+  final int views;
 
   Question({
     required this.question,
@@ -11,6 +12,7 @@ class Question {
     required this.askedBy,
     required this.answeredBy,
     required this.date,
+    required this.views,
   });
 
   factory Question.fromJson(Map<dynamic, dynamic> json) {
@@ -23,6 +25,7 @@ class Question {
       date: json['datum'] != null
           ? DateTime.parse(json['datum'])
           : DateTime.now(),
+      views: json['pregledi'] ?? 0,
     );
   }
 }

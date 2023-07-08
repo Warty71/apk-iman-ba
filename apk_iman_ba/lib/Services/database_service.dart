@@ -56,4 +56,6 @@ class DatabaseService {
       return [];
     }
   }
+
+  void increaseViewCount() async {}
 }

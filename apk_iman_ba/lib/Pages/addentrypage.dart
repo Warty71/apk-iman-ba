@@ -24,6 +24,7 @@ class _AddEntryPageState extends State<AddEntryPage> {
   void dispose() {
     questionController.dispose();
     answerController.dispose();
+    answeredByController.dispose();
     super.dispose();
   }
 
@@ -70,6 +71,7 @@ class _AddEntryPageState extends State<AddEntryPage> {
                     "pitao": userState.user!.email.toString().trim(),
                     "odgovorio": answeredByController.text.trim(),
                     "datum": DateTime.now().toIso8601String().trim(),
+                    "pregledi": 0,
                   };
                   dbRef.child("Questions").push().set(data).then((value) {
                     // ignore: avoid_print
@@ -82,6 +84,7 @@ class _AddEntryPageState extends State<AddEntryPage> {
                   );
                   questionController.clear();
                   answerController.clear();
+                  answeredByController.clear();
                 } catch (error) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Failed to add entry')),
