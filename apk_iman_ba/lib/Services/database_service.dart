@@ -71,6 +71,8 @@ class DatabaseService {
           final Question question = Question.fromJson(entry.value);
           return question;
         }).toList();
+
+        popularQuestions.sort((a, b) => b.views.compareTo(a.views));
         return popularQuestions;
       } else {
         return [];

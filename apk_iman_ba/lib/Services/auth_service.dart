@@ -1,6 +1,8 @@
 import 'package:apk_iman_ba/Pages/Extra/authpage.dart';
 import 'package:apk_iman_ba/Services/alert_service.dart';
 import 'package:apk_iman_ba/State%20Management/user_state.dart';
+import 'package:apk_iman_ba/models/user_model.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -23,12 +25,33 @@ class AuthService {
       final UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credentials);
 
-      final User? user = userCredential.user;
-      if (user != null) {
+      final User? loggedInUser = userCredential.user;
+      if (loggedInUser != null) {
         // Update the user state using the provider
         // ignore: use_build_context_synchronously
-        Provider.of<UserState>(context, listen: false).updateUser(user);
+        Provider.of<UserState>(context, listen: false).updateUser(loggedInUser);
+
+        // Check if it's the user's first login
+        final DatabaseReference userRef = FirebaseDatabase.instance
+            .ref()
+            .child("Korisnici")
+            .child(loggedInUser.uid);
+        final DatabaseEvent event = await userRef.once();
+        final DataSnapshot snapshot = event.snapshot;
+        final dynamic userData = snapshot.value;
+
+        if (userData == null) {
+          // User's first login, copy data to Realtime Database
+          final newUser = Users.fromJson({
+            'id': loggedInUser.uid,
+            'email': loggedInUser.email,
+            'favoriteQuestions': [],
+            'personalQuestions': [],
+          });
+          await userRef.set(newUser.toJson());
+        }
       }
+
       // Sign in
       return userCredential;
     } catch (e, stackTrace) {
@@ -45,16 +68,6 @@ class AuthService {
     TextEditingController emailController,
     TextEditingController passwordController,
   ) async {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
-
     try {
       final userState = Provider.of<UserState>(context, listen: false);
       final userCredential =
@@ -65,8 +78,25 @@ class AuthService {
       final loggedInUser = userCredential.user;
       if (loggedInUser != null) {
         userState.updateUser(loggedInUser);
-        // ignore: use_build_context_synchronously
-        Navigator.pop(context);
+
+        final DatabaseReference userRef = FirebaseDatabase.instance
+            .ref()
+            .child("Korisnici")
+            .child(loggedInUser.uid);
+        final DatabaseEvent event = await userRef.once();
+        final DataSnapshot snapshot = event.snapshot;
+        final dynamic userData = snapshot.value;
+
+        if (userData == null) {
+          // User's first login, copy data to Realtime Database
+          final newUser = Users.fromJson({
+            'id': loggedInUser.uid,
+            'email': loggedInUser.email,
+            'favoriteQuestions': [],
+            'personalQuestions': [],
+          });
+          await userRef.set(newUser.toJson());
+        }
       }
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
