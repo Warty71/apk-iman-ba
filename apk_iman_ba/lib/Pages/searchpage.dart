@@ -136,7 +136,7 @@ class _SearchPageState extends State<SearchPage> {
                           onChanged: (value) async {
                             isTextFieldEmptyNotifier.value = value.isEmpty;
                             final result =
-                                await _database.searchPageIndex(value);
+                                await _database.filterBySearch(value);
                             setState(() {
                               questionList = result;
                             });
@@ -247,6 +247,7 @@ class _SearchPageState extends State<SearchPage> {
                                         builder: (_) => DetailsPage(
                                           answer: question.answer,
                                           title: question.question,
+                                          views: question.views,
                                         ),
                                       ),
                                     );

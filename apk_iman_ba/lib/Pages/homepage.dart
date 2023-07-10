@@ -44,11 +44,20 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     currentTopic = "Kur'an";
-    _fetchQuestions(currentTopic);
+    _fetchQuestionsByTopic(currentTopic);
   }
 
-  Future<void> _fetchQuestions(String topic) async {
-    final List<Question> questions = await _database.homePageIndex(topic);
+  Future<void> _fetchQuestionsByTopic(String topic) async {
+    final List<Question> questions = await _database.filterByTopic(topic);
+
+    setState(() {
+      questionList = questions;
+    });
+  }
+
+  Future<void> _fetchQuestionsByViews() async {
+    final List<Question> questions = await _database.filterByViews();
+
     setState(() {
       questionList = questions;
     });
@@ -59,7 +68,11 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       currentTopic = Utils().removeEmojis(topic);
     });
-    _fetchQuestions(currentTopic);
+    if (currentTopic != "Popularno") {
+      _fetchQuestionsByTopic(currentTopic);
+    } else {
+      _fetchQuestionsByViews();
+    }
   }
 
   @override
@@ -215,6 +228,7 @@ class _HomePageState extends State<HomePage> {
                                 builder: (_) => DetailsPage(
                                   answer: question.answer,
                                   title: question.question,
+                                  views: question.views,
                                 ),
                               ),
                             );

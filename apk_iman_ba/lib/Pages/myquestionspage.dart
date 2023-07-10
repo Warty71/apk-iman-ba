@@ -200,6 +200,7 @@ class MyQuestionsPage extends StatelessWidget {
                                   builder: (_) => DetailsPage(
                                     answer: qa['answer'] ?? '',
                                     title: qa['question'] ?? '',
+                                    views: 0,
                                   ),
                                 ),
                               );
