@@ -1,6 +1,7 @@
 // ignore: unused_import
 import 'package:apk_iman_ba/Services/database_service.dart';
 import 'package:apk_iman_ba/State%20Management/user_state.dart';
+import 'package:apk_iman_ba/models/question_model.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,8 @@ class _AddEntryPageState extends State<AddEntryPage> {
   final TextEditingController askedByController = TextEditingController();
   final TextEditingController answeredByController = TextEditingController();
 
-  DatabaseReference dbRef = FirebaseDatabase.instance.ref().child("Baza");
+  //DatabaseReference dbRef = FirebaseDatabase.instance.ref().child("Baza");
+  DatabaseReference dbRef = FirebaseDatabase.instance.ref();
 
   @override
   void dispose() {
@@ -64,8 +66,22 @@ class _AddEntryPageState extends State<AddEntryPage> {
               onPressed: () {
                 final userState =
                     Provider.of<UserState>(context, listen: false);
+                final question = Question(
+                  id: dbRef.push().key!,
+                  question: questionController.text.trim(),
+                  answer: answerController.text.trim(),
+                  askedBy: userState.user!.email.toString().trim(),
+                  answeredBy: answeredByController.text.trim(),
+                  date: DateTime.now().toIso8601String().trim(),
+                  views: 0,
+                );
                 try {
-                  Map<String, dynamic> data = {
+                  dbRef
+                      .child("Pitanja i Odgovori")
+                      .push()
+                      .set(question.toJson());
+
+                  /* Map<String, dynamic> data = {
                     "pitanje": questionController.text.trim(),
                     "odgovor": answerController.text.trim(),
                     "pitao": userState.user!.email.toString().trim(),
@@ -76,7 +92,7 @@ class _AddEntryPageState extends State<AddEntryPage> {
                   dbRef.child("Questions").push().set(data).then((value) {
                     // ignore: avoid_print
                     print("Data written!");
-                  });
+                  }); */
 
                   // ignore: use_build_context_synchronously
                   ScaffoldMessenger.of(context).showSnackBar(

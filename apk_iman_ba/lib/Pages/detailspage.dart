@@ -125,13 +125,15 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                           height: 48,
                           child: Image.asset(
-                            "lib/Images/back.png",
+                            "assets/images/back.png",
                             height: 4,
                           ),
                         ),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          //DatabaseService().updateFavoriteQuestion(questionId);
+                        },
                         style: TextButton.styleFrom(),
                         child: Container(
                           padding: const EdgeInsets.all(10),
