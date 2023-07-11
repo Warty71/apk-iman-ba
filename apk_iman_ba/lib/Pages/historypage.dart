@@ -92,7 +92,7 @@ class HistoryPage extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (_) => const FavoritesPage(),
+                          builder: (_) => FavoritesPage(),
                         ),
                       );
                     },
@@ -192,6 +192,7 @@ class HistoryPage extends StatelessWidget {
                                     answer: qa['answer'] ?? '',
                                     title: qa['question'] ?? '',
                                     views: 0,
+                                    id: '',
                                   ),
                                 ),
                               );

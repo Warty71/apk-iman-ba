@@ -19,7 +19,6 @@ class _AddEntryPageState extends State<AddEntryPage> {
   final TextEditingController askedByController = TextEditingController();
   final TextEditingController answeredByController = TextEditingController();
 
-  //DatabaseReference dbRef = FirebaseDatabase.instance.ref().child("Baza");
   DatabaseReference dbRef = FirebaseDatabase.instance.ref();
 
   @override
@@ -78,21 +77,8 @@ class _AddEntryPageState extends State<AddEntryPage> {
                 try {
                   dbRef
                       .child("Pitanja i Odgovori")
-                      .push()
+                      .child(question.id)
                       .set(question.toJson());
-
-                  /* Map<String, dynamic> data = {
-                    "pitanje": questionController.text.trim(),
-                    "odgovor": answerController.text.trim(),
-                    "pitao": userState.user!.email.toString().trim(),
-                    "odgovorio": answeredByController.text.trim(),
-                    "datum": DateTime.now().toIso8601String().trim(),
-                    "pregledi": 0,
-                  };
-                  dbRef.child("Questions").push().set(data).then((value) {
-                    // ignore: avoid_print
-                    print("Data written!");
-                  }); */
 
                   // ignore: use_build_context_synchronously
                   ScaffoldMessenger.of(context).showSnackBar(

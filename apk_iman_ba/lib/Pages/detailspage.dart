@@ -1,17 +1,20 @@
 import 'package:apk_iman_ba/Pages/searchpage.dart';
 import 'package:apk_iman_ba/services/database_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'homepage.dart';
 
 class DetailsPage extends StatefulWidget {
+  final String id;
   final String title;
   final String answer;
   final int views;
 
   const DetailsPage(
       {super.key,
+      required this.id,
       required this.title,
       required this.answer,
       required this.views});
@@ -21,15 +24,34 @@ class DetailsPage extends StatefulWidget {
 }
 
 class _DetailsPageState extends State<DetailsPage> {
+  bool isFavorite = false;
+
   @override
   void initState() {
     super.initState();
     increaseViewCount();
+    checkFavoriteStatus();
   }
 
   void increaseViewCount() async {
     await DatabaseService()
         .updateViews("pitanje", widget.title, "pregledi", widget.views);
+  }
+
+  void checkFavoriteStatus() async {
+    try {
+      final User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final bool favoriteStatus =
+            await DatabaseService().checkFavoriteStatus(widget.id);
+
+        setState(() {
+          isFavorite = favoriteStatus;
+        });
+      }
+    } catch (error) {
+      print('Failed to check favorite status: $error');
+    }
   }
 
   @override
@@ -132,7 +154,11 @@ class _DetailsPageState extends State<DetailsPage> {
                       ),
                       TextButton(
                         onPressed: () {
-                          //DatabaseService().updateFavoriteQuestion(questionId);
+                          DatabaseService().updateFavoriteQuestion(widget.id);
+
+                          setState(() {
+                            isFavorite = !isFavorite;
+                          });
                         },
                         style: TextButton.styleFrom(),
                         child: Container(
@@ -142,9 +168,9 @@ class _DetailsPageState extends State<DetailsPage> {
                             color: const Color(0xffeff2f8),
                           ),
                           height: 48,
-                          child: const Icon(
-                            Icons.favorite_border,
-                            color: Colors.black,
+                          child: Icon(
+                            isFavorite ? Icons.favorite : Icons.favorite_border,
+                            color: isFavorite ? Colors.black : Colors.black,
                             size: 28,
                           ),
                         ),

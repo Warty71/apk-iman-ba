@@ -95,7 +95,7 @@ class _SearchPageState extends State<SearchPage> {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (_) => const FavoritesPage(),
+                            builder: (_) => FavoritesPage(),
                           ),
                         );
                       },
@@ -245,6 +245,7 @@ class _SearchPageState extends State<SearchPage> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (_) => DetailsPage(
+                                          id: question.id,
                                           answer: question.answer,
                                           title: question.question,
                                           views: question.views,
