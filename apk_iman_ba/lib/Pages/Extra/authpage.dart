@@ -1,5 +1,5 @@
-import 'package:apk_iman_ba/Pages/homepage.dart';
 import 'package:apk_iman_ba/Pages/loginpage.dart';
+import 'package:apk_iman_ba/components/custom_bnb.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +14,7 @@ class AuthPage extends StatelessWidget {
     if (userState.user == null) {
       return LoginPage();
     } else {
-      return const HomePage();
+      return const CustomBNB();
     }
   }
 }
