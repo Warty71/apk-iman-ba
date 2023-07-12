@@ -1,10 +1,34 @@
+import 'package:apk_iman_ba/State%20Management/user_state.dart';
 import 'package:apk_iman_ba/models/question_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DatabaseService {
   // Reference to the Realtime Database
   DatabaseReference dbRef = FirebaseDatabase.instance.ref();
+
+  // Method used to ask a question
+  Future<void> askQuestions(BuildContext context, question) async {
+    try {
+      DatabaseReference korisnickaPitanjaRef =
+          dbRef.child('Korisnicka Pitanja').push();
+
+      await korisnickaPitanjaRef.set({
+        'pitanje': question,
+        'korisnik': Provider.of<UserState>(context, listen: false)
+            .user!
+            .email
+            .toString(),
+        // Additional fields or data associated with the question
+      });
+    } catch (error) {
+      // Handle the error if writing to the database fails
+      // ignore: avoid_print
+      print('Failed to ask question: $error');
+    }
+  }
 
   // Method used to query the database using a search text (String)
   Future<List<Question>> filterBySearch(String searchText) async {
