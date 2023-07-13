@@ -11,7 +11,7 @@ class OnboardingPage extends StatelessWidget {
       child: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("lib/Images/Onboarding 1.jpg"),
+            image: AssetImage("assets/images/onboarding01.jpg"),
             fit: BoxFit.cover,
           ),
         ),

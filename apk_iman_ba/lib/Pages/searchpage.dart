@@ -95,7 +95,7 @@ class _SearchPageState extends State<SearchPage> {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (_) => const FavoritesPage(),
+                            builder: (_) => FavoritesPage(),
                           ),
                         );
                       },
@@ -191,7 +191,7 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                             height: 48,
                             child: Image.asset(
-                              "lib/Images/close.png",
+                              "assets/images/close.png",
                               height: 4,
                             ),
                           ),
@@ -220,7 +220,7 @@ class _SearchPageState extends State<SearchPage> {
                             textAlign: TextAlign.center,
                           ),
                           Image.asset(
-                            "lib/Images/Compass.png",
+                            "assets/images/compass.png",
                           ),
                         ],
                       ),
@@ -245,6 +245,7 @@ class _SearchPageState extends State<SearchPage> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (_) => DetailsPage(
+                                          id: question.id,
                                           answer: question.answer,
                                           title: question.question,
                                           views: question.views,

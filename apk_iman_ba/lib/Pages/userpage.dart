@@ -91,7 +91,7 @@ class UserPage extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (_) => const FavoritesPage(),
+                          builder: (_) => FavoritesPage(),
                         ),
                       );
                     },

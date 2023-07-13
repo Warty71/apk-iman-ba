@@ -1,13 +1,16 @@
 import 'package:apk_iman_ba/models/question_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class DatabaseService {
-  DatabaseReference dbRef = FirebaseDatabase.instance.ref().child("Baza");
+  // Reference to the Realtime Database
+  DatabaseReference dbRef = FirebaseDatabase.instance.ref();
 
+  // Method used to query the database using a search text (String)
   Future<List<Question>> filterBySearch(String searchText) async {
     try {
       List<Question> questionList = [];
-      DatabaseEvent event = await dbRef.child('Questions').once();
+      DatabaseEvent event = await dbRef.child('Pitanja i Odgovori').once();
       DataSnapshot snapshot = event.snapshot;
       dynamic data = snapshot.value;
       if (data != null) {
@@ -29,10 +32,11 @@ class DatabaseService {
     }
   }
 
+// Method used to query the database using a topic (String)
   Future<List<Question>> filterByTopic(String topic) async {
     try {
       DatabaseEvent event = await dbRef
-          .child("Questions")
+          .child("Pitanja i Odgovori")
           .orderByChild('datum')
           .limitToLast(10)
           .once();
@@ -57,10 +61,11 @@ class DatabaseService {
     }
   }
 
+// Method used to query the database by views (Integer)
   Future<List<Question>> filterByViews() async {
     try {
       final DatabaseEvent event = await dbRef
-          .child("Questions")
+          .child("Pitanja i Odgovori")
           .orderByChild("pregledi")
           .limitToLast(10)
           .once();
@@ -82,10 +87,11 @@ class DatabaseService {
     }
   }
 
+// Method used to update the views of a question each time it is opened
   Future<void> updateViews(String fieldToMatch, dynamic valueToMatch,
       String fieldToUpdate, dynamic newValue) async {
     final Query query = dbRef
-        .child("Questions")
+        .child("Pitanja i Odgovori")
         .orderByChild(fieldToMatch)
         .equalTo(valueToMatch);
     final DatabaseEvent event = await query.once();
@@ -95,8 +101,119 @@ class DatabaseService {
     if (entries.isNotEmpty) {
       final String entryKey = entries.keys.first;
       final DatabaseReference entryRef =
-          dbRef.child("Questions").child(entryKey);
+          dbRef.child("Pitanja i Odgovori").child(entryKey);
       await entryRef.child(fieldToUpdate).set(newValue + 1);
     } else {}
+  }
+
+// Method used to select/deselect a question as a Favorite
+  Future<void> updateFavoriteQuestion(String questionId) async {
+    try {
+      final User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final DatabaseReference userRef =
+            FirebaseDatabase.instance.ref().child("Korisnici").child(user.uid);
+
+        final DatabaseEvent event = await userRef.once();
+        final dynamic userData = event.snapshot.value;
+
+        if (userData != null && userData is Map<dynamic, dynamic>) {
+          final List<String> favoriteQuestions =
+              List<String>.from(userData['favoriteQuestions'] ?? []);
+
+          if (favoriteQuestions.contains(questionId)) {
+            // Remove the question from favorites
+            favoriteQuestions.remove(questionId);
+          } else {
+            // Add the question to favorites
+            favoriteQuestions.add(questionId);
+          }
+
+          await userRef.child('favoriteQuestions').set(favoriteQuestions);
+        }
+      }
+    } catch (error) {
+      // ignore: avoid_print
+      print('Failed to toggle favorite question: $error');
+    }
+  }
+
+// Method used to check whether a question is a Favorite
+  Future<bool> checkFavoriteStatus(String questionId) async {
+    try {
+      final User? user = FirebaseAuth.instance.currentUser;
+      final DatabaseReference userRef =
+          dbRef.child("Korisnici").child(user!.uid);
+
+      final DatabaseEvent event = await userRef.once();
+      final dynamic userData = event.snapshot.value;
+      if (userData != null && userData is Map<dynamic, dynamic>) {
+        final List<String> favoriteQuestions =
+            List<String>.from(userData['favoriteQuestions'] ?? []);
+
+        return favoriteQuestions.contains(questionId);
+      }
+    } catch (error) {}
+    return false;
+  }
+
+// Method used to fetch the Favorite questions
+  Future<List<Question>> fetchFavorites(String userId) async {
+    final DatabaseReference userRef =
+        FirebaseDatabase.instance.ref().child("Korisnici").child(userId);
+    final DatabaseEvent event = await userRef.once();
+    final DataSnapshot snapshot = event.snapshot;
+    final dynamic userData = snapshot.value;
+
+    if (userData != null && userData is Map<dynamic, dynamic>) {
+      final List<String> favoriteQuestionIds =
+          List<String>.from(userData['favoriteQuestions'] ?? []);
+
+      final List<Question> favoriteQuestions = [];
+
+      for (String questionId in favoriteQuestionIds) {
+        final DatabaseEvent event =
+            await dbRef.child("Pitanja i Odgovori").child(questionId).once();
+        final DataSnapshot snapshot = event.snapshot;
+        final dynamic questionData = snapshot.value;
+        if (questionData != null) {
+          final Question question = Question.fromJson(questionData);
+          favoriteQuestions.add(question);
+        }
+      }
+      return favoriteQuestions;
+    } else {
+      return [];
+    }
+  }
+
+// Method used to fetch personal questions
+  Future<List<Question>> fetchMyQuestions(String userId) async {
+    final DatabaseReference userRef =
+        FirebaseDatabase.instance.ref().child("Korisnici").child(userId);
+    final DatabaseEvent event = await userRef.once();
+    final DataSnapshot snapshot = event.snapshot;
+    final dynamic userData = snapshot.value;
+
+    if (userData != null && userData is Map<dynamic, dynamic>) {
+      final List<String> personalQuestionIds =
+          List<String>.from(userData['personalQuestions'] ?? []);
+
+      final List<Question> personalQuestions = [];
+
+      for (String questionId in personalQuestionIds) {
+        final DatabaseEvent event =
+            await dbRef.child("Pitanja i Odgovori").child(questionId).once();
+        final DataSnapshot snapshot = event.snapshot;
+        final dynamic questionData = snapshot.value;
+        if (questionData != null) {
+          final Question question = Question.fromJson(questionData);
+          personalQuestions.add(question);
+        }
+      }
+      return personalQuestions;
+    } else {
+      return [];
+    }
   }
 }

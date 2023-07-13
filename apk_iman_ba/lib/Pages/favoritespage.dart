@@ -1,6 +1,9 @@
 import 'package:apk_iman_ba/Pages/homepage.dart';
 import 'package:apk_iman_ba/Pages/searchpage.dart';
 import 'package:apk_iman_ba/Pages/userpage.dart';
+import 'package:apk_iman_ba/Services/database_service.dart';
+import 'package:apk_iman_ba/models/question_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -32,8 +35,38 @@ List<Map<String, String>> qaList = [
   },
 ];
 
-class FavoritesPage extends StatelessWidget {
+class FavoritesPage extends StatefulWidget {
   const FavoritesPage({super.key});
+
+  @override
+  State<FavoritesPage> createState() => _FavoritesPageState();
+}
+
+class _FavoritesPageState extends State<FavoritesPage> {
+  List<Question> favorites = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchFavoriteQuestions();
+  }
+
+  void fetchFavoriteQuestions() async {
+    try {
+      final User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final String userId = user.uid;
+        final List<Question> questions =
+            await DatabaseService().fetchFavorites(userId);
+
+        setState(() {
+          favorites = questions;
+        });
+      }
+    } catch (error) {
+      print('Failed to fetch favorite questions: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +182,7 @@ class FavoritesPage extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  for (Map<String, String> qa in qaList)
+                  for (Question question in favorites)
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ClipRRect(
@@ -159,9 +192,10 @@ class FavoritesPage extends StatelessWidget {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (_) => DetailsPage(
-                                  answer: qa['answer'] ?? '',
-                                  title: qa['question'] ?? '',
-                                  views: 0,
+                                  id: question.id,
+                                  answer: question.answer,
+                                  title: question.question,
+                                  views: question.views,
                                 ),
                               ),
                             );
@@ -171,34 +205,29 @@ class FavoritesPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8.0),
                           child: Card(
                             child: ListTile(
-                              title: qa['question'] != null
-                                  ? Container(
-                                      margin:
-                                          const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                      child: Text(
-                                        qa['question']!,
-                                        style: GoogleFonts.poppins(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16,
-                                          letterSpacing: 0.32,
-                                          color: const Color(0xff201d22),
-                                        ),
-                                      ),
-                                    )
-                                  : Container(),
-                              subtitle: qa['answer'] != null
-                                  ? Text(
-                                      qa['answer']!,
-                                      maxLines: 5,
-                                      overflow: TextOverflow.fade,
-                                      style: GoogleFonts.poppins(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 14,
-                                        letterSpacing: 0.28,
-                                        color: const Color(0xff626164),
-                                      ),
-                                    )
-                                  : Container(),
+                              title: Container(
+                                margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                child: Text(
+                                  question.question,
+                                  style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                    letterSpacing: 0.32,
+                                    color: const Color(0xff201d22),
+                                  ),
+                                ),
+                              ),
+                              subtitle: Text(
+                                question.answer,
+                                maxLines: 5,
+                                overflow: TextOverflow.fade,
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                  letterSpacing: 0.28,
+                                  color: const Color(0xff626164),
+                                ),
+                              ),
                               tileColor: const Color(0xffeff2f8),
                             ),
                           ),

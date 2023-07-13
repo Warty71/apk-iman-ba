@@ -62,7 +62,7 @@ class _AskPageState extends State<AskPage> {
                           ),
                           height: 48,
                           child: Image.asset(
-                            "lib/Images/back.png",
+                            "assets/images/back.png",
                             height: 4,
                           ),
                         ),

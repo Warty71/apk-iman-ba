@@ -226,6 +226,7 @@ class _HomePageState extends State<HomePage> {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (_) => DetailsPage(
+                                  id: question.id,
                                   answer: question.answer,
                                   title: question.question,
                                   views: question.views,
