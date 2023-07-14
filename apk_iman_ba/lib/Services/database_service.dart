@@ -12,8 +12,12 @@ class DatabaseService {
   // Method used to ask a question
   Future<void> askQuestions(BuildContext context, question) async {
     try {
+      final User? user = FirebaseAuth.instance.currentUser;
+
       DatabaseReference korisnickaPitanjaRef =
           dbRef.child('Korisnicka Pitanja').push();
+
+      DatabaseReference korisnikRef = dbRef.child('Korisnici').child(user!.uid);
 
       await korisnickaPitanjaRef.set({
         'pitanje': question,
@@ -22,6 +26,11 @@ class DatabaseService {
             .email
             .toString(),
         // Additional fields or data associated with the question
+      });
+
+      // When was the last question asked?
+      await korisnikRef.update({
+        'zadnjePitanje': DateTime.now().toIso8601String(),
       });
     } catch (error) {
       // Handle the error if writing to the database fails

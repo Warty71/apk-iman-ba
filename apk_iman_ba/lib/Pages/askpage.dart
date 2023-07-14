@@ -1,7 +1,6 @@
 import 'package:apk_iman_ba/Services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AskPage extends StatefulWidget {
   const AskPage({
@@ -17,7 +16,6 @@ class _AskPageState extends State<AskPage> {
   final DatabaseService _database = DatabaseService();
   bool _isEmpty = true;
   bool _isQuestionPosted = false;
-  SharedPreferences? prefs;
 
   @override
   void initState() {
@@ -44,14 +42,7 @@ class _AskPageState extends State<AskPage> {
         _isQuestionPosted = true;
       });
       questionController.clear();
-      _saveLastQuestionTimestamp(DateTime.now());
     }
-  }
-
-  // Save the last question timestamp to SharedPreferences
-  Future<void> _saveLastQuestionTimestamp(DateTime timestamp) async {
-    await prefs!
-        .setInt('lastQuestionTimestamp', timestamp.millisecondsSinceEpoch);
   }
 
   @override

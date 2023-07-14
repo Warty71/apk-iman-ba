@@ -1,82 +1,88 @@
+import 'dart:async';
+
 import 'package:apk_iman_ba/pages/askpage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomFAB extends StatefulWidget {
-  const CustomFAB({Key? key});
+  const CustomFAB({super.key});
 
   @override
   State<CustomFAB> createState() => _CustomFABState();
 }
 
 class _CustomFABState extends State<CustomFAB> {
-  DateTime?
-      lastQuestionDateTime; // Stores the timestamp of the last question asked
-  SharedPreferences? prefs;
+  late Duration _remainingTime = Duration();
+  late Timer _timer;
+
   @override
   void initState() {
     super.initState();
-    _loadLastQuestionTimestamp();
+    _getLastQuestionTime();
   }
 
-// Load the last question timestamp from SharedPreferences
-  Future<void> _loadLastQuestionTimestamp() async {
-    prefs = await SharedPreferences.getInstance();
-    final timestamp = prefs!.getInt('lastQuestionTimestamp');
-    print(timestamp);
-    if (timestamp != null) {
-      lastQuestionDateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
-    }
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
-  bool get canAskQuestion {
-    if (lastQuestionDateTime == null) {
-      return true; // User can ask a question if no question has been asked yet
-    } else {
-      final currentTime = DateTime.now();
-      final nextDay = lastQuestionDateTime!.add(const Duration(days: 1));
+  Future<void> _getLastQuestionTime() async {
+    // For example, if you are using Firebase Firestore:
+    final User? user = FirebaseAuth.instance.currentUser;
+    DatabaseReference korisnikRef =
+        FirebaseDatabase.instance.ref().child('Korisnici').child(user!.uid);
+    final DatabaseEvent event = await korisnikRef.once();
+    final dynamic userData = event.snapshot.value;
+    final lastQuestionTime = DateTime.parse((userData['zadnjePitanje']));
 
-      return currentTime.isAfter(nextDay);
+    // Start the timer if the last question time is available
+    // Calculate the remaining time until 24 hours have passed
+    _calculateRemainingTime(lastQuestionTime);
+
+    // Start a timer that updates the remaining time every second
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      _calculateRemainingTime(lastQuestionTime);
+    });
+  }
+
+  void _calculateRemainingTime(DateTime lastQuestionTime) {
+    final nextQuestionTime = lastQuestionTime.add(const Duration(minutes: 1));
+
+    _remainingTime = nextQuestionTime.difference(DateTime.now());
+
+    // If the remaining time is negative or zero, reset it to zero
+    if (_remainingTime.isNegative) {
+      _remainingTime = Duration.zero;
     }
+
+    setState(() {});
+  }
+
+  String _formatTime(Duration duration) {
+    final formattedDuration = duration.toString().split('.').first;
+    final parts = formattedDuration.split(':');
+    final hours = parts[0].padLeft(2, '0');
+    final minutes = parts[1].padLeft(2, '0');
+    final seconds = parts[2].padLeft(2, '0');
+    return '$hours:$minutes:$seconds';
   }
 
   @override
   Widget build(BuildContext context) {
-    if (canAskQuestion) {
-      return FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => const AskPage(),
-            ),
-          );
-          setState(() {
-            // Store the current timestamp as the last question timestamp
-            lastQuestionDateTime = DateTime.now();
-            // Save the lastQuestionDateTime to storage
-            // Example: saveLastQuestionTimestamp(lastQuestionDateTime);
-          });
-        },
-        label: const Text("Postavi pitanje"),
-        backgroundColor: const Color(0xff5449d2),
-        extendedPadding: const EdgeInsets.all(55),
-      );
-    } else {
-      final timeLeft = lastQuestionDateTime!
-          .add(const Duration(days: 1))
-          .difference(DateTime.now());
-      final hours = timeLeft.inHours;
-      final minutes = timeLeft.inMinutes.remainder(60);
-      final seconds = timeLeft.inSeconds.remainder(60);
-      final formattedTimeLeft =
-          '$hours:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+    return FloatingActionButton.extended(
+      onPressed: _remainingTime == Duration.zero ? _navigateToAskPage : null,
+      label: _remainingTime == Duration.zero
+          ? const Text("Postavi pitanje")
+          : Text("Preostalo vrijeme: ${_formatTime(_remainingTime)}"),
+      backgroundColor: const Color(0xff5449d2),
+      extendedPadding: const EdgeInsets.all(55),
+    );
+  }
 
-      return FloatingActionButton.extended(
-        onPressed: null, // Disable the button when time is not expired
-        label: Text("Time left: $formattedTimeLeft"),
-        backgroundColor: Colors.grey,
-        extendedPadding: const EdgeInsets.all(55),
-      );
-    }
+  void _navigateToAskPage() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => const AskPage()));
   }
 }

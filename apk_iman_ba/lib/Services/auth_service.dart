@@ -45,6 +45,7 @@ class AuthService {
           final newUser = Users.fromJson({
             'id': loggedInUser.uid,
             'email': loggedInUser.email,
+            'zadnjePitanje': '',
             'favoriteQuestions': [],
             'personalQuestions': [],
           });
