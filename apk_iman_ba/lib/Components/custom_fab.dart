@@ -13,8 +13,9 @@ class CustomFAB extends StatefulWidget {
 }
 
 class _CustomFABState extends State<CustomFAB> {
-  late Duration _remainingTime = Duration();
+  late Duration _remainingTime = const Duration();
   late Timer _timer;
+  late bool _isLoading = true;
 
   @override
   void initState() {
@@ -57,7 +58,9 @@ class _CustomFABState extends State<CustomFAB> {
       _remainingTime = Duration.zero;
     }
 
-    setState(() {});
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   String _formatTime(Duration duration) {
@@ -71,14 +74,26 @@ class _CustomFABState extends State<CustomFAB> {
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton.extended(
-      onPressed: _remainingTime == Duration.zero ? _navigateToAskPage : null,
-      label: _remainingTime == Duration.zero
-          ? const Text("Postavi pitanje")
-          : Text("Preostalo vrijeme: ${_formatTime(_remainingTime)}"),
-      backgroundColor: const Color(0xff5449d2),
-      extendedPadding: const EdgeInsets.all(55),
-    );
+    if (_isLoading) {
+      // Return a loading indicator or placeholder widget while the timer data is being fetched
+      return const CircularProgressIndicator();
+    } else if (_remainingTime == Duration.zero) {
+      // Show the button with "Postavi pitanje" text if the timer has expired
+      return FloatingActionButton.extended(
+        onPressed: _navigateToAskPage,
+        label: const Text("Postavi pitanje"),
+        backgroundColor: const Color(0xff5449d2),
+        extendedPadding: const EdgeInsets.all(55),
+      );
+    } else {
+      // Show the button with the remaining time if the timer is active
+      return FloatingActionButton.extended(
+        onPressed: null,
+        label: Text("Time Left: ${_formatTime(_remainingTime)}"),
+        backgroundColor: Colors.grey,
+        extendedPadding: const EdgeInsets.all(55),
+      );
+    }
   }
 
   void _navigateToAskPage() {

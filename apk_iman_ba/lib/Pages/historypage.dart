@@ -92,7 +92,7 @@ class HistoryPage extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (_) => FavoritesPage(),
+                          builder: (_) => const FavoritesPage(),
                         ),
                       );
                     },
