@@ -1,10 +1,7 @@
-import 'package:apk_iman_ba/Pages/searchpage.dart';
 import 'package:apk_iman_ba/services/database_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'homepage.dart';
 
 class DetailsPage extends StatefulWidget {
   final String id;
@@ -57,7 +54,7 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: SafeArea(
+      /* bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
@@ -123,7 +120,7 @@ class _DetailsPageState extends State<DetailsPage> {
             ),
           ),
         ),
-      ),
+      ), */
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

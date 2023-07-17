@@ -5,9 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'detailspage.dart';
-import 'homepage.dart';
-import 'userpage.dart';
-import 'favoritespage.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -49,79 +46,6 @@ class _SearchPageState extends State<SearchPage> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
-        bottomNavigationBar: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              margin: const EdgeInsets.symmetric(horizontal: 24),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                gradient: const RadialGradient(
-                  center: Alignment(-1.538, -3.615),
-                  radius: 4,
-                  colors: <Color>[Color(0xff5959e4), Color(0xff140632)],
-                  stops: <double>[0, 0.99],
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Material(
-                    color: Colors.transparent,
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => const HomePage(),
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.home_outlined),
-                      color: Colors.white54,
-                    ),
-                  ),
-                  Material(
-                    color: Colors.transparent,
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.search_outlined),
-                      color: Colors.white,
-                    ),
-                  ),
-                  Material(
-                    color: Colors.transparent,
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => FavoritesPage(),
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.favorite_outline),
-                      color: Colors.white54,
-                    ),
-                  ),
-                  Material(
-                    color: Colors.transparent,
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => const UserPage(),
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.person_2_outlined),
-                      color: Colors.white54,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
         body: SafeArea(
           child: Column(
             children: [
