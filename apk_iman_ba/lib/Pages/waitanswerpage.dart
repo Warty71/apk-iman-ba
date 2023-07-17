@@ -1,62 +1,20 @@
-import 'package:apk_iman_ba/services/database_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class DetailsPage extends StatefulWidget {
-  final String id;
-  final String title;
-  final String answer;
-  final int views;
+class WaitAnswerpage extends StatefulWidget {
+  final String questionTitle;
 
-  const DetailsPage(
-      {super.key,
-      required this.id,
-      required this.title,
-      required this.answer,
-      required this.views});
+  const WaitAnswerpage({super.key, required this.questionTitle});
 
   @override
-  State<DetailsPage> createState() => _DetailsPageState();
+  State<WaitAnswerpage> createState() => _WaitAnswerpageState();
 }
 
-class _DetailsPageState extends State<DetailsPage> {
-  bool isFavorite = false;
-
-  @override
-  void initState() {
-    super.initState();
-    increaseViewCount();
-    checkFavoriteStatus();
-  }
-
-  void increaseViewCount() async {
-    await DatabaseService()
-        .updateViews("pitanje", widget.title, "pregledi", widget.views);
-  }
-
-  void checkFavoriteStatus() async {
-    try {
-      final User? user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        final bool favoriteStatus =
-            await DatabaseService().checkFavoriteStatus(widget.id);
-
-        setState(() {
-          isFavorite = favoriteStatus;
-        });
-      }
-    } catch (error) {
-      if (kDebugMode) {
-        print('Failed to check favorite status: $error');
-      }
-    }
-  }
-
+class _WaitAnswerpageState extends State<WaitAnswerpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -86,39 +44,30 @@ class _DetailsPageState extends State<DetailsPage> {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {
-                          DatabaseService().updateFavoriteQuestion(widget.id);
-
-                          setState(() {
-                            isFavorite = !isFavorite;
-                          });
-                        },
+                        onPressed: () {},
                         style: TextButton.styleFrom(),
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16.0),
-                            color: const Color(0xffeff2f8),
-                          ),
+                              borderRadius: BorderRadius.circular(16.0),
+                              color: Colors.white),
                           height: 48,
-                          child: Icon(
-                            isFavorite ? Icons.favorite : Icons.favorite_border,
-                            color: isFavorite ? Colors.black : Colors.black,
-                            size: 28,
-                          ),
+                          width: 48,
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
+
+              // Vase pitanje
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 20.0, vertical: 10.0),
                   child: Text(
-                    "Pitanje: ",
+                    "Vaše pitanje: ",
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -128,12 +77,13 @@ class _DetailsPageState extends State<DetailsPage> {
                   ),
                 ),
               ),
+
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Text(
-                    widget.title,
+                    widget.questionTitle,
                     style: GoogleFonts.poppins(
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
@@ -144,7 +94,7 @@ class _DetailsPageState extends State<DetailsPage> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
                   child: Text(
                     "Odgovor: ",
                     style: GoogleFonts.poppins(
@@ -161,12 +111,25 @@ class _DetailsPageState extends State<DetailsPage> {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                   child: Text(
-                    widget.answer,
+                    "Molimo da sačekate dok naš tim da odgovor na vaše pitanje.",
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                       letterSpacing: 0.28,
-                      color: const Color(0xFF626164),
+                      color: const Color(0xFFA6A6AD),
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
+                  child: SizedBox(
+                    height: 250,
+                    width: 250,
+                    child: Image.asset(
+                      'assets/images/hourglass.png',
                     ),
                   ),
                 ),

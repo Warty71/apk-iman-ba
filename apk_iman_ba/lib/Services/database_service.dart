@@ -13,14 +13,17 @@ class DatabaseService {
   Future<void> askQuestions(BuildContext context, question) async {
     try {
       final User? user = FirebaseAuth.instance.currentUser;
-
       DatabaseReference korisnickaPitanjaRef =
           dbRef.child('Korisnicka Pitanja').push();
+      String? questionId = korisnickaPitanjaRef.key;
 
       DatabaseReference korisnikRef = dbRef.child('Korisnici').child(user!.uid);
+      final DatabaseEvent event = await korisnikRef.once();
+      final dynamic korisnikData = event.snapshot.value;
 
       await korisnickaPitanjaRef.set({
         'pitanje': question,
+        // ignore: use_build_context_synchronously
         'korisnik': Provider.of<UserState>(context, listen: false)
             .user!
             .email
@@ -32,6 +35,16 @@ class DatabaseService {
       await korisnikRef.update({
         'zadnjePitanje': DateTime.now().toIso8601String(),
       });
+
+      if (korisnikData != null && korisnikData is Map<dynamic, dynamic>) {
+        final List<String> onHoldQuestions =
+            List<String>.from(korisnikData['naČekanjuPitanja'] ?? []);
+
+        // Add the question to favorites
+        onHoldQuestions.add(questionId!);
+
+        await korisnikRef.child('naČekanjuPitanja').set(onHoldQuestions);
+      }
     } catch (error) {
       // Handle the error if writing to the database fails
       // ignore: avoid_print
@@ -80,6 +93,7 @@ class DatabaseService {
           .where((entry) {
             final question = entry.value;
             final topics = question['topics'];
+
             return topics != null && topics.toString().contains(topic);
           })
           .map((entry) => Question.fromJson(entry.value))
@@ -186,6 +200,7 @@ class DatabaseService {
 
         return favoriteQuestions.contains(questionId);
       }
+      // ignore: empty_catches
     } catch (error) {}
     return false;
   }
@@ -245,6 +260,53 @@ class DatabaseService {
         }
       }
       return personalQuestions;
+    } else {
+      return [];
+    }
+  }
+
+// Method used to fetch the length of the personal questions list
+  Future<String> fetchMyQuestionsLength(String userId) async {
+    final DatabaseReference pesronalQuestionsRef =
+        dbRef.child("Korisnici").child(userId).child('personalQuestion');
+
+    DatabaseEvent event = await pesronalQuestionsRef.once();
+    DataSnapshot snapshot = event.snapshot;
+    dynamic personalQuestionsData = snapshot.value;
+
+    if (personalQuestionsData != null && personalQuestionsData is List) {
+      int count = personalQuestionsData.length;
+      return count.toString();
+    } else {
+      return 0.toString();
+    }
+  }
+
+  // Method used to fetch onHold questions
+  Future<List<Question>> fetchOnHoldQuestions(String userId) async {
+    final DatabaseReference userRef =
+        FirebaseDatabase.instance.ref().child("Korisnici").child(userId);
+    final DatabaseEvent event = await userRef.once();
+    final DataSnapshot snapshot = event.snapshot;
+    final dynamic userData = snapshot.value;
+
+    if (userData != null && userData is Map<dynamic, dynamic>) {
+      final List<String> onHoldQuestionIds =
+          List<String>.from(userData['naČekanjuPitanja'] ?? []);
+
+      final List<Question> onHoldQuestions = [];
+
+      for (String questionId in onHoldQuestionIds) {
+        final DatabaseEvent event =
+            await dbRef.child("Korisnicka Pitanja").child(questionId).once();
+        final DataSnapshot snapshot = event.snapshot;
+        final dynamic questionData = snapshot.value;
+        if (questionData != null) {
+          final Question question = Question.fromJson(questionData);
+          onHoldQuestions.add(question);
+        }
+      }
+      return onHoldQuestions;
     } else {
       return [];
     }

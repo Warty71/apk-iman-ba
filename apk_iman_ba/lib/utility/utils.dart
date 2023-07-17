@@ -1,7 +1,19 @@
 class Utils {
   String removeEmojis(String text) {
     // Define a list of emojis to be removed
-    List<String> emojis = ["🔥", "📖", "🧎", "🍽️"];
+    List<String> emojis = [
+      "🔥",
+      "📖",
+      "🧎",
+      "🍽️",
+      "💰",
+      "🕋",
+      "💍",
+      "🏚",
+      "💶",
+      "🤲",
+      "📜"
+    ];
 
     // Remove emojis from the topic string
     for (String emoji in emojis) {

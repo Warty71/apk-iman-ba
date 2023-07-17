@@ -161,27 +161,36 @@ class _SearchPageState extends State<SearchPage> {
                         children: [
                           for (Question question in questionList)
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(30.0),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (_) => DetailsPage(
-                                          id: question.id,
-                                          answer: question.answer,
-                                          title: question.question,
-                                          views: question.views,
-                                        ),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 5.0, horizontal: 8),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (_) => DetailsPage(
+                                        id: question.id,
+                                        answer: question.answer,
+                                        title: question.question,
+                                        views: question.views,
                                       ),
-                                    );
-                                  },
-                                  splashColor: Colors.blue.withOpacity(0.5),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Card(
-                                    child: ListTile(
-                                      title: Text(
+                                    ),
+                                  );
+                                },
+                                splashColor: Colors.blue.withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: ListTile(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    title: Container(
+                                      color: Colors.transparent,
+                                      margin:
+                                          const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                      child: Text(
                                         maxLines: 3,
                                         overflow: TextOverflow.ellipsis,
                                         question.question,
@@ -192,19 +201,19 @@ class _SearchPageState extends State<SearchPage> {
                                           color: const Color(0xff201d22),
                                         ),
                                       ),
-                                      subtitle: Text(
-                                        question.answer,
-                                        maxLines: 5,
-                                        overflow: TextOverflow.fade,
-                                        style: GoogleFonts.poppins(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 14,
-                                          letterSpacing: 0.28,
-                                          color: const Color(0xff626164),
-                                        ),
-                                      ),
-                                      tileColor: const Color(0xffeff2f8),
                                     ),
+                                    subtitle: Text(
+                                      question.answer,
+                                      maxLines: 5,
+                                      overflow: TextOverflow.fade,
+                                      style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14,
+                                        letterSpacing: 0.28,
+                                        color: const Color(0xff626164),
+                                      ),
+                                    ),
+                                    tileColor: const Color(0xffeff2f8),
                                   ),
                                 ),
                               ),

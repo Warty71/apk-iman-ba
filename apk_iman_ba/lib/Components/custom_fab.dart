@@ -6,7 +6,14 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class CustomFAB extends StatefulWidget {
-  const CustomFAB({super.key});
+  final bool shouldRebuild;
+  final VoidCallback? onQuestionAsked;
+
+  const CustomFAB({
+    super.key,
+    required this.shouldRebuild,
+    this.onQuestionAsked,
+  });
 
   @override
   State<CustomFAB> createState() => _CustomFABState();
@@ -30,30 +37,25 @@ class _CustomFABState extends State<CustomFAB> {
   }
 
   Future<void> _getLastQuestionTime() async {
-    // For example, if you are using Firebase Firestore:
     final User? user = FirebaseAuth.instance.currentUser;
     DatabaseReference korisnikRef =
         FirebaseDatabase.instance.ref().child('Korisnici').child(user!.uid);
     final DatabaseEvent event = await korisnikRef.once();
     final dynamic userData = event.snapshot.value;
-    final lastQuestionTime = DateTime.parse((userData['zadnjePitanje']));
+    final lastQuestionTime = DateTime.parse(userData['zadnjePitanje']);
 
-    // Start the timer if the last question time is available
-    // Calculate the remaining time until 24 hours have passed
     _calculateRemainingTime(lastQuestionTime);
 
-    // Start a timer that updates the remaining time every second
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       _calculateRemainingTime(lastQuestionTime);
     });
   }
 
   void _calculateRemainingTime(DateTime lastQuestionTime) {
-    final nextQuestionTime = lastQuestionTime.add(const Duration(minutes: 1));
+    final nextQuestionTime = lastQuestionTime.add(const Duration(days: 1));
 
     _remainingTime = nextQuestionTime.difference(DateTime.now());
 
-    // If the remaining time is negative or zero, reset it to zero
     if (_remainingTime.isNegative) {
       _remainingTime = Duration.zero;
     }
@@ -75,29 +77,31 @@ class _CustomFABState extends State<CustomFAB> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      // Return a loading indicator or placeholder widget while the timer data is being fetched
       return const CircularProgressIndicator();
     } else if (_remainingTime == Duration.zero) {
-      // Show the button with "Postavi pitanje" text if the timer has expired
       return FloatingActionButton.extended(
-        onPressed: _navigateToAskPage,
+        onPressed: () => _navigateToAskPage(context),
         label: const Text("Postavi pitanje"),
         backgroundColor: const Color(0xff5449d2),
         extendedPadding: const EdgeInsets.all(55),
       );
     } else {
-      // Show the button with the remaining time if the timer is active
       return FloatingActionButton.extended(
         onPressed: null,
-        label: Text("Time Left: ${_formatTime(_remainingTime)}"),
+        label: Text("Preostalo: ${_formatTime(_remainingTime)}"),
         backgroundColor: Colors.grey,
         extendedPadding: const EdgeInsets.all(55),
       );
     }
   }
 
-  void _navigateToAskPage() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => const AskPage()));
+  Future<void> _navigateToAskPage(BuildContext context) async {
+    final result = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(builder: (_) => const AskPage()),
+    );
+
+    if (result == true) {
+      widget.onQuestionAsked?.call();
+    }
   }
 }

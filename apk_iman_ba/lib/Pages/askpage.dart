@@ -1,3 +1,4 @@
+import 'package:apk_iman_ba/Pages/Extra/authpage.dart';
 import 'package:apk_iman_ba/Services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -137,7 +138,12 @@ class _AskPageState extends State<AskPage> {
                       children: [
                         TextButton(
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const AuthPage()),
+                              (route) => false,
+                            );
                           },
                           style: TextButton.styleFrom(),
                           child: Container(
@@ -147,9 +153,11 @@ class _AskPageState extends State<AskPage> {
                               color: const Color(0xffeff2f8),
                             ),
                             height: 48,
-                            child: Image.asset(
-                              "assets/images/back.png",
-                              height: 4,
+                            width: 48,
+                            child: const Icon(
+                              Icons.home_outlined,
+                              size: 28,
+                              color: Colors.black,
                             ),
                           ),
                         ),

@@ -4,6 +4,7 @@ class Users {
   String lastQuestionTime;
   List<String> favoriteQuestions;
   List<String> personalQuestions;
+  List<String> onHoldQuestions;
 
   Users({
     required this.id,
@@ -11,6 +12,7 @@ class Users {
     required this.lastQuestionTime,
     this.favoriteQuestions = const [],
     this.personalQuestions = const [],
+    this.onHoldQuestions = const [],
   });
 
   factory Users.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class Users {
       lastQuestionTime: json['zadnjePitanje'],
       favoriteQuestions: List<String>.from(json['favoriteQuestions']),
       personalQuestions: List<String>.from(json['personalQuestions']),
+      onHoldQuestions: List<String>.from(json['naČekanjuPitanja']),
     );
   }
 
@@ -27,8 +30,10 @@ class Users {
     return {
       'id': id,
       'email': email,
+      'zadnjePitanje': lastQuestionTime,
       'favoriti': favoriteQuestions,
       'mojaPitanja': personalQuestions,
+      'naČekanjuPitanja': onHoldQuestions,
     };
   }
 }

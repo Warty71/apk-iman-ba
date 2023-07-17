@@ -3,13 +3,34 @@ import 'package:apk_iman_ba/Pages/addentrypage.dart';
 import 'package:apk_iman_ba/Pages/myquestionspage.dart';
 import 'package:apk_iman_ba/State%20Management/user_state.dart';
 import 'package:apk_iman_ba/components/custom_fab.dart';
+import 'package:apk_iman_ba/services/database_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class UserPage extends StatelessWidget {
+import 'waitinglistpage.dart';
+
+class UserPage extends StatefulWidget {
   const UserPage({super.key});
+
+  @override
+  State<UserPage> createState() => _UserPageState();
+}
+
+class _UserPageState extends State<UserPage> {
+  String userID = FirebaseAuth.instance.currentUser!.uid;
+  late String lengthQuestions = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getUserQuestionsLength();
+  }
+
+  void getUserQuestionsLength() async {
+    lengthQuestions = await DatabaseService().fetchMyQuestionsLength(userID);
+  }
 
   void signUserOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
@@ -28,63 +49,33 @@ class UserPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      floatingActionButton: const CustomFAB(),
+      floatingActionButton: const CustomFAB(
+        shouldRebuild: true,
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
+                padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
                 child: SizedBox(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16.0),
-                          color: Colors.white,
-                        ),
-                        height: 48,
-                        width: 48,
+                      const Icon(
+                        Icons.person,
+                        color: Colors.black,
                       ),
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.person,
-                            color: Colors.black,
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 5.0),
-                            child: Text(
-                              "Moj Racun",
-                              style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 0.32,
-                                color: const Color(0xFF201E22),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          signUserOut(context);
-                        },
-                        style: TextButton.styleFrom(),
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16.0),
-                            color: const Color(0xffeff2f8),
-                          ),
-                          height: 48,
-                          child: const Icon(
-                            Icons.logout,
-                            color: Colors.black,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: Text(
+                          "Moj Racun",
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 0.32,
+                            color: const Color(0xFF201E22),
                           ),
                         ),
                       ),
@@ -177,7 +168,7 @@ class UserPage extends StatelessWidget {
                           const Icon(Icons.person_outline, size: 24),
                           Padding(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 5.0),
+                                const EdgeInsets.only(left: 10.0, right: 2.0),
                             child: Text(
                               "Moja Pitanja",
                               style: GoogleFonts.poppins(
@@ -187,9 +178,7 @@ class UserPage extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const Text(
-                            "(12)",
-                          ),
+                          Text(lengthQuestions),
                         ],
                       ),
                       IconButton(
@@ -210,8 +199,8 @@ class UserPage extends StatelessWidget {
                 ),
               ),
 
-              // Zadnje otvarana pitanja
-              /* Container(
+              // Na cekanju
+              Container(
                 margin: const EdgeInsets.fromLTRB(25, 5, 25, 10),
                 decoration: const BoxDecoration(
                   border: Border(
@@ -231,9 +220,9 @@ class UserPage extends StatelessWidget {
                           const Icon(Icons.history, size: 24),
                           Padding(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 5.0),
+                                const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Text(
-                              "Zadnje otvarana pitanja",
+                              "Pitanja na Čekanju",
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 letterSpacing: 0.28,
@@ -251,7 +240,7 @@ class UserPage extends StatelessWidget {
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (_) => const HistoryPage(),
+                              builder: (_) => const WaitingPage(),
                             ),
                           );
                         },
@@ -259,7 +248,7 @@ class UserPage extends StatelessWidget {
                     ],
                   ),
                 ),
-              ), */
+              ),
 
               // Unos u bazu - TEST
               Container(
@@ -307,7 +296,7 @@ class UserPage extends StatelessWidget {
                 ),
               ),
 
-              // USLOVI KORISTENJA
+              // USLOVI KORIŠTENJA
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
@@ -318,7 +307,7 @@ class UserPage extends StatelessWidget {
                     5,
                   ),
                   child: Text(
-                    "USLOVI KORISTENJA",
+                    "USLOVI KORIŠTENJA",
                     style: GoogleFonts.poppins(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
@@ -350,7 +339,7 @@ class UserPage extends StatelessWidget {
                           const Icon(Icons.help_outline, size: 24),
                           Padding(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 5.0),
+                                const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Text(
                               "FAQ",
                               style: GoogleFonts.poppins(
@@ -397,9 +386,9 @@ class UserPage extends StatelessWidget {
                           const Icon(Icons.text_snippet_outlined, size: 24),
                           Padding(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 5.0),
+                                const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Text(
-                              "Uslovi koristenja",
+                              "Uslovi korištenja",
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 letterSpacing: 0.28,
@@ -422,6 +411,18 @@ class UserPage extends StatelessWidget {
                   ),
                 ),
               ),
+              Container(
+                margin: const EdgeInsets.fromLTRB(15, 20, 15, 100),
+                child: GestureDetector(
+                  onTap: () => signUserOut(context),
+                  child: Text(
+                    "Odjava",
+                    style: GoogleFonts.poppins(
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
