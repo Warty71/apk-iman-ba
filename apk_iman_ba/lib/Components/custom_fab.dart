@@ -4,6 +4,7 @@ import 'package:apk_iman_ba/pages/askpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class CustomFAB extends StatefulWidget {
   final bool shouldRebuild;
@@ -77,7 +78,13 @@ class _CustomFABState extends State<CustomFAB> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const CircularProgressIndicator();
+      return const SizedBox(
+        width: 75,
+        height: 30,
+        child: SpinKitWave(
+          color: Colors.black,
+        ),
+      );
     } else if (_remainingTime == Duration.zero) {
       return FloatingActionButton.extended(
         onPressed: () => _navigateToAskPage(context),
