@@ -45,7 +45,7 @@ class AuthService {
           final newUser = Users.fromJson({
             'id': loggedInUser.uid,
             'email': loggedInUser.email,
-            'zadnjePitanje': '',
+            'zadnjePitanje': '2021-01-11T21:47:42.316387',
             'favoriteQuestions': [],
             'personalQuestions': [],
           });
@@ -93,6 +93,7 @@ class AuthService {
           final newUser = Users.fromJson({
             'id': loggedInUser.uid,
             'email': loggedInUser.email,
+            'zadnjePitanje': '2021-01-11T21:47:42.316387',
             'favoriteQuestions': [],
             'personalQuestions': [],
           });

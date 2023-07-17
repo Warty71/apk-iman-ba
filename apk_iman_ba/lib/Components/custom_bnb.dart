@@ -2,6 +2,7 @@ import 'package:apk_iman_ba/Pages/favoritespage.dart';
 import 'package:apk_iman_ba/Pages/homepage.dart';
 import 'package:apk_iman_ba/Pages/searchpage.dart';
 import 'package:apk_iman_ba/Pages/userpage.dart';
+
 import 'package:flutter/material.dart';
 
 class CustomBNB extends StatefulWidget {
@@ -26,7 +27,7 @@ class _CustomBNBState extends State<CustomBNB> {
     return Scaffold(
       body: _pages[_currentIndex],
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
         child: Container(
           padding: const EdgeInsets.all(4.0),
           margin: const EdgeInsets.symmetric(horizontal: 24),

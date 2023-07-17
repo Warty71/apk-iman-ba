@@ -1,8 +1,10 @@
 import 'package:apk_iman_ba/Pages/searchpage.dart';
 import 'package:apk_iman_ba/Pages/userpage.dart';
 import 'package:apk_iman_ba/Services/database_service.dart';
+import 'package:apk_iman_ba/components/custom_fab.dart';
 import 'package:apk_iman_ba/models/question_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -38,7 +40,9 @@ class _MyQuestionsPageState extends State<MyQuestionsPage> {
         });
       }
     } catch (error) {
-      print('Failed to fetch personal questions: $error');
+      if (kDebugMode) {
+        print('Failed to fetch personal questions: $error');
+      }
     }
   }
 
@@ -46,16 +50,11 @@ class _MyQuestionsPageState extends State<MyQuestionsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        label: const Text("Postavi pitanje"),
-        backgroundColor: const Color(0xff5449d2),
-        extendedPadding: const EdgeInsets.all(55),
-      ),
+      floatingActionButton: const CustomFAB(shouldRebuild: true),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       bottomNavigationBar: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
           child: Container(
             padding: const EdgeInsets.all(8.0),
             margin: const EdgeInsets.symmetric(horizontal: 24),
@@ -196,52 +195,56 @@ class _MyQuestionsPageState extends State<MyQuestionsPage> {
                 children: [
                   for (Question question in personalQuestions)
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(30.0),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => DetailsPage(
-                                  id: question.id,
-                                  answer: question.answer,
-                                  title: question.question,
-                                  views: question.views,
-                                ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5.0, horizontal: 8),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => DetailsPage(
+                                id: question.id,
+                                answer: question.answer,
+                                title: question.question,
+                                views: question.views,
                               ),
-                            );
-                          },
-                          splashColor: Colors.blue
-                              .withOpacity(0.5), // Customize the splash color
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Card(
-                            child: ListTile(
-                              title: Container(
-                                margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                child: Text(
-                                  question.question,
-                                  style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16,
-                                    letterSpacing: 0.32,
-                                    color: const Color(0xff201d22),
-                                  ),
-                                ),
-                              ),
-                              subtitle: Text(
-                                question.answer,
-                                maxLines: 5,
-                                overflow: TextOverflow.fade,
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14,
-                                  letterSpacing: 0.28,
-                                  color: const Color(0xff626164),
-                                ),
-                              ),
-                              tileColor: const Color(0xffeff2f8),
                             ),
+                          );
+                        },
+                        splashColor: Colors.blue
+                            .withOpacity(0.5), // Customize the splash color
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: ListTile(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            title: Container(
+                              margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                              child: Text(
+                                question.question,
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  letterSpacing: 0.32,
+                                  color: const Color(0xff201d22),
+                                ),
+                              ),
+                            ),
+                            subtitle: Text(
+                              question.answer,
+                              maxLines: 5,
+                              overflow: TextOverflow.fade,
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14,
+                                letterSpacing: 0.28,
+                                color: const Color(0xff626164),
+                              ),
+                            ),
+                            tileColor: const Color(0xffeff2f8),
                           ),
                         ),
                       ),
