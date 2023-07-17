@@ -20,11 +20,14 @@ class MyQuestionsPage extends StatefulWidget {
 
 class _MyQuestionsPageState extends State<MyQuestionsPage> {
   List<Question> personalQuestions = [];
+  String userID = FirebaseAuth.instance.currentUser!.uid;
+  late String lengthQuestions = '';
 
   @override
   void initState() {
     super.initState();
     fetchPersonalQuestions();
+    getUserQuestionsLength();
   }
 
   void fetchPersonalQuestions() async {
@@ -44,6 +47,11 @@ class _MyQuestionsPageState extends State<MyQuestionsPage> {
         print('Failed to fetch personal questions: $error');
       }
     }
+  }
+
+  void getUserQuestionsLength() async {
+    lengthQuestions = await DatabaseService().fetchMyQuestionsLength(userID);
+    setState(() {});
   }
 
   @override
@@ -167,7 +175,7 @@ class _MyQuestionsPageState extends State<MyQuestionsPage> {
                           ),
                         ),
                         Text(
-                          "(12)",
+                          "($lengthQuestions)",
                           style: GoogleFonts.poppins(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,

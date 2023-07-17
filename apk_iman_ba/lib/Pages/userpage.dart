@@ -30,6 +30,7 @@ class _UserPageState extends State<UserPage> {
 
   void getUserQuestionsLength() async {
     lengthQuestions = await DatabaseService().fetchMyQuestionsLength(userID);
+    setState(() {});
   }
 
   void signUserOut(BuildContext context) async {
@@ -178,7 +179,7 @@ class _UserPageState extends State<UserPage> {
                               ),
                             ),
                           ),
-                          Text(lengthQuestions),
+                          Text("($lengthQuestions)"),
                         ],
                       ),
                       IconButton(
