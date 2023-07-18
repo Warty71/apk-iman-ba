@@ -1,15 +1,14 @@
 import 'package:apk_iman_ba/Services/database_service.dart';
 import 'package:apk_iman_ba/components/custom_fab.dart';
+import 'package:apk_iman_ba/components/custom_listview.dart';
 import 'package:apk_iman_ba/models/question_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'detailspage.dart';
-
 class FavoritesPage extends StatefulWidget {
-  const FavoritesPage({super.key});
+  const FavoritesPage({Key? key}) : super(key: key);
 
   @override
   State<FavoritesPage> createState() => _FavoritesPageState();
@@ -17,6 +16,7 @@ class FavoritesPage extends StatefulWidget {
 
 class _FavoritesPageState extends State<FavoritesPage> {
   List<Question> favorites = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -25,6 +25,9 @@ class _FavoritesPageState extends State<FavoritesPage> {
   }
 
   void fetchFavoriteQuestions() async {
+    setState(() {
+      isLoading = true; // Show shimmer while loading
+    });
     try {
       final User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
@@ -34,6 +37,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
         setState(() {
           favorites = questions;
+          isLoading = false;
         });
       }
     } catch (error) {
@@ -79,65 +83,12 @@ class _FavoritesPageState extends State<FavoritesPage> {
               ),
             ),
             Expanded(
-              child: ListView(
-                children: [
-                  for (Question question in favorites)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 5.0, horizontal: 8),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => DetailsPage(
-                                id: question.id,
-                                answer: question.answer,
-                                title: question.question,
-                                views: question.views,
-                              ),
-                            ),
-                          );
-                        },
-                        splashColor: Colors.blue
-                            .withOpacity(0.5), // Customize the splash color
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: ListTile(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            title: Container(
-                              margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                              child: Text(
-                                question.question,
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                  letterSpacing: 0.32,
-                                  color: const Color(0xff201d22),
-                                ),
-                              ),
-                            ),
-                            subtitle: Text(
-                              question.answer,
-                              maxLines: 5,
-                              overflow: TextOverflow.fade,
-                              style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                                letterSpacing: 0.28,
-                                color: const Color(0xff626164),
-                              ),
-                            ),
-                            tileColor: const Color(0xffeff2f8),
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
+              child: CustomListView(
+                itemCount: favorites.length,
+                loadingFlag: isLoading,
+                questionList: favorites,
+                useSubtitle: true,
+                detailViewSelector: 1,
               ),
             ),
           ],

@@ -1,15 +1,11 @@
-import 'package:apk_iman_ba/Pages/searchpage.dart';
-import 'package:apk_iman_ba/Pages/userpage.dart';
 import 'package:apk_iman_ba/Services/database_service.dart';
 import 'package:apk_iman_ba/components/custom_fab.dart';
+import 'package:apk_iman_ba/components/custom_listview.dart';
 import 'package:apk_iman_ba/models/question_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'detailspage.dart';
-import 'favoritespage.dart';
 
 class MyQuestionsPage extends StatefulWidget {
   const MyQuestionsPage({super.key});
@@ -22,6 +18,7 @@ class _MyQuestionsPageState extends State<MyQuestionsPage> {
   List<Question> personalQuestions = [];
   String userID = FirebaseAuth.instance.currentUser!.uid;
   late String lengthQuestions = '';
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -31,6 +28,9 @@ class _MyQuestionsPageState extends State<MyQuestionsPage> {
   }
 
   void fetchPersonalQuestions() async {
+    setState(() {
+      isLoading = true; // Show shimmer while loading
+    });
     try {
       final User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
@@ -40,6 +40,7 @@ class _MyQuestionsPageState extends State<MyQuestionsPage> {
 
         setState(() {
           personalQuestions = questions;
+          isLoading = false;
         });
       }
     } catch (error) {
@@ -60,79 +61,6 @@ class _MyQuestionsPageState extends State<MyQuestionsPage> {
       backgroundColor: Colors.white,
       floatingActionButton: const CustomFAB(shouldRebuild: true),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-          child: Container(
-            padding: const EdgeInsets.all(8.0),
-            margin: const EdgeInsets.symmetric(horizontal: 24),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              gradient: const RadialGradient(
-                center: Alignment(-1.538, -3.615),
-                radius: 4,
-                colors: <Color>[Color(0xff5959e4), Color(0xff140632)],
-                stops: <double>[0, 0.99],
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Material(
-                  color: Colors.transparent,
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.home_outlined),
-                    color: Colors.white54,
-                  ),
-                ),
-                Material(
-                  color: Colors.transparent,
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const SearchPage(),
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.search_outlined),
-                    color: Colors.white54,
-                  ),
-                ),
-                Material(
-                  color: Colors.transparent,
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const FavoritesPage(),
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.favorite_outline),
-                    color: Colors.white54,
-                  ),
-                ),
-                Material(
-                  color: Colors.transparent,
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const UserPage(),
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.person_2_outlined),
-                    color: Colors.white54,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -199,65 +127,12 @@ class _MyQuestionsPageState extends State<MyQuestionsPage> {
               ),
             ),
             Expanded(
-              child: ListView(
-                children: [
-                  for (Question question in personalQuestions)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 5.0, horizontal: 8),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => DetailsPage(
-                                id: question.id,
-                                answer: question.answer,
-                                title: question.question,
-                                views: question.views,
-                              ),
-                            ),
-                          );
-                        },
-                        splashColor: Colors.blue
-                            .withOpacity(0.5), // Customize the splash color
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: ListTile(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            title: Container(
-                              margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                              child: Text(
-                                question.question,
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                  letterSpacing: 0.32,
-                                  color: const Color(0xff201d22),
-                                ),
-                              ),
-                            ),
-                            subtitle: Text(
-                              question.answer,
-                              maxLines: 5,
-                              overflow: TextOverflow.fade,
-                              style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                                letterSpacing: 0.28,
-                                color: const Color(0xff626164),
-                              ),
-                            ),
-                            tileColor: const Color(0xffeff2f8),
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
+              child: CustomListView(
+                loadingFlag: isLoading,
+                itemCount: personalQuestions.length,
+                questionList: personalQuestions,
+                useSubtitle: true,
+                detailViewSelector: 1,
               ),
             ),
           ],
