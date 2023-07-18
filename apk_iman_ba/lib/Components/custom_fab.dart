@@ -78,11 +78,17 @@ class _CustomFABState extends State<CustomFAB> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const SizedBox(
-        width: 75,
-        height: 30,
-        child: SpinKitWave(
-          color: Colors.black,
+      return Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.circular(25),
+        ),
+        width: 265,
+        height: 48,
+        child: const SpinKitWave(
+          color: Colors.white,
+          size: 32,
         ),
       );
     } else if (_remainingTime == Duration.zero) {

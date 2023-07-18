@@ -1,6 +1,5 @@
-import 'package:apk_iman_ba/Pages/detailspage.dart';
 import 'package:apk_iman_ba/components/custom_fab.dart';
-import 'package:apk_iman_ba/components/custom_shimmer.dart';
+import 'package:apk_iman_ba/components/custom_listview.dart';
 import 'package:apk_iman_ba/models/question_model.dart';
 import 'package:apk_iman_ba/services/database_service.dart';
 import 'package:apk_iman_ba/utility/utils.dart';
@@ -139,72 +138,12 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: isLoading ? 5 : questionList.length,
-                itemBuilder: (context, index) {
-                  if (isLoading) {
-                    // Display shimmer while loading
-                    return const CustomShimmer();
-                  } else {
-                    // Display actual list item
-                    final question = questionList[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 5.0, horizontal: 8),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => DetailsPage(
-                                id: question.id,
-                                answer: question.answer,
-                                title: question.question,
-                                views: question.views,
-                              ),
-                            ),
-                          );
-                        },
-                        splashColor: Colors.blue.withOpacity(0.5),
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: ListTile(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            title: Container(
-                              color: Colors.transparent,
-                              margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                              child: Text(
-                                question.question,
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                  letterSpacing: 0.32,
-                                  color: const Color(0xff201d22),
-                                ),
-                              ),
-                            ),
-                            subtitle: Text(
-                              question.answer,
-                              maxLines: 5,
-                              overflow: TextOverflow.fade,
-                              style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                                letterSpacing: 0.28,
-                                color: const Color(0xff626164),
-                              ),
-                            ),
-                            tileColor: const Color(0xffeff2f8),
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-                },
+              child: CustomListView(
+                loadingFlag: isLoading,
+                itemCount: questionList.length,
+                questionList: questionList,
+                useSubtitle: true,
+                detailViewSelector: 1,
               ),
             ),
           ],

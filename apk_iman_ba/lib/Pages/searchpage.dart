@@ -1,3 +1,4 @@
+import 'package:apk_iman_ba/components/custom_shimmer.dart';
 import 'package:apk_iman_ba/models/question_model.dart';
 import 'package:apk_iman_ba/services/database_service.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -17,6 +18,7 @@ class _SearchPageState extends State<SearchPage> {
   final TextEditingController searchController = TextEditingController();
   ValueNotifier<bool> isTextFieldEmptyNotifier = ValueNotifier<bool>(true);
   bool isTextFieldEmpty = true;
+  bool isLoading = true;
 
   DatabaseReference dbRef = FirebaseDatabase.instance.ref().child("Baza");
   final DatabaseService _database = DatabaseService();
@@ -58,11 +60,15 @@ class _SearchPageState extends State<SearchPage> {
                         child: TextFormField(
                           controller: searchController,
                           onChanged: (value) async {
+                            setState(() {
+                              isLoading = true;
+                            });
                             isTextFieldEmptyNotifier.value = value.isEmpty;
                             final result =
                                 await _database.filterBySearch(value);
                             setState(() {
                               questionList = result;
+                              isLoading = false;
                             });
                           },
                           onFieldSubmitted: (value) {
@@ -135,7 +141,7 @@ class _SearchPageState extends State<SearchPage> {
                       child: Column(
                         children: [
                           Text(
-                            "Trazite neko od vec postavljenih pitanja?",
+                            "Tražite neko od već postavljenih pitanja?",
                             style: GoogleFonts.poppins(
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
@@ -155,70 +161,82 @@ class _SearchPageState extends State<SearchPage> {
               ValueListenableBuilder<bool>(
                 valueListenable: isTextFieldEmptyNotifier,
                 builder: (context, isTextFieldEmpty, _) {
-                  if (!isTextFieldEmpty) {
+                  if (!isTextFieldEmpty && !isLoading) {
                     return Expanded(
-                      child: ListView(
-                        children: [
-                          for (Question question in questionList)
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 5.0, horizontal: 8),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (_) => DetailsPage(
-                                        id: question.id,
-                                        answer: question.answer,
-                                        title: question.question,
-                                        views: question.views,
-                                      ),
+                      child: ListView.builder(
+                        itemCount: questionList.length,
+                        itemBuilder: (context, index) {
+                          final question = questionList[index];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 5.0,
+                              horizontal: 8,
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => DetailsPage(
+                                      id: question.id,
+                                      answer: question.answer,
+                                      title: question.question,
+                                      views: question.views,
                                     ),
-                                  );
-                                },
-                                splashColor: Colors.blue.withOpacity(0.5),
-                                borderRadius: BorderRadius.circular(8.0),
-                                child: Card(
+                                  ),
+                                );
+                              },
+                              splashColor: Colors.blue.withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: ListTile(
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(15),
                                   ),
-                                  child: ListTile(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    title: Container(
-                                      color: Colors.transparent,
-                                      margin:
-                                          const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                      child: Text(
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis,
-                                        question.question,
-                                        style: GoogleFonts.poppins(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16,
-                                          letterSpacing: 0.32,
-                                          color: const Color(0xff201d22),
-                                        ),
-                                      ),
-                                    ),
-                                    subtitle: Text(
-                                      question.answer,
-                                      maxLines: 5,
-                                      overflow: TextOverflow.fade,
+                                  title: Container(
+                                    color: Colors.transparent,
+                                    margin:
+                                        const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                    child: Text(
+                                      question.question,
                                       style: GoogleFonts.poppins(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 14,
-                                        letterSpacing: 0.28,
-                                        color: const Color(0xff626164),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16,
+                                        letterSpacing: 0.32,
+                                        color: const Color(0xff201d22),
                                       ),
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    tileColor: const Color(0xffeff2f8),
                                   ),
+                                  subtitle: Text(
+                                    question.answer,
+                                    maxLines: 5,
+                                    overflow: TextOverflow.fade,
+                                    style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14,
+                                      letterSpacing: 0.28,
+                                      color: const Color(0xff626164),
+                                    ),
+                                  ),
+                                  tileColor: const Color(0xffeff2f8),
                                 ),
                               ),
                             ),
-                        ],
+                          );
+                        },
+                      ),
+                    );
+                  } else if (isLoading && !isTextFieldEmpty) {
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return const CustomShimmer();
+                        },
                       ),
                     );
                   } else {
