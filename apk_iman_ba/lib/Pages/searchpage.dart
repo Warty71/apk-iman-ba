@@ -79,7 +79,7 @@ class _SearchPageState extends State<SearchPage> {
                           decoration: InputDecoration(
                             fillColor: const Color(0xffeff2f8),
                             filled: true,
-                            hintText: "Trazi pitanje...",
+                            hintText: "Traži pitanje...",
                             contentPadding: const EdgeInsets.symmetric(
                               vertical: 15.0,
                               horizontal: 15.0,

@@ -57,6 +57,7 @@ class _AskPageState extends State<AskPage> {
         floatingActionButton: Padding(
           padding: const EdgeInsets.all(20.0),
           child: TextFormField(
+            enabled: _isQuestionPosted ? false : true,
             controller: questionController,
             maxLength: null,
             maxLines: null,
@@ -64,7 +65,7 @@ class _AskPageState extends State<AskPage> {
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.never,
               suffixIcon: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 500),
+                duration: const Duration(milliseconds: 300),
                 transitionBuilder: (Widget child, Animation<double> animation) {
                   return FadeTransition(
                     opacity: animation,
@@ -110,7 +111,8 @@ class _AskPageState extends State<AskPage> {
                 borderRadius: BorderRadius.circular(16.0),
               ),
               filled: true,
-              fillColor: const Color(0xFF554AD2),
+              fillColor:
+                  _isQuestionPosted ? Colors.grey : const Color(0xFF554AD2),
               labelText: "Pitanje",
               labelStyle: GoogleFonts.poppins(
                 color: Colors.white38,
@@ -206,7 +208,7 @@ class _AskPageState extends State<AskPage> {
                           child: const Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Text(
-                              'Pitanje uspjesno postavljeno!',
+                              'Pitanje uspješno postavljeno!',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white,

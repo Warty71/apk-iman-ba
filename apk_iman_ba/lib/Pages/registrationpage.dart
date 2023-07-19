@@ -65,7 +65,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 5.0),
                     child: Text(
-                      "Napravite novi racun",
+                      "Napravite novi račun",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
                         color: const Color(0xff626164),
@@ -93,7 +93,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                         CustomTextField(
                           controller: emailController,
-                          hintText: 'Vas e-mail',
+                          hintText: 'Vaš e-mail',
                           obscureText: false,
                         ),
                       ],
@@ -108,7 +108,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Sifra",
+                          "Šifra",
                           style: GoogleFonts.poppins(
                             color: const Color(0xff201d22),
                             fontSize: 14,

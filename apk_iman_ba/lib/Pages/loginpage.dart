@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: Text(
-                      "Dobrodosli na IMAN",
+                      "Dobrodošli na IMAN",
                       style: GoogleFonts.poppins(
                         color: const Color(0xff190c3f),
                         fontSize: 28,
@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 5.0),
                     child: Text(
-                      "Prijavite se na svoj IMAN racun\n ili kreirajte novi",
+                      "Prijavite se na svoj IMAN račun\n ili kreirajte novi",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
                         color: const Color(0xff626164),
@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         CustomTextField(
                           controller: emailController,
-                          hintText: 'Vas e-mail',
+                          hintText: 'Vaš e-mail',
                           obscureText: false,
                         ),
                       ],
@@ -108,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Sifra",
+                          "Šifra",
                           style: GoogleFonts.poppins(
                             color: const Color(0xff201d22),
                             fontSize: 14,
@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
 
-                  // Zaboravili ste sifru?
+                  // Registracije i Zaboravili ste šifru?
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -155,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           child: Text(
-                            "Zaboravili ste sifru?",
+                            "Zaboravili ste šifru?",
                             style: GoogleFonts.poppins(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
@@ -210,7 +210,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: Text(
-                      "Prijavite se preko Google racuna",
+                      "Prijavite se preko Google računa",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
                         color: const Color(0xff626164),
