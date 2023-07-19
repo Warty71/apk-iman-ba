@@ -5,6 +5,7 @@ class Question {
   final String askedBy;
   final String answeredBy;
   final String date;
+  final String topics;
   final int views;
 
   Question({
@@ -14,6 +15,7 @@ class Question {
     required this.askedBy,
     required this.answeredBy,
     required this.date,
+    required this.topics,
     required this.views,
   });
 
@@ -26,6 +28,7 @@ class Question {
       askedBy: json['pitao'] ?? '',
       answeredBy: json['odgovorio'] ?? '',
       date: json['datum'] ?? '',
+      topics: json['topics'] ?? '',
       views: json['pregledi'] ?? 0,
     );
   }
@@ -38,6 +41,7 @@ class Question {
       'pitao': askedBy,
       'odgovorio': answeredBy,
       'datum': date,
+      'topics': topics,
       'pregledi': views,
     };
   }
