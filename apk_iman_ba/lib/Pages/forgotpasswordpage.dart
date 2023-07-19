@@ -118,12 +118,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     ),
 
                     // Button - Reset
-                    GestureDetector(
-                      onTap: () {
-                        passwordReset(context);
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15.0),
+                      child: Ink(
                         width: 325,
                         height: 64,
                         decoration: BoxDecoration(
@@ -138,16 +135,23 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             stops: <double>[0, 0.99],
                           ),
                         ),
-                        child: const Center(
-                          child: Text(
-                            "Reset",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 0.36,
+                        child: InkWell(
+                          onTap: () {
+                            passwordReset(context);
+                          },
+                          borderRadius: BorderRadius.circular(24),
+                          splashFactory: InkRipple.splashFactory,
+                          child: const Center(
+                            child: Text(
+                              "Reset",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: 0.36,
+                              ),
                             ),
                           ),
                         ),

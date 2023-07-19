@@ -149,13 +149,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
 
                   // Button - Registracija
-                  GestureDetector(
-                    onTap: () {
-                      AuthService.signUpEmail(context, passwordController,
-                          confirmController, emailController);
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: Ink(
                       width: 325,
                       height: 64,
                       decoration: BoxDecoration(
@@ -167,16 +163,24 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           stops: <double>[0, 0.99],
                         ),
                       ),
-                      child: const Center(
-                        child: Text(
-                          "Registruj se",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w500,
-                            letterSpacing: 0.36,
+                      child: InkWell(
+                        onTap: () {
+                          AuthService.signUpEmail(context, passwordController,
+                              confirmController, emailController);
+                        },
+                        borderRadius: BorderRadius.circular(24),
+                        splashFactory: InkRipple.splashFactory,
+                        child: const Center(
+                          child: Text(
+                            "Registruj se",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 0.36,
+                            ),
                           ),
                         ),
                       ),
