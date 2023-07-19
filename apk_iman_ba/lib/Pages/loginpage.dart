@@ -6,11 +6,23 @@ import '../Services/auth_service.dart';
 import '../components/custom_textfield.dart';
 import 'forgotpasswordpage.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +151,7 @@ class LoginPage extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (_) => ForgotPasswordPage(),
+                              builder: (_) => const ForgotPasswordPage(),
                             ),
                           ),
                           child: Text(
@@ -156,13 +168,9 @@ class LoginPage extends StatelessWidget {
                   ),
 
                   // "Prijavi se - button"
-                  GestureDetector(
-                    onTap: () {
-                      AuthService.signUserIn(
-                          context, emailController, passwordController);
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: Ink(
                       width: 325,
                       height: 64,
                       decoration: BoxDecoration(
@@ -174,16 +182,24 @@ class LoginPage extends StatelessWidget {
                           stops: <double>[0, 0.99],
                         ),
                       ),
-                      child: const Center(
-                        child: Text(
-                          "Prijavi se",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w500,
-                            letterSpacing: 0.36,
+                      child: InkWell(
+                        splashFactory: InkRipple.splashFactory,
+                        borderRadius: BorderRadius.circular(24),
+                        onTap: () {
+                          AuthService.signUserIn(
+                              context, emailController, passwordController);
+                        },
+                        child: const Center(
+                          child: Text(
+                            "Prijavi se",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 0.36,
+                            ),
                           ),
                         ),
                       ),
@@ -206,12 +222,9 @@ class LoginPage extends StatelessWidget {
                   ),
 
                   // Button - Google Login
-                  GestureDetector(
-                    onTap: () {
-                      AuthService().signInWithGoogle(context);
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Ink(
                       width: 325,
                       height: 64,
                       decoration: BoxDecoration(
@@ -220,28 +233,35 @@ class LoginPage extends StatelessWidget {
                         ),
                         borderRadius: BorderRadius.circular(24),
                       ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(0, 0, 10.0, 0),
-                            width: 24,
-                            height: 24,
-                            child: Image.asset("assets/images/google.png"),
-                          ),
-                          const Text(
-                            "Google Login",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color(0xff24195b),
-                              fontSize: 18,
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 0.36,
+                      child: InkWell(
+                        splashFactory: InkRipple.splashFactory,
+                        borderRadius: BorderRadius.circular(24),
+                        onTap: () {
+                          AuthService().signInWithGoogle(context);
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.fromLTRB(0, 0, 10.0, 0),
+                              width: 24,
+                              height: 24,
+                              child: Image.asset("assets/images/google.png"),
                             ),
-                          ),
-                        ],
+                            const Text(
+                              "Google Login",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color(0xff24195b),
+                                fontSize: 18,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: 0.36,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

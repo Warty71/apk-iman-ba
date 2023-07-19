@@ -4,9 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../Components/custom_textfield.dart';
 
-class ForgotPasswordPage extends StatelessWidget {
-  ForgotPasswordPage({super.key});
+class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({super.key});
 
+  @override
+  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
+}
+
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final TextEditingController emailController = TextEditingController();
 
   Future passwordReset(BuildContext context) async {
@@ -26,6 +31,12 @@ class ForgotPasswordPage extends StatelessWidget {
       // ignore: avoid_print
       print(e);
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
   }
 
   @override

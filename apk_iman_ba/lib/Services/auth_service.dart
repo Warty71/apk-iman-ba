@@ -1,4 +1,3 @@
-import 'package:apk_iman_ba/Pages/Extra/authpage.dart';
 import 'package:apk_iman_ba/Services/alert_service.dart';
 import 'package:apk_iman_ba/State%20Management/user_state.dart';
 import 'package:apk_iman_ba/models/user_model.dart';
@@ -63,45 +62,74 @@ class AuthService {
     }
   }
 
-// Sign-In (Traditional)
   static Future<void> signUserIn(
     BuildContext context,
     TextEditingController emailController,
     TextEditingController passwordController,
   ) async {
     try {
-      final userState = Provider.of<UserState>(context, listen: false);
       final userCredential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
+
       final loggedInUser = userCredential.user;
+
       if (loggedInUser != null) {
-        userState.updateUser(loggedInUser);
+        if (!loggedInUser.emailVerified) {
+          // If the email is not verified, display an error message and prevent login.
+          await FirebaseAuth.instance.signOut();
+          // ignore: use_build_context_synchronously
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text("E-mail nije verifikovan."),
+                content: const Text(
+                  "Molimo vas da potvrdite vas e-mail prije prijave.",
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text("OK"),
+                  ),
+                ],
+              );
+            },
+          );
+        } else {
+          // Email is verified, continue with login.
+          final DatabaseReference userRef = FirebaseDatabase.instance
+              .ref()
+              .child("Korisnici")
+              .child(loggedInUser.uid);
+          final DatabaseEvent event = await userRef.once();
+          final DataSnapshot snapshot = event.snapshot;
+          final dynamic userData = snapshot.value;
 
-        final DatabaseReference userRef = FirebaseDatabase.instance
-            .ref()
-            .child("Korisnici")
-            .child(loggedInUser.uid);
-        final DatabaseEvent event = await userRef.once();
-        final DataSnapshot snapshot = event.snapshot;
-        final dynamic userData = snapshot.value;
+          if (userData == null) {
+            // User's first login, copy data to Realtime Database
+            final newUser = Users.fromJson({
+              'id': loggedInUser.uid,
+              'email': loggedInUser.email,
+              'zadnjePitanje': '2021-01-11T21:47:42.316387',
+              'favoriteQuestions': [],
+              'personalQuestions': [],
+              'naČekanjuPitanja': [],
+            });
+            await userRef.set(newUser.toJson());
+          }
 
-        if (userData == null) {
-          // User's first login, copy data to Realtime Database
-          final newUser = Users.fromJson({
-            'id': loggedInUser.uid,
-            'email': loggedInUser.email,
-            'zadnjePitanje': '2021-01-11T21:47:42.316387',
-            'favoriteQuestions': [],
-            'personalQuestions': [],
-          });
-          await userRef.set(newUser.toJson());
+          // Update the user state using the provider
+          // ignore: use_build_context_synchronously
+          Provider.of<UserState>(context, listen: false)
+              .updateUser(loggedInUser);
         }
       }
     } on FirebaseAuthException catch (e) {
-      Navigator.pop(context);
       if (e.code == 'user-not-found') {
         AlertService.showWrongEmailMessage(context);
       } else if (e.code == 'wrong-password') {
@@ -128,20 +156,37 @@ class AuthService {
     // Try to sign up
     if (passwordController.text == confirmController.text) {
       try {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        final UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
+
+        // Send email verification
+        await userCredential.user?.sendEmailVerification();
+
         // ignore: use_build_context_synchronously
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (_) => const AuthPage()),
-          (route) => false,
-        );
+        AlertService.showEmailVerifMessageSuccess(context);
       } on Exception catch (e) {
         Navigator.pop(context);
-        // ignore: avoid_print
-        print(e);
+        // Handle the sign-up error (e.g., display an error message)
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text("Greška prilikom registracije"),
+              content: Text(e.toString()),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Zatvori"),
+                ),
+              ],
+            );
+          },
+        );
       }
     } else {
       Navigator.pop(context);

@@ -59,18 +59,20 @@ class OnboardingPage extends StatelessWidget {
                   const SizedBox(
                     height: 150,
                   ),
-                  GestureDetector(
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => const AuthPage(),
-                      ),
+                  Ink(
+                    width: 325,
+                    height: 64,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24),
+                      color: Colors.white,
                     ),
-                    child: Container(
-                      width: 325,
-                      height: 64,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24),
-                        color: Colors.white,
+                    child: InkWell(
+                      splashFactory: InkRipple.splashFactory,
+                      borderRadius: BorderRadius.circular(24),
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const AuthPage(),
+                        ),
                       ),
                       child: const Center(
                         child: Text(
