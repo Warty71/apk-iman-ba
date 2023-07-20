@@ -134,33 +134,6 @@ class _SearchPageState extends State<SearchPage> {
               ValueListenableBuilder<bool>(
                 valueListenable: isTextFieldEmptyNotifier,
                 builder: (context, isTextFieldEmpty, _) {
-                  return Visibility(
-                    visible: isTextFieldEmpty,
-                    child: Container(
-                      margin: const EdgeInsets.all(25.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Tražite neko od već postavljenih pitanja?",
-                            style: GoogleFonts.poppins(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                              color: const Color(0xFFA7A7AD),
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          Image.asset(
-                            "assets/images/compass.png",
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-              ValueListenableBuilder<bool>(
-                valueListenable: isTextFieldEmptyNotifier,
-                builder: (context, isTextFieldEmpty, _) {
                   if (!isTextFieldEmpty && !isLoading) {
                     return Expanded(
                       child: ListView.builder(
@@ -240,7 +213,29 @@ class _SearchPageState extends State<SearchPage> {
                       ),
                     );
                   } else {
-                    return const SizedBox.shrink();
+                    return Expanded(
+                      child: SingleChildScrollView(
+                        child: Container(
+                          margin: const EdgeInsets.all(25.0),
+                          child: Column(
+                            children: [
+                              Text(
+                                "Tražite neko od već postavljenih pitanja?",
+                                style: GoogleFonts.poppins(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                  color: const Color(0xFFA7A7AD),
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              Image.asset(
+                                "assets/images/compass.png",
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
                   }
                 },
               ),
