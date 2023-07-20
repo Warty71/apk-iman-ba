@@ -23,7 +23,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         context: context,
         builder: (context) {
           return const AlertDialog(
-            content: Text("Reset uspjesan. Provjerite svoj e-mail!"),
+            content: Text("Reset uspješan. Provjerite svoj e-mail!"),
           );
         },
       );
@@ -69,7 +69,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
                       child: Text(
-                        "Reset sifre",
+                        "Reset šifre",
                         style: GoogleFonts.poppins(
                           color: const Color(0xff190c3f),
                           fontSize: 28,
@@ -82,7 +82,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     Padding(
                       padding: const EdgeInsets.only(top: 5.0),
                       child: Text(
-                        "Unesite svoj e-mail, i dobit cete link za reset.",
+                        "Unesite svoj e-mail, i dobit ćete link za reset.",
                         textAlign: TextAlign.center,
                         style: GoogleFonts.poppins(
                           color: const Color(0xff626164),
@@ -110,7 +110,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           ),
                           CustomTextField(
                             controller: emailController,
-                            hintText: 'Vas e-mail',
+                            hintText: 'Vaš e-mail',
                             obscureText: false,
                           ),
                         ],
@@ -118,12 +118,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     ),
 
                     // Button - Reset
-                    GestureDetector(
-                      onTap: () {
-                        passwordReset(context);
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15.0),
+                      child: Ink(
                         width: 325,
                         height: 64,
                         decoration: BoxDecoration(
@@ -138,16 +135,23 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             stops: <double>[0, 0.99],
                           ),
                         ),
-                        child: const Center(
-                          child: Text(
-                            "Reset",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 0.36,
+                        child: InkWell(
+                          onTap: () {
+                            passwordReset(context);
+                          },
+                          borderRadius: BorderRadius.circular(24),
+                          splashFactory: InkRipple.splashFactory,
+                          child: const Center(
+                            child: Text(
+                              "Reset",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: 0.36,
+                              ),
                             ),
                           ),
                         ),

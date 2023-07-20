@@ -72,6 +72,7 @@ class _AddEntryPageState extends State<AddEntryPage> {
                   askedBy: userState.user!.email.toString().trim(),
                   answeredBy: answeredByController.text.trim(),
                   date: DateTime.now().toIso8601String().trim(),
+                  topics: '',
                   views: 0,
                 );
                 try {

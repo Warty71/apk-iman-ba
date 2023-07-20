@@ -71,7 +71,7 @@ class _UserPageState extends State<UserPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: Text(
-                          "Moj Racun",
+                          "Moj Račun",
                           style: GoogleFonts.poppins(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,

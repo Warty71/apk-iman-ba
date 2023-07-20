@@ -48,7 +48,7 @@ class OnboardingPage extends StatelessWidget {
                     height: 10.0,
                   ),
                   const Text(
-                    "Jedno mjesto za sva vasa\n serijatska pitanja",
+                    "Jedno mjesto za sva vaša\n šerijatska pitanja",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,

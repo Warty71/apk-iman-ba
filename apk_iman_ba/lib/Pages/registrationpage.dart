@@ -65,7 +65,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 5.0),
                     child: Text(
-                      "Napravite novi racun",
+                      "Napravite novi račun",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
                         color: const Color(0xff626164),
@@ -93,7 +93,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                         CustomTextField(
                           controller: emailController,
-                          hintText: 'Vas e-mail',
+                          hintText: 'Vaš e-mail',
                           obscureText: false,
                         ),
                       ],
@@ -108,7 +108,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Sifra",
+                          "Šifra",
                           style: GoogleFonts.poppins(
                             color: const Color(0xff201d22),
                             fontSize: 14,
@@ -149,13 +149,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
 
                   // Button - Registracija
-                  GestureDetector(
-                    onTap: () {
-                      AuthService.signUpEmail(context, passwordController,
-                          confirmController, emailController);
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: Ink(
                       width: 325,
                       height: 64,
                       decoration: BoxDecoration(
@@ -167,16 +163,24 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           stops: <double>[0, 0.99],
                         ),
                       ),
-                      child: const Center(
-                        child: Text(
-                          "Registruj se",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w500,
-                            letterSpacing: 0.36,
+                      child: InkWell(
+                        onTap: () {
+                          AuthService.signUpEmail(context, passwordController,
+                              confirmController, emailController);
+                        },
+                        borderRadius: BorderRadius.circular(24),
+                        splashFactory: InkRipple.splashFactory,
+                        child: const Center(
+                          child: Text(
+                            "Registruj se",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 0.36,
+                            ),
                           ),
                         ),
                       ),

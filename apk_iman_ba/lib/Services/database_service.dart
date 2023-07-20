@@ -81,28 +81,32 @@ class DatabaseService {
 // Method used to query the database using a topic (String)
   Future<List<Question>> filterByTopic(String topic) async {
     try {
-      DatabaseEvent event = await dbRef
-          .child("Pitanja i Odgovori")
-          .orderByChild('datum')
-          .limitToLast(10)
-          .once();
+      final DatabaseEvent event =
+          await dbRef.child("Pitanja i Odgovori").orderByChild('datum').once();
+      final DataSnapshot snapshot = event.snapshot;
 
-      final questionsMap = event.snapshot.value as Map<dynamic, dynamic>;
+      final questionsMap = snapshot.value as Map<dynamic, dynamic>;
 
-      final filteredQuestions = questionsMap.entries
-          .where((entry) {
-            final question = entry.value;
-            final topics = question['topics'];
+      final List<Question> filteredQuestions = [];
 
-            return topics != null && topics.toString().contains(topic);
-          })
-          .map((entry) => Question.fromJson(entry.value))
-          .toList();
+      questionsMap.entries.forEach((entry) {
+        final question = Question.fromJson(entry.value);
+        final questionTopics = question.topics.split(
+            ","); // Assuming 'topics' is a single string with comma-separated topics
 
-      // ignore: avoid_function_literals_in_foreach_calls
-      filteredQuestions.forEach((question) {});
+        if (questionTopics.contains(topic.trim())) {
+          filteredQuestions.add(question);
+        }
+      });
 
-      return filteredQuestions;
+      // Sort the questions by 'datum' in descending order (most recent first)
+      filteredQuestions.sort((a, b) => b.date.compareTo(a.date));
+
+      // Take the 10 most recent entries for the specified topic
+      final List<Question> recentQuestions =
+          filteredQuestions.take(10).toList();
+
+      return recentQuestions;
     } catch (error) {
       return [];
     }
