@@ -47,6 +47,7 @@ class AuthService {
             'zadnjePitanje': '2021-01-11T21:47:42.316387',
             'favoriteQuestions': [],
             'personalQuestions': [],
+            'naČekanjuPitanja': [],
           });
           await userRef.set(newUser.toJson());
         }
