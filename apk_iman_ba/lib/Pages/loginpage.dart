@@ -32,6 +32,9 @@ class _LoginPageState extends State<LoginPage> {
       isLoginLoading = true;
     });
     await AuthService.signUserIn(context, emailController, passwordController);
+    setState(() {
+      isLoginLoading = false;
+    });
   }
 
   void handleGoogleLogin() async {
@@ -39,6 +42,9 @@ class _LoginPageState extends State<LoginPage> {
       isGoogleLoginLoading = true;
     });
     await AuthService().signInWithGoogle(context);
+    setState(() {
+      isGoogleLoginLoading = false;
+    });
   }
 
   @override
