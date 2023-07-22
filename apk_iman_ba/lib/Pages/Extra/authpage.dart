@@ -12,7 +12,7 @@ class AuthPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final userState = Provider.of<UserState>(context);
     if (userState.user == null) {
-      return LoginPage();
+      return const LoginPage();
     } else {
       return const CustomBNB();
     }
