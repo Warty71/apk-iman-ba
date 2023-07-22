@@ -1,3 +1,4 @@
+import 'package:apk_iman_ba/Pages/Extra/authpage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,11 @@ class AlertService {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const AuthPage()),
+                    (route) => false,
+                  );
                 },
                 child: const Text("OK"),
               ),
@@ -35,7 +40,11 @@ class AlertService {
             actions: [
               CupertinoDialogAction(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const AuthPage()),
+                    (route) => false,
+                  );
                 },
                 child: const Text("OK"),
               ),
