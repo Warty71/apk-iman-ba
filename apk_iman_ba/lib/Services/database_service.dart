@@ -89,6 +89,7 @@ class DatabaseService {
 
       final List<Question> filteredQuestions = [];
 
+      // ignore: avoid_function_literals_in_foreach_calls
       questionsMap.entries.forEach((entry) {
         final question = Question.fromJson(entry.value);
         final questionTopics = question.topics.split(

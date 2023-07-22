@@ -1,5 +1,6 @@
 import 'package:apk_iman_ba/Pages/registrationpage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../Services/auth_service.dart';
@@ -16,12 +17,28 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool isLoginLoading = false;
+  bool isGoogleLoginLoading = false;
 
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  void handleLogin() async {
+    setState(() {
+      isLoginLoading = true;
+    });
+    await AuthService.signUserIn(context, emailController, passwordController);
+  }
+
+  void handleGoogleLogin() async {
+    setState(() {
+      isGoogleLoginLoading = true;
+    });
+    await AuthService().signInWithGoogle(context);
   }
 
   @override
@@ -124,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
 
-                  // Registracije i Zaboravili ste šifru?
+                  // Registracija i Zaboravili ste šifru?
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -133,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: GestureDetector(
                           onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (_) => RegistrationPage(),
+                              builder: (_) => const RegistrationPage(),
                             ),
                           ),
                           child: Text(
@@ -186,21 +203,25 @@ class _LoginPageState extends State<LoginPage> {
                         splashFactory: InkRipple.splashFactory,
                         borderRadius: BorderRadius.circular(24),
                         onTap: () {
-                          AuthService.signUserIn(
-                              context, emailController, passwordController);
+                          handleLogin();
                         },
-                        child: const Center(
-                          child: Text(
-                            "Prijavi se",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 0.36,
-                            ),
-                          ),
+                        child: Center(
+                          child: isLoginLoading
+                              ? const SpinKitDualRing(
+                                  size: 24,
+                                  color: Colors.white,
+                                )
+                              : const Text(
+                                  "Prijavi se",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w500,
+                                    letterSpacing: 0.36,
+                                  ),
+                                ),
                         ),
                       ),
                     ),
@@ -237,31 +258,38 @@ class _LoginPageState extends State<LoginPage> {
                         splashFactory: InkRipple.splashFactory,
                         borderRadius: BorderRadius.circular(24),
                         onTap: () {
-                          AuthService().signInWithGoogle(context);
+                          handleGoogleLogin();
                         },
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.fromLTRB(0, 0, 10.0, 0),
-                              width: 24,
-                              height: 24,
-                              child: Image.asset("assets/images/google.png"),
-                            ),
-                            const Text(
-                              "Google Login",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Color(0xff24195b),
-                                fontSize: 18,
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 0.36,
+                        child: isGoogleLoginLoading
+                            ? const SpinKitDualRing(
+                                color: Colors.black,
+                                size: 24,
+                              )
+                            : Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.fromLTRB(
+                                        0, 0, 10.0, 0),
+                                    width: 24,
+                                    height: 24,
+                                    child:
+                                        Image.asset("assets/images/google.png"),
+                                  ),
+                                  const Text(
+                                    "Google Login",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Color(0xff24195b),
+                                      fontSize: 18,
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: 0.36,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
                       ),
                     ),
                   ),
