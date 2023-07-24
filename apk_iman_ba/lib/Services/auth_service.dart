@@ -71,7 +71,7 @@ class AuthService {
     try {
       final userCredential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
+        email: emailController.text.trim(),
         password: passwordController.text,
       );
 
