@@ -148,104 +148,120 @@ class _UserPageState extends State<UserPage> {
               ),
 
               // Moja Pitanja
-              Container(
-                margin: const EdgeInsets.fromLTRB(25, 5, 25, 10),
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Color(0xCCEFF2F8),
-                      width: 3,
-                    ),
-                  ),
-                ),
+              Ink(
                 child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.person_outline, size: 24),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 10.0, right: 2.0),
-                            child: Text(
-                              "Moja Pitanja",
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                letterSpacing: 0.28,
-                                color: const Color(0xFF201E22),
+                  padding: const EdgeInsets.fromLTRB(25, 10, 25, 10),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const MyQuestionsPage(),
+                        ),
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(15),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Color(0xCCEFF2F8),
+                            width: 3,
+                          ),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(Icons.person_outline, size: 24),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10.0, right: 2.0),
+                                  child: Text(
+                                    "Moja Pitanja",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14,
+                                      letterSpacing: 0.28,
+                                      color: const Color(0xFF201E22),
+                                    ),
+                                  ),
+                                ),
+                                Text("($lengthQuestions)"),
+                              ],
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              child: Icon(
+                                Icons.arrow_forward_ios_outlined,
+                                size: 20,
                               ),
                             ),
-                          ),
-                          Text("($lengthQuestions)"),
-                        ],
-                      ),
-                      IconButton(
-                        iconSize: 20,
-                        icon: const Icon(
-                          Icons.arrow_forward_ios,
+                          ],
                         ),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => const MyQuestionsPage(),
-                            ),
-                          );
-                        },
-                      )
-                    ],
+                      ),
+                    ),
                   ),
                 ),
               ),
 
               // Na cekanju
-              Container(
-                margin: const EdgeInsets.fromLTRB(25, 5, 25, 10),
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Color(0xCCEFF2F8),
-                      width: 3,
-                    ),
-                  ),
-                ),
+              Ink(
                 child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.history, size: 24),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Text(
-                              "Pitanja na Čekanju",
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                letterSpacing: 0.28,
-                                color: const Color(0xFF201E22),
+                  padding: const EdgeInsets.fromLTRB(25, 10, 25, 10),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const WaitingPage(),
+                        ),
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(15),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Color(0xCCEFF2F8),
+                            width: 3,
+                          ),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(Icons.history, size: 24),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0),
+                                  child: Text(
+                                    "Pitanja na Čekanju",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14,
+                                      letterSpacing: 0.28,
+                                      color: const Color(0xFF201E22),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              child: Icon(
+                                Icons.arrow_forward_ios_outlined,
+                                size: 20,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      IconButton(
-                        iconSize: 20,
-                        icon: const Icon(
-                          Icons.arrow_forward_ios,
+                          ],
                         ),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => const WaitingPage(),
-                            ),
-                          );
-                        },
-                      )
-                    ],
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -273,95 +289,122 @@ class _UserPageState extends State<UserPage> {
               ),
 
               // FAQ
-              Container(
-                margin: const EdgeInsets.fromLTRB(25, 5, 25, 10),
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Color(0xCCEFF2F8),
-                      width: 3,
-                    ),
-                  ),
-                ),
+              Ink(
                 child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.help_outline, size: 24),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Text(
-                              "FAQ",
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                letterSpacing: 0.28,
-                                color: const Color(0xFF201E22),
+                  padding: const EdgeInsets.fromLTRB(25, 10, 25, 10),
+                  child: InkWell(
+                    onTap: () {
+                      _showDialog(context);
+                    },
+                    borderRadius: BorderRadius.circular(15),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Color(0xCCEFF2F8),
+                            width: 3,
+                          ),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(Icons.help_outline, size: 24),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0),
+                                  child: Text(
+                                    "FAQ",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14,
+                                      letterSpacing: 0.28,
+                                      color: const Color(0xFF201E22),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              child: Icon(
+                                Icons.arrow_forward_ios_outlined,
+                                size: 20,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      IconButton(
-                        iconSize: 20,
-                        icon: const Icon(
-                          Icons.arrow_forward_ios,
+                          ],
                         ),
-                        onPressed: () {
-                          _showDialog(context);
-                        },
-                      )
-                    ],
+                      ),
+                    ),
                   ),
                 ),
               ),
 
               // Uslovi koristenja
-              Container(
-                margin: const EdgeInsets.fromLTRB(25, 5, 25, 10),
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Color(0xCCEFF2F8),
-                      width: 3,
-                    ),
-                  ),
-                ),
+              Ink(
                 child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.text_snippet_outlined, size: 24),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Text(
-                              "Uslovi korištenja",
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                letterSpacing: 0.28,
-                                color: const Color(0xFF201E22),
-                              ),
+                  padding: const EdgeInsets.fromLTRB(25, 10, 25, 10),
+                  child: InkWell(
+                    onTap: () {
+                      _showDialog(context);
+                    },
+                    borderRadius: BorderRadius.circular(15),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Color(0xCCEFF2F8),
+                            width: 3,
+                          ),
+                        ),
+                      ),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Color(0xCCEFF2F8),
+                              width: 3,
                             ),
                           ),
-                        ],
-                      ),
-                      IconButton(
-                        iconSize: 20,
-                        icon: const Icon(
-                          Icons.arrow_forward_ios,
                         ),
-                        onPressed: () {
-                          _showDialog(context);
-                        },
-                      )
-                    ],
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(Icons.text_snippet_outlined,
+                                      size: 24),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0),
+                                    child: Text(
+                                      "Uslovi korištenja",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 14,
+                                        letterSpacing: 0.28,
+                                        color: const Color(0xFF201E22),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 15),
+                                child: Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                  size: 20,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
