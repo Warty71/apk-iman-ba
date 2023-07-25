@@ -23,11 +23,15 @@ class DatabaseService {
 
       await korisnickaPitanjaRef.set({
         'pitanje': question,
-        // ignore: use_build_context_synchronously
-        'korisnik': Provider.of<UserState>(context, listen: false)
-            .user!
-            .email
-            .toString(),
+        'email':
+            // ignore: use_build_context_synchronously
+            Provider.of<UserState>(context, listen: false)
+                .user!
+                .email
+                .toString(),
+        'id':
+            // ignore: use_build_context_synchronously
+            Provider.of<UserState>(context, listen: false).user!.uid.toString(),
         // Additional fields or data associated with the question
       });
 
