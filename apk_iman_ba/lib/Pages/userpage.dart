@@ -1,5 +1,4 @@
 import 'package:apk_iman_ba/Pages/Extra/authpage.dart';
-import 'package:apk_iman_ba/Pages/addentrypage.dart';
 import 'package:apk_iman_ba/Pages/myquestionspage.dart';
 import 'package:apk_iman_ba/State%20Management/user_state.dart';
 import 'package:apk_iman_ba/components/custom_fab.dart';
@@ -242,52 +241,6 @@ class _UserPageState extends State<UserPage> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => const WaitingPage(),
-                            ),
-                          );
-                        },
-                      )
-                    ],
-                  ),
-                ),
-              ),
-
-              // Unos u bazu - TEST
-              Container(
-                margin: const EdgeInsets.fromLTRB(25, 5, 25, 10),
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Color(0xCCEFF2F8),
-                      width: 3,
-                    ),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Icon(Icons.add, size: 24),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: Text(
-                          "UNOS U BAZU",
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            letterSpacing: 0.28,
-                            color: const Color(0xFF201E22),
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        iconSize: 20,
-                        icon: const Icon(
-                          Icons.arrow_forward_ios,
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => const AddEntryPage(),
                             ),
                           );
                         },
