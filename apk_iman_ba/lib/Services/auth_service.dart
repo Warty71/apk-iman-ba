@@ -45,8 +45,8 @@ class AuthService {
             'id': loggedInUser.uid,
             'email': loggedInUser.email,
             'zadnjePitanje': '2021-01-11T21:47:42.316387',
-            'favoriteQuestions': [],
-            'personalQuestions': [],
+            'favoriti': [],
+            'mojaPitanja': [],
             'naČekanjuPitanja': [],
           });
           await userRef.set(newUser.toJson());
@@ -117,8 +117,8 @@ class AuthService {
               'id': loggedInUser.uid,
               'email': loggedInUser.email,
               'zadnjePitanje': '2021-01-11T21:47:42.316387',
-              'favoriteQuestions': [],
-              'personalQuestions': [],
+              'favoriti': [],
+              'mojaPitanja': [],
               'naČekanjuPitanja': [],
             });
             await userRef.set(newUser.toJson());

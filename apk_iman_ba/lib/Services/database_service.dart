@@ -175,7 +175,7 @@ class DatabaseService {
 
         if (userData != null && userData is Map<dynamic, dynamic>) {
           final List<String> favoriteQuestions =
-              List<String>.from(userData['favoriteQuestions'] ?? []);
+              List<String>.from(userData['favoriti'] ?? []);
 
           if (favoriteQuestions.contains(questionId)) {
             // Remove the question from favorites
@@ -185,7 +185,7 @@ class DatabaseService {
             favoriteQuestions.add(questionId);
           }
 
-          await userRef.child('favoriteQuestions').set(favoriteQuestions);
+          await userRef.child('favoriti').set(favoriteQuestions);
         }
       }
     } catch (error) {
@@ -205,7 +205,7 @@ class DatabaseService {
       final dynamic userData = event.snapshot.value;
       if (userData != null && userData is Map<dynamic, dynamic>) {
         final List<String> favoriteQuestions =
-            List<String>.from(userData['favoriteQuestions'] ?? []);
+            List<String>.from(userData['favoriti'] ?? []);
 
         return favoriteQuestions.contains(questionId);
       }
@@ -224,7 +224,7 @@ class DatabaseService {
 
     if (userData != null && userData is Map<dynamic, dynamic>) {
       final List<String> favoriteQuestionIds =
-          List<String>.from(userData['favoriteQuestions'] ?? []);
+          List<String>.from(userData['favoriti'] ?? []);
 
       final List<Question> favoriteQuestions = [];
 
@@ -254,7 +254,7 @@ class DatabaseService {
 
     if (userData != null && userData is Map<dynamic, dynamic>) {
       final List<String> personalQuestionIds =
-          List<String>.from(userData['personalQuestions'] ?? []);
+          List<String>.from(userData['mojaPitanja'] ?? []);
 
       final List<Question> personalQuestions = [];
 
@@ -277,7 +277,7 @@ class DatabaseService {
 // Method used to fetch the length of the personal questions list
   Future<String> fetchMyQuestionsLength(String userId) async {
     final DatabaseReference pesronalQuestionsRef =
-        dbRef.child("Korisnici").child(userId).child('personalQuestion');
+        dbRef.child("Korisnici").child(userId).child('mojaPitanja');
 
     DatabaseEvent event = await pesronalQuestionsRef.once();
     DataSnapshot snapshot = event.snapshot;
@@ -298,16 +298,19 @@ class DatabaseService {
     final DatabaseEvent event = await userRef.once();
     final DataSnapshot snapshot = event.snapshot;
     final dynamic userData = snapshot.value;
+    print(userData);
 
     if (userData != null && userData is Map<dynamic, dynamic>) {
       final List<String> onHoldQuestionIds =
           List<String>.from(userData['naČekanjuPitanja'] ?? []);
+      print("AAA");
 
       final List<Question> onHoldQuestions = [];
 
       for (String questionId in onHoldQuestionIds) {
         final DatabaseEvent event =
             await dbRef.child("Korisnicka Pitanja").child(questionId).once();
+        print(questionId);
         final DataSnapshot snapshot = event.snapshot;
         final dynamic questionData = snapshot.value;
         if (questionData != null) {

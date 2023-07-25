@@ -25,7 +25,7 @@ class Question {
       id: json['id'] ?? '',
       question: json['pitanje'] ?? '',
       answer: json['odgovor'] ?? '',
-      askedBy: json['pitao'] ?? '',
+      askedBy: json['email'] ?? '',
       answeredBy: json['odgovorio'] ?? '',
       date: json['datum'] ?? '',
       topics: json['topics'] ?? '',
