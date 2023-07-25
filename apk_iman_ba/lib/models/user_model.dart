@@ -20,8 +20,8 @@ class Users {
       id: json['id'],
       email: json['email'],
       lastQuestionTime: json['zadnjePitanje'],
-      favoriteQuestions: List<String>.from(json['favoriteQuestions']),
-      personalQuestions: List<String>.from(json['personalQuestions']),
+      favoriteQuestions: List<String>.from(json['favoriti']),
+      personalQuestions: List<String>.from(json['mojaPitanja']),
       onHoldQuestions: List<String>.from(json['naČekanjuPitanja']),
     );
   }
