@@ -36,7 +36,7 @@ class OnboardingPage extends StatelessWidget {
                     height: 200,
                   ),
                   const Text(
-                    "Dobrodosli na IMAN",
+                    "Dobrodošli na IMAN",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 28,
