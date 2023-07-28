@@ -1,5 +1,6 @@
 import 'package:apk_iman_ba/State%20Management/user_state.dart';
 import 'package:apk_iman_ba/models/question_model.dart';
+import 'package:apk_iman_ba/services/notification_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class DatabaseService {
       final dynamic korisnikData = event.snapshot.value;
 
       await korisnickaPitanjaRef.set({
+        'token': await NotificationService().getFCMToken(),
         'pitanje': question,
         'email':
             // ignore: use_build_context_synchronously
@@ -32,7 +34,6 @@ class DatabaseService {
         'id':
             // ignore: use_build_context_synchronously
             Provider.of<UserState>(context, listen: false).user!.uid.toString(),
-        // Additional fields or data associated with the question
       });
 
       // When was the last question asked?

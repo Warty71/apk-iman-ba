@@ -1,5 +1,7 @@
 import 'package:apk_iman_ba/pages/onboarding_page.dart';
 import 'package:apk_iman_ba/firebase_options.dart';
+import 'package:apk_iman_ba/services/notification_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +13,22 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await NotificationService().initialize();
+
+  // Initialize the notification service and listen for foreground and background notifications
+  NotificationService notificationService = NotificationService();
+  notificationService.handleForegroundNotifications();
+
+  // Check if the app was opened from a terminated state
+  RemoteMessage? initialMessage =
+      await FirebaseMessaging.instance.getInitialMessage();
+  if (initialMessage != null) {
+    print(
+        'Terminated Notification received: ${initialMessage.notification?.body}');
+    // You can handle the notification here when the app was opened from a terminated state
+    // For example, you can navigate to a specific screen
+  }
 
   runApp(
     MultiProvider(
