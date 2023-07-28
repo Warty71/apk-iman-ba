@@ -23,11 +23,13 @@ class NotificationService {
   // Method to handle foreground and background notifications
   void handleForegroundNotifications() {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      // ignore: avoid_print
       print('Foreground Notification received: ${message.notification?.body}');
       // You can handle the notification here when the app is in the foreground
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      // ignore: avoid_print
       print('Background Notification received: ${message.notification?.body}');
       // You can handle the notification here when the app is in the background
       // For example, you can navigate to a specific screen

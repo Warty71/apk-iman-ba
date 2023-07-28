@@ -32,14 +32,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final DatabaseService _database = DatabaseService();
 
-  String currentTopic = "Kur'an";
+  String currentTopic = "Popularno";
   List<Question> questionList = [];
   bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    currentTopic = "Kur'an";
+    currentTopic = "Popularno";
     _fetchQuestionsByTopic(currentTopic);
   }
 

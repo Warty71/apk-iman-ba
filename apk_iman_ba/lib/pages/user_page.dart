@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'waiting_list_page.dart';
 
@@ -36,6 +37,10 @@ class _UserPageState extends State<UserPage> {
     await FirebaseAuth.instance.signOut();
     // ignore: use_build_context_synchronously
     Provider.of<UserState>(context, listen: false).updateUser(null);
+
+    // Remove the user ID from SharedPreferences
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('user_id');
 
     // ignore: use_build_context_synchronously
     Navigator.pushAndRemoveUntil(
@@ -411,7 +416,9 @@ class _UserPageState extends State<UserPage> {
               Container(
                 margin: const EdgeInsets.fromLTRB(15, 20, 15, 100),
                 child: GestureDetector(
-                  onTap: () => signUserOut(context),
+                  onTap: () {
+                    signUserOut(context);
+                  },
                   child: Text(
                     "Odjava",
                     style: GoogleFonts.poppins(

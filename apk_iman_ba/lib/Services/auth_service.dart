@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
 // Sign-In (Google)
@@ -26,6 +27,9 @@ class AuthService {
 
       final User? loggedInUser = userCredential.user;
       if (loggedInUser != null) {
+        // Save the user ID in SharedPreferences
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setString('user_id', loggedInUser.uid);
         // Update the user state using the provider
         // ignore: use_build_context_synchronously
         Provider.of<UserState>(context, listen: false).updateUser(loggedInUser);
@@ -103,6 +107,9 @@ class AuthService {
           );
         } else {
           // Email is verified, continue with login.
+          final prefs = await SharedPreferences.getInstance();
+          prefs.setString('user_id', loggedInUser.uid);
+
           final DatabaseReference userRef = FirebaseDatabase.instance
               .ref()
               .child("Korisnici")

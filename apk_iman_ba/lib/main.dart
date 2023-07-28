@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:apk_iman_ba/pages/onboarding_page.dart';
 import 'package:apk_iman_ba/firebase_options.dart';
 import 'package:apk_iman_ba/services/notification_service.dart';

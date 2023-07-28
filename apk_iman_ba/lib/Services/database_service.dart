@@ -299,19 +299,17 @@ class DatabaseService {
     final DatabaseEvent event = await userRef.once();
     final DataSnapshot snapshot = event.snapshot;
     final dynamic userData = snapshot.value;
-    print(userData);
 
     if (userData != null && userData is Map<dynamic, dynamic>) {
       final List<String> onHoldQuestionIds =
           List<String>.from(userData['naČekanjuPitanja'] ?? []);
-      print("AAA");
 
       final List<Question> onHoldQuestions = [];
 
       for (String questionId in onHoldQuestionIds) {
         final DatabaseEvent event =
             await dbRef.child("Korisnicka Pitanja").child(questionId).once();
-        print(questionId);
+
         final DataSnapshot snapshot = event.snapshot;
         final dynamic questionData = snapshot.value;
         if (questionData != null) {
