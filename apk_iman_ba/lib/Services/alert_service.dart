@@ -1,4 +1,4 @@
-import 'package:apk_iman_ba/Pages/Extra/authpage.dart';
+import 'package:apk_iman_ba/Pages/Extra/auth_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

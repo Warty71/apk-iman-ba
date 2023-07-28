@@ -1,5 +1,5 @@
-import 'package:apk_iman_ba/Pages/searchpage.dart';
-import 'package:apk_iman_ba/Pages/userpage.dart';
+import 'package:apk_iman_ba/Pages/search_page.dart';
+import 'package:apk_iman_ba/Pages/user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

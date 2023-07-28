@@ -1,5 +1,5 @@
-import 'package:apk_iman_ba/Pages/Extra/authpage.dart';
-import 'package:apk_iman_ba/Pages/myquestionspage.dart';
+import 'package:apk_iman_ba/Pages/Extra/auth_page.dart';
+import 'package:apk_iman_ba/Pages/my_questions_page.dart';
 import 'package:apk_iman_ba/State%20Management/user_state.dart';
 import 'package:apk_iman_ba/components/custom_fab.dart';
 import 'package:apk_iman_ba/services/database_service.dart';
