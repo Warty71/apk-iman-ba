@@ -1,7 +1,7 @@
 import "package:apk_iman_ba/Pages/detailspage.dart";
 import "package:apk_iman_ba/components/custom_shimmer.dart";
 import "package:apk_iman_ba/models/question_model.dart";
-import "package:apk_iman_ba/pages/waitanswerpage.dart";
+import 'package:apk_iman_ba/pages/wait_answer_page.dart';
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 

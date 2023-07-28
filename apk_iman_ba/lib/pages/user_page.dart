@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import 'waitinglistpage.dart';
+import 'waiting_list_page.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({super.key});

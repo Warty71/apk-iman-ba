@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../Services/auth_service.dart';
 import '../components/custom_textfield.dart';
-import 'forgotpasswordpage.dart';
+import 'forgot_password_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

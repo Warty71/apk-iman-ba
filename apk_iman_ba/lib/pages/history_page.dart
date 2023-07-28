@@ -3,8 +3,8 @@ import 'package:apk_iman_ba/Pages/userpage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'detailspage.dart';
-import 'favoritespage.dart';
+import 'details_page.dart';
+import 'favorites_page.dart';
 
 List<Map<String, String>> qaList = [
   {

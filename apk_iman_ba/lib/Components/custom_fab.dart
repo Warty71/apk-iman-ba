@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:apk_iman_ba/pages/askpage.dart';
+import 'package:apk_iman_ba/pages/ask_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
