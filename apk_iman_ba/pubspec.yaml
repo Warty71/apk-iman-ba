@@ -64,7 +64,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/logo.jpg"
+  image_path: "assets/images/iman_launcher_logo.png"
 
 # The following section is specific to Flutter packages.
 flutter:
