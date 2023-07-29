@@ -39,8 +39,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    currentTopic = "Popularno";
-    _fetchQuestionsByTopic(currentTopic);
+    _fetchQuestionsByViews();
   }
 
   Future<void> _fetchQuestionsByTopic(String topic) async {

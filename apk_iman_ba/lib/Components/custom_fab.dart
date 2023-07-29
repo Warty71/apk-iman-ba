@@ -53,7 +53,7 @@ class _CustomFABState extends State<CustomFAB> {
   }
 
   void _calculateRemainingTime(DateTime lastQuestionTime) {
-    final nextQuestionTime = lastQuestionTime.add(const Duration(minutes: 1));
+    final nextQuestionTime = lastQuestionTime.add(const Duration(hours: 3));
 
     _remainingTime = nextQuestionTime.difference(DateTime.now());
 
