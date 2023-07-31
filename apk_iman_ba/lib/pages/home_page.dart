@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
 
   String currentTopic = "Popularno";
   List<Question> questionList = [];
+  int selectedTopicIndex = 0;
   bool isLoading = true;
 
   @override
@@ -100,17 +101,24 @@ class _HomePageState extends State<HomePage> {
                     return Container(
                       margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                       decoration: BoxDecoration(
-                        color: const Color(0xff190c3f),
+                        color: index == selectedTopicIndex
+                            ? const Color(0xff5449d2)
+                            : const Color(0xff190c3f),
                         borderRadius: BorderRadius.circular(14.0),
                       ),
                       child: Material(
                         child: Ink(
                           decoration: BoxDecoration(
-                            color: const Color(0xff190c3f),
+                            color: index == selectedTopicIndex
+                                ? const Color(0xff5449d2)
+                                : const Color(0xff190c3f),
                             borderRadius: BorderRadius.circular(14.0),
                           ),
                           child: InkWell(
                             onTap: () {
+                              setState(() {
+                                selectedTopicIndex = index;
+                              });
                               _updateCurrentTopic(topics[index]);
                             },
                             splashColor: Colors.white.withOpacity(0.3),
@@ -122,7 +130,9 @@ class _HomePageState extends State<HomePage> {
                                 child: Text(
                                   topics[index],
                                   style: GoogleFonts.poppins(
-                                    color: Colors.white,
+                                    color: index == selectedTopicIndex
+                                        ? Colors.white
+                                        : Colors.white,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
