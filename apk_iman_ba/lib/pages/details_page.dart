@@ -94,7 +94,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             widget.answeredBy,
                             softWrap: true,
                             style: GoogleFonts.poppins(
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.w400,
                               color: Colors.black,
                             ),
@@ -186,6 +186,9 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 25,
               ),
             ],
           ),
