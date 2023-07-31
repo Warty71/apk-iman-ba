@@ -152,6 +152,7 @@ class _SearchPageState extends State<SearchPage> {
                                     builder: (_) => DetailsPage(
                                       id: question.id,
                                       answer: question.answer,
+                                      answeredBy: question.answeredBy,
                                       title: question.question,
                                       views: question.views,
                                     ),
