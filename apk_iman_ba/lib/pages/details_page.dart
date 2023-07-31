@@ -8,6 +8,7 @@ class DetailsPage extends StatefulWidget {
   final String id;
   final String title;
   final String answer;
+  final String answeredBy;
   final int views;
 
   const DetailsPage(
@@ -15,6 +16,7 @@ class DetailsPage extends StatefulWidget {
       required this.id,
       required this.title,
       required this.answer,
+      required this.answeredBy,
       required this.views});
 
   @override
@@ -82,6 +84,20 @@ class _DetailsPageState extends State<DetailsPage> {
                           child: Image.asset(
                             "assets/images/back.png",
                             height: 4,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 205,
+                        child: Center(
+                          child: Text(
+                            widget.answeredBy,
+                            softWrap: true,
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
@@ -170,6 +186,9 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 25,
               ),
             ],
           ),

@@ -50,6 +50,7 @@ class _CustomListViewState extends State<CustomListView> {
                       builder: (_) => DetailsPage(
                         id: question.id,
                         answer: question.answer,
+                        answeredBy: question.answeredBy,
                         title: question.question,
                         views: question.views,
                       ),
