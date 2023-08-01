@@ -144,6 +144,32 @@ class DatabaseService {
     }
   }
 
+// Method used to query the database by date
+  Future<List<Question>> filterByDate() async {
+    try {
+      final DatabaseEvent event = await dbRef
+          .child("Pitanja i Odgovori")
+          .orderByChild("datum")
+          .limitToLast(10)
+          .once();
+      final DataSnapshot snapshot = event.snapshot;
+      final dynamic data = snapshot.value;
+      if (data != null && data is Map<dynamic, dynamic>) {
+        final List<Question> recentQuestions = data.entries.map((entry) {
+          final Question question = Question.fromJson(entry.value);
+          return question;
+        }).toList();
+
+        recentQuestions.sort((a, b) => b.date.compareTo(a.date));
+        return recentQuestions;
+      } else {
+        return [];
+      }
+    } catch (error) {
+      return [];
+    }
+  }
+
 // Method used to update the views of a question each time it is opened
   Future<void> updateViews(String fieldToMatch, dynamic valueToMatch,
       String fieldToUpdate, dynamic newValue) async {

@@ -2,6 +2,7 @@ class Utils {
   String removeEmojis(String text) {
     // Define a list of emojis to be removed
     List<String> emojis = [
+      "🆕",
       "🔥",
       "📖",
       "🧎",
