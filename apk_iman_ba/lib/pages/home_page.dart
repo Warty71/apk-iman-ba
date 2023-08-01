@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 List<String> topics = [
+  "🆕Novo",
   "🔥Popularno",
   "📖Kur'an",
   "🧎Namaz",
@@ -32,7 +33,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final DatabaseService _database = DatabaseService();
 
-  String currentTopic = "Popularno";
+  String currentTopic = "Novo";
   List<Question> questionList = [];
   int selectedTopicIndex = 0;
   bool isLoading = true;
@@ -69,14 +70,29 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Future<void> _fetchQuestionsByDate() async {
+    setState(() {
+      isLoading = true; // Show shimmer while loading
+    });
+
+    final List<Question> questions = await _database.filterByDate();
+
+    setState(() {
+      questionList = questions;
+      isLoading = false; // Hide shimmer when data is loaded
+    });
+  }
+
   void _updateCurrentTopic(String topic) {
     setState(() {
       currentTopic = Utils().removeEmojis(topic);
     });
-    if (currentTopic != "Popularno") {
-      _fetchQuestionsByTopic(currentTopic);
-    } else {
+    if (currentTopic == "Popularno") {
       _fetchQuestionsByViews();
+    } else if (currentTopic == "Novo") {
+      _fetchQuestionsByDate();
+    } else {
+      _fetchQuestionsByTopic(currentTopic);
     }
   }
 
