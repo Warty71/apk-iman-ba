@@ -3,6 +3,7 @@ import 'package:apk_iman_ba/Pages/my_questions_page.dart';
 import 'package:apk_iman_ba/State%20Management/user_state.dart';
 import 'package:apk_iman_ba/components/custom_fab.dart';
 import 'package:apk_iman_ba/pages/faq_page.dart';
+import 'package:apk_iman_ba/pages/terms_of_use_page.dart';
 import 'package:apk_iman_ba/services/database_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -302,7 +303,7 @@ class _UserPageState extends State<UserPage> {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (_) => FAQPage(),
+                          builder: (_) => const FAQPage(),
                         ),
                       );
                     },
@@ -359,7 +360,11 @@ class _UserPageState extends State<UserPage> {
                   padding: const EdgeInsets.fromLTRB(25, 10, 25, 10),
                   child: InkWell(
                     onTap: () {
-                      _showDialog(context);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const TermsOfUsePage(),
+                        ),
+                      );
                     },
                     borderRadius: BorderRadius.circular(15),
                     child: Container(
@@ -393,7 +398,7 @@ class _UserPageState extends State<UserPage> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10.0),
                                     child: Text(
-                                      "Uslovi korištenja",
+                                      "Uslovi Korištenja",
                                       style: GoogleFonts.poppins(
                                         fontSize: 14,
                                         letterSpacing: 0.28,
@@ -438,23 +443,4 @@ class _UserPageState extends State<UserPage> {
       ),
     );
   }
-}
-
-void _showDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text("Nema nista."),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text("Close"),
-          ),
-        ],
-      );
-    },
-  );
 }
