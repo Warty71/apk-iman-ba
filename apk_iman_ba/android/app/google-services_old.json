@@ -15,22 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "43835481855-f6957qd6pbcrhe57gfrcb8f1u78936si.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "ba.iman.IMAN",
-            "certificate_hash": "e6aec3e75cf90e6499e7acf9c087f1449913fd3d"
-          }
-        },
-        {
-          "client_id": "43835481855-nabdsvecou9puiteene8440p1pimva73.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "ba.iman.IMAN",
-            "certificate_hash": "8e8083c798b2c571a2d43b04cf976d9b77562cb6"
-          }
-        },
-        {
           "client_id": "43835481855-oj8lfsr3q3g32ib876a8bsc02e0im3fb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
