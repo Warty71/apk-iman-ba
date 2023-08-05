@@ -1,4 +1,4 @@
-package com.example.apk_iman_ba
+package ba.iman.IMAN
 
 import io.flutter.embedding.android.FlutterActivity
 

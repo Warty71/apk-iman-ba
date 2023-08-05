@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:43835481855:android:a4e34a37cfdda53a4db6ca",
         "android_client_info": {
-          "package_name": "com.example.apk_iman_ba"
+          "package_name": "ba.iman.IMAN"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "43835481855-oj8lfsr3q3g32ib876a8bsc02e0im3fb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.apk_iman_ba",
+            "package_name": "ba.iman.IMAN",
             "certificate_hash": "addd448f8ccf2b4fd361f1ef940911e8bbec2067"
           }
         },
@@ -43,7 +43,7 @@
               "client_id": "43835481855-3sln3aghq2g905lgm3dgj6cdhjgfaj93.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.apkImanBa"
+                "bundle_id": "ba.iman.IMAN"
               }
             }
           ]
