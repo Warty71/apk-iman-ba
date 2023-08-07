@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _fetchQuestionsByViews();
+    _fetchQuestionsByDate();
   }
 
   Future<void> _fetchQuestionsByTopic(String topic) async {
