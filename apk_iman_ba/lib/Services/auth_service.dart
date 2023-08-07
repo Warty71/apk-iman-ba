@@ -67,6 +67,9 @@ class AuthService {
     }
   }
 
+  // Todo:Sign-In (Apple)
+  signInWithApple(BuildContext context) async {}
+
   static Future<void> signUserIn(
     BuildContext context,
     TextEditingController emailController,

@@ -18,7 +18,8 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isLoginLoading = false;
-  bool isGoogleLoginLoading = false;
+  bool isGoogleLoading = false;
+  bool isAppleLoading = false;
 
   @override
   void dispose() {
@@ -39,11 +40,23 @@ class _LoginPageState extends State<LoginPage> {
 
   void handleGoogleLogin() async {
     setState(() {
-      isGoogleLoginLoading = true;
+      isGoogleLoading = true;
     });
     await AuthService().signInWithGoogle(context);
     setState(() {
-      isGoogleLoginLoading = false;
+      isGoogleLoading = false;
+    });
+  }
+
+  void handleAppleLogin() async {
+    setState(() {
+      isAppleLoading = true;
+    });
+
+    // Todo: Add AuthService.signInWithApple();
+
+    setState(() {
+      isAppleLoading = false;
     });
   }
 
@@ -248,55 +261,77 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
 
-                  // Button - Google Login
+                  // Buttons - Google & Apple Login
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
-                    child: Ink(
-                      width: 325,
-                      height: 64,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: const Color(0xff626164),
-                        ),
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: InkWell(
-                        splashFactory: InkRipple.splashFactory,
-                        borderRadius: BorderRadius.circular(24),
-                        onTap: () {
-                          handleGoogleLogin();
-                        },
-                        child: isGoogleLoginLoading
-                            ? const SpinKitDualRing(
-                                color: Colors.black,
-                                size: 24,
-                              )
-                            : Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.fromLTRB(
-                                        0, 0, 10.0, 0),
-                                    width: 24,
-                                    height: 24,
-                                    child:
-                                        Image.asset("assets/images/google.png"),
-                                  ),
-                                  const Text(
-                                    "Google Login",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Color(0xff24195b),
-                                      fontSize: 18,
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.w500,
-                                      letterSpacing: 0.36,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Ink(
+                          width: 65,
+                          height: 64,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: const Color(0xff626164),
+                            ),
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          child: InkWell(
+                            splashFactory: InkRipple.splashFactory,
+                            borderRadius: BorderRadius.circular(24),
+                            onTap: () {
+                              handleGoogleLogin();
+                            },
+                            child: isGoogleLoading
+                                ? const SpinKitDualRing(
+                                    color: Colors.black,
+                                    size: 24,
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Image.asset(
+                                      "assets/images/google.png",
+                                      height: 24,
+                                      width: 24,
                                     ),
                                   ),
-                                ],
-                              ),
-                      ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Ink(
+                          width: 65,
+                          height: 64,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: const Color(0xff626164),
+                            ),
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          child: InkWell(
+                            splashFactory: InkRipple.splashFactory,
+                            borderRadius: BorderRadius.circular(24),
+                            onTap: () {
+                              handleAppleLogin();
+                            },
+                            child: isAppleLoading
+                                ? const SpinKitDualRing(
+                                    color: Colors.black,
+                                    size: 24,
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Image.asset(
+                                      "assets/images/apple.png",
+                                      height: 24,
+                                      width: 24,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
