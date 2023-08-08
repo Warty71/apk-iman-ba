@@ -1,4 +1,5 @@
 import 'package:apk_iman_ba/Pages/registration_page.dart';
+import 'package:apk_iman_ba/services/alert_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -54,6 +55,7 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     // Todo: Add AuthService.signInWithApple();
+    AlertService.showComingSoon(context);
 
     setState(() {
       isAppleLoading = false;

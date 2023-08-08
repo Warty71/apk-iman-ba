@@ -83,4 +83,14 @@ class AlertService {
           "Molimo Vas da verifikujete svoj email prije prijave.", // Customize the content here
     );
   }
+
+  // Feature coming soon alert window.
+  static void showComingSoon(BuildContext context) {
+    _showPlatformSpecificAlertDialog(
+      context,
+      title: "Uskoro!",
+      content:
+          "InšAllah, ubrzo dolazi ova funkcija.", // Customize the content here
+    );
+  }
 }

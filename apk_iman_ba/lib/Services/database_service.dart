@@ -153,7 +153,7 @@ class DatabaseService {
       final DatabaseEvent event = await dbRef
           .child("Pitanja i Odgovori")
           .orderByChild("datum")
-          .limitToLast(10)
+          .limitToLast(30)
           .once();
       final DataSnapshot snapshot = event.snapshot;
       final dynamic data = snapshot.value;
