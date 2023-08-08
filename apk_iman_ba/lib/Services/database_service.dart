@@ -109,8 +109,11 @@ class DatabaseService {
       filteredQuestions.sort((a, b) => b.date.compareTo(a.date));
 
       // Take the 10 most recent entries for the specified topic
-      final List<Question> recentQuestions =
-          filteredQuestions.take(10).toList();
+      /* final List<Question> recentQuestions =
+          filteredQuestions.take(10).toList(); */
+
+      // * Version 1.0.2 Show all the entries from the category / topic
+      final List<Question> recentQuestions = filteredQuestions.toList();
 
       return recentQuestions;
     } catch (error) {
