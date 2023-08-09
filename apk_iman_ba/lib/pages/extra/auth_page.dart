@@ -25,7 +25,6 @@ class AuthPage extends StatelessWidget {
             .updateUser(FirebaseAuth.instance.currentUser);
       }
     });
-
     if (userState.user == null) {
       return const LoginPage();
     } else {

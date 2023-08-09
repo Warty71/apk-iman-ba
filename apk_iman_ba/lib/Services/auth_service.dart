@@ -4,9 +4,11 @@ import 'package:apk_iman_ba/models/user_model.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
 class AuthService {
 // Sign-In (Google)
@@ -57,6 +59,9 @@ class AuthService {
         }
       }
 
+      Provider.of<UserState>(context, listen: false)
+          .updateUser(FirebaseAuth.instance.currentUser);
+
       // Sign in
       return userCredential;
     } catch (e, stackTrace) {
@@ -67,8 +72,86 @@ class AuthService {
     }
   }
 
-  // Todo:Sign-In (Apple)
-  signInWithApple(BuildContext context) async {}
+  // Sign-In (Apple)
+  Future<User> signInWithApple(BuildContext context,
+      {List<Scope> scopes = const []}) async {
+    // 1. Perform the Sign-In request
+    final result = await TheAppleSignIn.performRequests(
+      [
+        AppleIdRequest(requestedScopes: scopes),
+      ],
+    ); // 2. check the result
+    switch (result.status) {
+      case AuthorizationStatus.authorized:
+        final appleIdCredential = result.credential!;
+        final oAuthProvider = OAuthProvider('apple.com');
+        final credential = oAuthProvider.credential(
+          idToken: String.fromCharCodes(appleIdCredential.identityToken!),
+          accessToken:
+              String.fromCharCodes(appleIdCredential.authorizationCode!),
+        );
+        final userCredential =
+            await FirebaseAuth.instance.signInWithCredential(credential);
+        final firebaseUser = userCredential.user!;
+        if (scopes.contains(Scope.fullName)) {
+          final fullName = appleIdCredential.fullName;
+          if (fullName != null &&
+              fullName.givenName != null &&
+              fullName.familyName != null) {
+            final displayName = '${fullName.givenName} ${fullName.familyName}';
+            await firebaseUser.updateDisplayName(displayName);
+          }
+        }
+
+        // Update the email
+        if (scopes.contains(Scope.email)) {
+          final email = appleIdCredential.email;
+          if (email != null) {
+            await firebaseUser.updateEmail(email);
+          }
+        }
+
+        final DatabaseReference userRef = FirebaseDatabase.instance
+            .ref()
+            .child("Korisnici")
+            .child(firebaseUser.uid);
+        final DatabaseEvent event = await userRef.once();
+        final DataSnapshot snapshot = event.snapshot;
+        final dynamic userData = snapshot.value;
+
+        if (userData == null) {
+          // User's first login, copy data to Realtime Database
+          final newUser = Users.fromJson({
+            'id': firebaseUser.uid,
+            'email': firebaseUser.email,
+            'zadnjePitanje': '2021-01-11T21:47:42.316387',
+            'favoriti': [],
+            'mojaPitanja': [],
+            'naČekanjuPitanja': [],
+          });
+          await userRef.set(newUser.toJson());
+        }
+
+        // Update the user state using the provider
+        // ignore: use_build_context_synchronously
+        Provider.of<UserState>(context, listen: false).updateUser(firebaseUser);
+
+        return firebaseUser;
+      case AuthorizationStatus.error:
+        throw PlatformException(
+          code: 'ERROR_AUTHORIZATION_DENIED',
+          message: result.error.toString(),
+        );
+
+      case AuthorizationStatus.cancelled:
+        throw PlatformException(
+          code: 'ERROR_ABORTED_BY_USER',
+          message: 'Sign in aborted by user',
+        );
+      default:
+        throw UnimplementedError();
+    }
+  }
 
   static Future<void> signUserIn(
     BuildContext context,

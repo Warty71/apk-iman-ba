@@ -1,8 +1,10 @@
+import 'dart:io' show Platform;
+
 import 'package:apk_iman_ba/Pages/registration_page.dart';
-import 'package:apk_iman_ba/services/alert_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
 import '../Services/auth_service.dart';
 import '../components/custom_textfield.dart';
@@ -54,12 +56,14 @@ class _LoginPageState extends State<LoginPage> {
       isAppleLoading = true;
     });
 
-    // Todo: Add AuthService.signInWithApple();
-    AlertService.showComingSoon(context);
-
-    setState(() {
-      isAppleLoading = false;
-    });
+    final user = await AuthService()
+        .signInWithApple(context, scopes: [Scope.email, Scope.fullName]).then(
+      (value) => setState(
+        () {
+          isAppleLoading = false;
+        },
+      ),
+    );
   }
 
   @override
@@ -252,7 +256,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: Text(
-                      "Prijavite se preko Google računa",
+                      "Prijavite se drugim metodama",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
                         color: const Color(0xff626164),
@@ -270,6 +274,41 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        if (Platform.isIOS) // Show for iOS only
+                          Ink(
+                            width: 65,
+                            height: 64,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: const Color(0xff626164),
+                              ),
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            child: InkWell(
+                              splashFactory: InkRipple.splashFactory,
+                              borderRadius: BorderRadius.circular(24),
+                              onTap: () {
+                                handleAppleLogin();
+                              },
+                              child: isAppleLoading
+                                  ? const SpinKitDualRing(
+                                      color: Colors.black,
+                                      size: 24,
+                                    )
+                                  : Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: Image.asset(
+                                        "assets/images/apple.png",
+                                        height: 24,
+                                        width: 24,
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        if (Platform.isIOS)
+                          const SizedBox(
+                            width: 20,
+                          ),
                         Ink(
                           width: 65,
                           height: 64,
@@ -294,39 +333,6 @@ class _LoginPageState extends State<LoginPage> {
                                     padding: const EdgeInsets.all(12.0),
                                     child: Image.asset(
                                       "assets/images/google.png",
-                                      height: 24,
-                                      width: 24,
-                                    ),
-                                  ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Ink(
-                          width: 65,
-                          height: 64,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: const Color(0xff626164),
-                            ),
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          child: InkWell(
-                            splashFactory: InkRipple.splashFactory,
-                            borderRadius: BorderRadius.circular(24),
-                            onTap: () {
-                              handleAppleLogin();
-                            },
-                            child: isAppleLoading
-                                ? const SpinKitDualRing(
-                                    color: Colors.black,
-                                    size: 24,
-                                  )
-                                : Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Image.asset(
-                                      "assets/images/apple.png",
                                       height: 24,
                                       width: 24,
                                     ),
