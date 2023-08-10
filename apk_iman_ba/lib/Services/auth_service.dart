@@ -59,6 +59,7 @@ class AuthService {
         }
       }
 
+      // ignore: use_build_context_synchronously
       Provider.of<UserState>(context, listen: false)
           .updateUser(FirebaseAuth.instance.currentUser);
 
