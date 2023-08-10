@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>43835481855-3sln3aghq2g905lgm3dgj6cdhjgfaj93.apps.googleusercontent.com</string>
+	<string>43835481855-35lrjisd0buk9lj3o15872r2ea903gap.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.43835481855-3sln3aghq2g905lgm3dgj6cdhjgfaj93</string>
+	<string>com.googleusercontent.apps.43835481855-35lrjisd0buk9lj3o15872r2ea903gap</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>43835481855-oj8lfsr3q3g32ib876a8bsc02e0im3fb.apps.googleusercontent.com</string>
+	<string>43835481855-f6957qd6pbcrhe57gfrcb8f1u78936si.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAbgFn5I_HTbLHU7NbdDHMA-dvWO5D8Os8</string>
 	<key>GCM_SENDER_ID</key>
@@ -15,23 +15,23 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.apkImanBa</string>
+	<string>ba.iman.IMAN</string>
 	<key>PROJECT_ID</key>
 	<string>iman-ba</string>
 	<key>STORAGE_BUCKET</key>
 	<string>iman-ba.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:43835481855:ios:41c3a0aac9bd97604db6ca</string>
+	<string>1:43835481855:ios:5e01d84018bdd2cc4db6ca</string>
 	<key>DATABASE_URL</key>
 	<string>https://iman-ba-default-rtdb.europe-west1.firebasedatabase.app</string>
 </dict>
