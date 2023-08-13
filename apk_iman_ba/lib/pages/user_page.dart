@@ -77,7 +77,7 @@ class _UserPageState extends State<UserPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: Text(
-                          "Moj Račun",
+                          "Moj profil",
                           style: GoogleFonts.poppins(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
@@ -107,10 +107,11 @@ class _UserPageState extends State<UserPage> {
                     Container(
                       width: double.maxFinite,
                       decoration: ShapeDecoration(
+                        // color: Colors.grey.shade100,
                         shape: RoundedRectangleBorder(
-                          side: const BorderSide(
+                          side: BorderSide(
                             width: 1.5,
-                            color: Color(0xFFEFF2F8),
+                            color: Colors.grey.shade200,
                           ),
                           borderRadius: BorderRadius.circular(16),
                         ),
@@ -123,7 +124,8 @@ class _UserPageState extends State<UserPage> {
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             letterSpacing: 0.14,
-                            color: const Color(0xFF201D22),
+                            color:
+                                Colors.grey.shade500, //const Color(0xFF201D22),
                           ),
                         ),
                       ),
@@ -188,7 +190,7 @@ class _UserPageState extends State<UserPage> {
                                   padding: const EdgeInsets.only(
                                       left: 10.0, right: 2.0),
                                   child: Text(
-                                    "Moja Pitanja",
+                                    "Moja pitanja",
                                     style: GoogleFonts.poppins(
                                       fontSize: 14,
                                       letterSpacing: 0.28,
@@ -248,7 +250,7 @@ class _UserPageState extends State<UserPage> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10.0),
                                   child: Text(
-                                    "Pitanja na Čekanju",
+                                    "Pitanja na čekanju",
                                     style: GoogleFonts.poppins(
                                       fontSize: 14,
                                       letterSpacing: 0.28,
@@ -398,7 +400,7 @@ class _UserPageState extends State<UserPage> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10.0),
                                     child: Text(
-                                      "Uslovi Korištenja",
+                                      "Uslovi korištenja",
                                       style: GoogleFonts.poppins(
                                         fontSize: 14,
                                         letterSpacing: 0.28,
