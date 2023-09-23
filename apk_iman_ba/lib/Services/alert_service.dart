@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AlertService {
   static void showSnackbar(
@@ -10,9 +9,6 @@ class AlertService {
       SnackBar(
         content: Text(
           message,
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-          ),
         ),
         duration: const Duration(seconds: 3),
       ),
@@ -32,6 +28,14 @@ class AlertService {
     showSnackbar(
       context,
       message: "Šifra koju ste unijeli nije tačna.",
+    );
+  }
+
+  // On Sign-In, if there are too many attempts.
+  static void showTooManyAttempts(BuildContext context) {
+    showSnackbar(
+      context,
+      message: "Previše pokušaja. Molimo pokušajte malo kasnije.",
     );
   }
 

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:apk_iman_ba/Services/alert_service.dart';
 import 'package:apk_iman_ba/State%20Management/user_state.dart';
 import 'package:apk_iman_ba/models/user_model.dart';
@@ -33,7 +35,6 @@ class AuthService {
         final prefs = await SharedPreferences.getInstance();
         prefs.setString('user_id', loggedInUser.uid);
         // Update the user state using the provider
-        // ignore: use_build_context_synchronously
         Provider.of<UserState>(context, listen: false).updateUser(loggedInUser);
 
         // Check if it's the user's first login
@@ -59,7 +60,6 @@ class AuthService {
         }
       }
 
-      // ignore: use_build_context_synchronously
       Provider.of<UserState>(context, listen: false)
           .updateUser(FirebaseAuth.instance.currentUser);
 
@@ -134,7 +134,6 @@ class AuthService {
         }
 
         // Update the user state using the provider
-        // ignore: use_build_context_synchronously
         Provider.of<UserState>(context, listen: false).updateUser(firebaseUser);
 
         return firebaseUser;
@@ -172,7 +171,6 @@ class AuthService {
         if (!loggedInUser.emailVerified) {
           // If the email is not verified, display an error message and prevent login.
           await FirebaseAuth.instance.signOut();
-          // ignore: use_build_context_synchronously
           showDialog(
             context: context,
             builder: (context) {
@@ -219,16 +217,20 @@ class AuthService {
           }
 
           // Update the user state using the provider
-          // ignore: use_build_context_synchronously
           Provider.of<UserState>(context, listen: false)
               .updateUser(loggedInUser);
         }
       }
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        AlertService.showWrongEmailMessage(context);
-      } else if (e.code == 'wrong-password') {
-        AlertService.showWrongPasswordMessage(context);
+      switch (e.code) {
+        case "user-not-found":
+          AlertService.showWrongEmailMessage(context);
+          break;
+        case "wrong-password":
+          AlertService.showWrongPasswordMessage(context);
+          break;
+        case "too-many-requests":
+          AlertService.showTooManyAttempts(context);
       }
     }
   }
@@ -260,7 +262,6 @@ class AuthService {
         // Send email verification
         await userCredential.user?.sendEmailVerification();
 
-        // ignore: use_build_context_synchronously
         AlertService.showEmailVerifMessageSuccess(context);
       } on Exception catch (e) {
         Navigator.pop(context);
