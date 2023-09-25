@@ -288,9 +288,22 @@ class DatabaseService {
 
       final List<Question> personalQuestions = [];
 
+      // Check public questions first
       for (String questionId in personalQuestionIds) {
         final DatabaseEvent event =
             await dbRef.child("Pitanja i Odgovori").child(questionId).once();
+        final DataSnapshot snapshot = event.snapshot;
+        final dynamic questionData = snapshot.value;
+        if (questionData != null) {
+          final Question question = Question.fromJson(questionData);
+          personalQuestions.add(question);
+        }
+      }
+
+      // Check private questions second
+      for (String questionId in personalQuestionIds) {
+        final DatabaseEvent event =
+            await dbRef.child("Privatni Odgovori").child(questionId).once();
         final DataSnapshot snapshot = event.snapshot;
         final dynamic questionData = snapshot.value;
         if (questionData != null) {
