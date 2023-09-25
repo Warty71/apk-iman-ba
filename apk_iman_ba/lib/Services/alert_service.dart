@@ -54,4 +54,34 @@ class AlertService {
       message: "InšAllah, ubrzo dolazi ova funkcija.",
     );
   }
+
+  // ! Registration Page Alerts
+
+  static void registrationPasswordsWrong(BuildContext context) {
+    showSnackbar(
+      context,
+      message: "Šifre nisu iste.",
+    );
+  }
+
+  static void registrationMailMissing(BuildContext context) {
+    showSnackbar(
+      context,
+      message: "Morate unijeti e-mail.",
+    );
+  }
+
+  static void registrationMailInvalid(BuildContext context) {
+    showSnackbar(
+      context,
+      message: "Format e-maila nije validan.",
+    );
+  }
+
+  static void registrationPasswordsWeak(BuildContext context) {
+    showSnackbar(
+      context,
+      message: "Šifra mora imati minimalno 6 karaktera.",
+    );
+  }
 }

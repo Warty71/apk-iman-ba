@@ -263,45 +263,23 @@ class AuthService {
         await userCredential.user?.sendEmailVerification();
 
         AlertService.showEmailVerifMessageSuccess(context);
-      } on Exception catch (e) {
+      } on FirebaseAuthException catch (e) {
+        switch (e.code) {
+          case "weak-password":
+            AlertService.registrationPasswordsWeak(context);
+            break;
+          case "missing-email":
+            AlertService.registrationMailMissing(context);
+            break;
+          case "invalid-email":
+            AlertService.registrationMailInvalid(context);
+            break;
+        }
         Navigator.pop(context);
-        // Handle the sign-up error (e.g., display an error message)
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text("Greška prilikom registracije"),
-              content: Text(e.toString()),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Zatvori"),
-                ),
-              ],
-            );
-          },
-        );
       }
     } else {
+      AlertService.registrationPasswordsWrong(context);
       Navigator.pop(context);
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text("Sifre nisu iste."),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text("Zatvori"),
-              ),
-            ],
-          );
-        },
-      );
     }
   }
 }
