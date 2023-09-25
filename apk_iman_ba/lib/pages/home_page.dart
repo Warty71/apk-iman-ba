@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 List<String> topics = [
   "🆕Novo",
-  "🔥Popularno",
+  //"🔥Popularno",
   "📖Kur'an",
   "🧎Namaz",
   "🍽️Post",
@@ -57,19 +57,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future<void> _fetchQuestionsByViews() async {
-    setState(() {
-      isLoading = true; // Show shimmer while loading
-    });
-
-    final List<Question> questions = await _database.filterByViews();
-
-    setState(() {
-      questionList = questions;
-      isLoading = false; // Hide shimmer when data is loaded
-    });
-  }
-
   Future<void> _fetchQuestionsByDate() async {
     setState(() {
       isLoading = true; // Show shimmer while loading
@@ -87,9 +74,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       currentTopic = Utils().removeEmojis(topic);
     });
-    if (currentTopic == "Popularno") {
-      _fetchQuestionsByViews();
-    } else if (currentTopic == "Novo") {
+    if (currentTopic == "Novo") {
       _fetchQuestionsByDate();
     } else {
       _fetchQuestionsByTopic(currentTopic);

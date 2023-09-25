@@ -121,8 +121,8 @@ class DatabaseService {
     }
   }
 
-// Method used to query the database by views (Integer)
-  Future<List<Question>> filterByViews() async {
+// ! Method used to query the database by views (Integer) / UNUSED
+  /*  Future<List<Question>> filterByViews() async {
     try {
       final DatabaseEvent event = await dbRef
           .child("Pitanja i Odgovori")
@@ -145,7 +145,7 @@ class DatabaseService {
     } catch (error) {
       return [];
     }
-  }
+  } */
 
 // Method used to query the database by date
   Future<List<Question>> filterByDate() async {
