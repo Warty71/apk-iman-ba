@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../State Management/user_state.dart';
+import '../../state_management/user_state.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});

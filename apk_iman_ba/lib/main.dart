@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
-import 'State Management/user_state.dart';
+import 'state_management/user_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
