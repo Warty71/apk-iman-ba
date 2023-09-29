@@ -1,4 +1,4 @@
-import 'package:apk_iman_ba/State%20Management/user_state.dart';
+import 'package:apk_iman_ba/state_management/user_state.dart';
 import 'package:apk_iman_ba/models/question_model.dart';
 import 'package:apk_iman_ba/services/notification_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -121,8 +121,8 @@ class DatabaseService {
     }
   }
 
-// Method used to query the database by views (Integer)
-  Future<List<Question>> filterByViews() async {
+// ! Method used to query the database by views (Integer) / UNUSED
+  /*  Future<List<Question>> filterByViews() async {
     try {
       final DatabaseEvent event = await dbRef
           .child("Pitanja i Odgovori")
@@ -145,7 +145,7 @@ class DatabaseService {
     } catch (error) {
       return [];
     }
-  }
+  } */
 
 // Method used to query the database by date
   Future<List<Question>> filterByDate() async {
@@ -288,9 +288,22 @@ class DatabaseService {
 
       final List<Question> personalQuestions = [];
 
+      // Check public questions first
       for (String questionId in personalQuestionIds) {
         final DatabaseEvent event =
             await dbRef.child("Pitanja i Odgovori").child(questionId).once();
+        final DataSnapshot snapshot = event.snapshot;
+        final dynamic questionData = snapshot.value;
+        if (questionData != null) {
+          final Question question = Question.fromJson(questionData);
+          personalQuestions.add(question);
+        }
+      }
+
+      // Check private questions second
+      for (String questionId in personalQuestionIds) {
+        final DatabaseEvent event =
+            await dbRef.child("Privatni Odgovori").child(questionId).once();
         final DataSnapshot snapshot = event.snapshot;
         final dynamic questionData = snapshot.value;
         if (questionData != null) {
