@@ -1,4 +1,4 @@
-import 'package:apk_iman_ba/pages/extra/auth_page.dart';
+import 'package:apk_iman_ba/src/features/authentication/presentation/pages/auth_page.dart';
 import 'package:apk_iman_ba/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

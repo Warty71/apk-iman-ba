@@ -1,4 +1,4 @@
-import 'package:apk_iman_ba/pages/Extra/auth_page.dart';
+import 'package:apk_iman_ba/src/features/authentication/presentation/pages/auth_page.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingPage extends StatelessWidget {

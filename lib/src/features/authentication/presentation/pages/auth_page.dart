@@ -1,11 +1,11 @@
-import 'package:apk_iman_ba/pages/login_page.dart';
 import 'package:apk_iman_ba/components/custom_bnb.dart';
+import 'package:apk_iman_ba/src/features/authentication/presentation/pages/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../state_management/user_state.dart';
+import '../../../../../state_management/user_state.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
