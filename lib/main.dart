@@ -1,7 +1,6 @@
 import 'package:apk_iman_ba/pages/onboarding_page.dart';
 import 'package:apk_iman_ba/firebase_options.dart';
 import 'package:apk_iman_ba/services/notification_service.dart';
-import 'package:apk_iman_ba/utility/utils.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -41,25 +40,20 @@ void main() async {
           create: (_) => UserState(),
         ),
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key) {
-    Utils().getNumberOfAnswers().then((numberOfAnswers) {
-      print("Pitanja i Odgovori: $numberOfAnswers");
-    }).catchError((error) {
-      print("Error getting number of answers: $error");
-    });
-  }
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: OnboardingPage(),
+      theme: ThemeData(useMaterial3: false),
+      home: const OnboardingPage(),
     );
   }
 }
