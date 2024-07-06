@@ -1,4 +1,4 @@
-import 'package:apk_iman_ba/pages/onboarding_page.dart';
+import 'package:apk_iman_ba/src/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:apk_iman_ba/firebase_options.dart';
 import 'package:apk_iman_ba/services/notification_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
