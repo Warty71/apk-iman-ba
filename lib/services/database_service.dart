@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_print
 
 import 'package:apk_iman_ba/services/alert_service.dart';
+import 'package:apk_iman_ba/src/features/questions/domain/models/question_model.dart';
 import 'package:apk_iman_ba/state_management/user_state.dart';
-import 'package:apk_iman_ba/models/question_model.dart';
 import 'package:apk_iman_ba/services/notification_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';

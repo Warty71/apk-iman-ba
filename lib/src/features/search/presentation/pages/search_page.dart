@@ -1,5 +1,5 @@
 import 'package:apk_iman_ba/components/custom_shimmer.dart';
-import 'package:apk_iman_ba/models/question_model.dart';
+import 'package:apk_iman_ba/src/features/questions/domain/models/question_model.dart';
 import 'package:apk_iman_ba/services/database_service.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
