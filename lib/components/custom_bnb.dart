@@ -1,7 +1,7 @@
-import 'package:apk_iman_ba/Pages/favorites_page.dart';
-import 'package:apk_iman_ba/Pages/home_page.dart';
-import 'package:apk_iman_ba/Pages/search_page.dart';
-import 'package:apk_iman_ba/Pages/user_page.dart';
+import 'package:apk_iman_ba/src/features/favorites/presentation/pages/favorites_page.dart';
+import 'package:apk_iman_ba/src/features/home/presentation/home_page.dart';
+import 'package:apk_iman_ba/src/features/profile/presentation/pages/user_page.dart';
+import 'package:apk_iman_ba/src/features/search/presentation/pages/search_page.dart';
 
 import 'package:flutter/material.dart';
 

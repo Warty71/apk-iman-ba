@@ -1,10 +1,10 @@
-import 'package:apk_iman_ba/Pages/Extra/auth_page.dart';
-import 'package:apk_iman_ba/Pages/my_questions_page.dart';
 import 'package:apk_iman_ba/services/alert_service.dart';
+import 'package:apk_iman_ba/src/features/authentication/presentation/pages/auth_page.dart';
+import 'package:apk_iman_ba/src/features/questions/presentation/pages/my_questions_page.dart';
 import 'package:apk_iman_ba/state_management/user_state.dart';
 import 'package:apk_iman_ba/components/custom_fab.dart';
-import 'package:apk_iman_ba/pages/faq_page.dart';
-import 'package:apk_iman_ba/pages/terms_of_use_page.dart';
+import 'package:apk_iman_ba/src/features/legal/presentation/pages/faq_page.dart';
+import 'package:apk_iman_ba/src/features/legal/presentation/pages/terms_of_use_page.dart';
 import 'package:apk_iman_ba/services/database_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'waiting_list_page.dart';
+import '../../../questions/presentation/pages/waiting_list_page.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({super.key});
