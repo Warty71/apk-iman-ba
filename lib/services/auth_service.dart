@@ -2,7 +2,7 @@
 
 import 'package:apk_iman_ba/Services/alert_service.dart';
 import 'package:apk_iman_ba/src/features/authentication/domain/models/user_model.dart';
-import 'package:apk_iman_ba/state_management/user_state.dart';
+import 'package:apk_iman_ba/src/features/authentication/presentation/provider/user_state.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';

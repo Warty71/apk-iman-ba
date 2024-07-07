@@ -1,7 +1,7 @@
 import 'package:apk_iman_ba/services/alert_service.dart';
 import 'package:apk_iman_ba/src/features/authentication/presentation/pages/auth_page.dart';
+import 'package:apk_iman_ba/src/features/authentication/presentation/provider/user_state.dart';
 import 'package:apk_iman_ba/src/features/questions/presentation/pages/my_questions_page.dart';
-import 'package:apk_iman_ba/state_management/user_state.dart';
 import 'package:apk_iman_ba/components/custom_fab.dart';
 import 'package:apk_iman_ba/src/features/legal/presentation/pages/faq_page.dart';
 import 'package:apk_iman_ba/src/features/legal/presentation/pages/terms_of_use_page.dart';

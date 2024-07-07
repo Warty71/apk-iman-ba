@@ -1,3 +1,4 @@
+import 'package:apk_iman_ba/src/features/authentication/presentation/provider/user_state.dart';
 import 'package:apk_iman_ba/src/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:apk_iman_ba/firebase_options.dart';
 import 'package:apk_iman_ba/services/notification_service.dart';
@@ -6,8 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-
-import 'state_management/user_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
