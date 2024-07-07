@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
 import '../../../../../Services/auth_service.dart';
-import '../../../../../components/custom_textfield.dart';
+import '../../../../shared/common_widgets/custom_textfield.dart';
 import 'forgot_password_page.dart';
 
 class LoginPage extends StatefulWidget {
