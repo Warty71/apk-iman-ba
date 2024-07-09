@@ -1,12 +1,12 @@
 import 'dart:io' show Platform;
 
+import 'package:apk_iman_ba/src/features/authentication/data/repositories/auth_repository.dart';
 import 'package:apk_iman_ba/src/features/authentication/presentation/pages/registration_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
-import '../../../../../Services/auth_service.dart';
 import '../../../../shared/common_widgets/custom_textfield.dart';
 import 'forgot_password_page.dart';
 
