@@ -1,7 +1,7 @@
 import 'package:apk_iman_ba/src/features/authentication/presentation/provider/user_state.dart';
+import 'package:apk_iman_ba/src/features/notifications/data/repositories/notification_repository.dart';
 import 'package:apk_iman_ba/src/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:apk_iman_ba/firebase_options.dart';
-import 'package:apk_iman_ba/services/notification_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +14,11 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  await NotificationService().initialize();
+  await NotificationRepository().initialize();
 
   // Initialize the notification service and listen for foreground and background notifications
-  NotificationService notificationService = NotificationService();
-  notificationService.handleForegroundNotifications();
+  NotificationRepository notificationRepository = NotificationRepository();
+  notificationRepository.handleForegroundNotifications();
 
   // Check if the app was opened from a terminated state
   RemoteMessage? initialMessage =
