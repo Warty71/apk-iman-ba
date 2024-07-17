@@ -94,9 +94,10 @@ class _CustomFABState extends State<CustomFAB> {
     } else if (_remainingTime == Duration.zero) {
       return FloatingActionButton.extended(
         onPressed: () => _navigateToAskPage(context),
-        label: const Text("Postavi pitanje"),
+        label: const Text("Postavi pitanje", style: TextStyle(color: Colors.white),),
         backgroundColor: const Color(0xff5449d2),
         extendedPadding: const EdgeInsets.all(55),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
       );
     } else {
       return FloatingActionButton.extended(
