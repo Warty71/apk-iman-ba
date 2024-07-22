@@ -108,7 +108,7 @@ class AuthService {
         if (scopes.contains(Scope.email)) {
           final email = appleIdCredential.email;
           if (email != null) {
-            await firebaseUser.updateEmail(email);
+            await firebaseUser.verifyBeforeUpdateEmail(email);
           }
         }
 

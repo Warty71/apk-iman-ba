@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:apk_iman_ba/services/alert_service.dart';
 import 'package:apk_iman_ba/src/features/authentication/presentation/provider/user_state.dart';
 import 'package:apk_iman_ba/src/features/notifications/data/repositories/notification_repository.dart';
@@ -55,7 +53,6 @@ class DatabaseService {
       }
     } catch (error) {
       // Handle the error if writing to the database fails
-      print('Failed to ask question: $error');
     }
   }
 
@@ -79,7 +76,7 @@ class DatabaseService {
       }
       return questionList;
     } catch (error) {
-      print('Failed to retrieve questions: $error');
+      //failed to retrieve questions
       return [];
     }
   }
@@ -220,7 +217,7 @@ class DatabaseService {
         }
       }
     } catch (error) {
-      print('Failed to toggle favorite question: $error');
+      //failed to toggle favorite question
     }
   }
 
@@ -369,12 +366,11 @@ class DatabaseService {
   Future<void> deleteUserAccount(BuildContext context) async {
     try {
       await FirebaseAuth.instance.currentUser!.delete();
-    } on FirebaseAuthException catch (e) {
-      print(e);
+    } on FirebaseAuthException {
       // ignore: use_build_context_synchronously
       AlertService.showAccountDeletionSnackBar(context);
-    } on Exception catch (e) {
-      print(e);
+    } on Exception {
+      //ignored
     }
   }
 }

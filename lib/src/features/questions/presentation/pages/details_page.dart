@@ -1,6 +1,5 @@
 import 'package:apk_iman_ba/services/database_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -50,9 +49,7 @@ class _DetailsPageState extends State<DetailsPage> {
         });
       }
     } catch (error) {
-      if (kDebugMode) {
-        print('Failed to check favorite status: $error');
-      }
+      //failed to check favorite status
     }
   }
 

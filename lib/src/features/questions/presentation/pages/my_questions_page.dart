@@ -3,7 +3,6 @@ import 'package:apk_iman_ba/src/shared/common_widgets/custom_fab.dart';
 import 'package:apk_iman_ba/src/shared/common_widgets/custom_listview.dart';
 import 'package:apk_iman_ba/src/features/questions/domain/models/question_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -44,9 +43,7 @@ class _MyQuestionsPageState extends State<MyQuestionsPage> {
         });
       }
     } catch (error) {
-      if (kDebugMode) {
-        print('Failed to fetch personal questions: $error');
-      }
+      //failed to fetch personal questions
     }
   }
 
