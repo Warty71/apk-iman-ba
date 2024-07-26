@@ -24,10 +24,8 @@ class _CustomBNBState extends State<CustomBNB> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
+    return PopScope(
+      canPop: false,
       child: SafeArea(
         top: false,
         child: Scaffold(

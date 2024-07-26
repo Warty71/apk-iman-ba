@@ -19,17 +19,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: emailController.text.trim());
       // ignore: use_build_context_synchronously
-      showDialog(
-        context: context,
-        builder: (context) {
-          return const AlertDialog(
-            content: Text("Reset uspješan. Provjerite svoj e-mail!"),
-          );
-        },
-      );
-    } on FirebaseAuthException catch (e) {
-      // ignore: avoid_print
-      print(e);
+      if (context.mounted) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return const AlertDialog(
+              content: Text("Reset uspješan. Provjerite svoj e-mail!"),
+            );
+          },
+        );
+      }
+    } on FirebaseAuthException {
+      // ignore
     }
   }
 

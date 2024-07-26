@@ -25,7 +25,7 @@ void main() async {
       await FirebaseMessaging.instance.getInitialMessage();
   if (initialMessage != null) {
     if (kDebugMode) {
-      print(
+      debugPrint(
           'Terminated Notification received: ${initialMessage.notification?.body}');
     }
     // You can handle the notification here when the app was opened from a terminated state
