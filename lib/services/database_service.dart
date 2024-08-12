@@ -1,6 +1,6 @@
 import 'package:apk_iman_ba/services/alert_service.dart';
 import 'package:apk_iman_ba/src/features/authentication/presentation/provider/user_state.dart';
-import 'package:apk_iman_ba/src/features/notifications/data/repositories/notification_repository.dart';
+import 'package:apk_iman_ba/src/features/notifications/data/repositories/notification_repository_impl.dart';
 import 'package:apk_iman_ba/src/features/questions/domain/models/question_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -24,7 +24,7 @@ class DatabaseService {
       final dynamic korisnikData = event.snapshot.value;
 
       await korisnickaPitanjaRef.set({
-        'token': await NotificationRepository().getFCMToken(),
+        'token': await NotificationRepositoryImpl().getFCMToken(),
         'pitanje': question,
         'email':
             // ignore: use_build_context_synchronously
