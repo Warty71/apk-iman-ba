@@ -75,7 +75,7 @@ class OnboardingPage extends StatelessWidget {
                       ),
                       child: const Center(
                         child: Text(
-                          "Prijavi se",
+                          "Prijava",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Color(0xff24195b),

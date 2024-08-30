@@ -234,7 +234,7 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Colors.white,
                               )
                             : const Text(
-                                "Prijavi se",
+                                "Prijava",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Colors.white,
