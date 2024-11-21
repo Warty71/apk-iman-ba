@@ -1,5 +1,6 @@
 import 'package:apk_iman_ba/services/database_service.dart';
 import 'package:apk_iman_ba/src/features/authentication/presentation/provider/user_state.dart';
+import 'package:apk_iman_ba/src/features/favorites/presentation/cubit/favorites_cubit.dart';
 import 'package:apk_iman_ba/src/features/navigation/presentation/cubit/navigation_cubit.dart';
 import 'package:apk_iman_ba/src/features/notifications/data/repositories/notification_repository.dart';
 import 'package:apk_iman_ba/src/features/onboarding/presentation/pages/onboarding_page.dart';
@@ -50,6 +51,11 @@ void main() async {
         ),
         BlocProvider<QuestionsCubit>(
           create: (_) => QuestionsCubit(
+            database: DatabaseService(),
+          ),
+        ),
+        BlocProvider<FavoritesCubit>(
+          create: (_) => FavoritesCubit(
             database: DatabaseService(),
           ),
         ),
