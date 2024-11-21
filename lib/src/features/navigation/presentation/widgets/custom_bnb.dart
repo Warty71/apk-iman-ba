@@ -1,5 +1,5 @@
 import 'package:apk_iman_ba/src/features/favorites/presentation/pages/favorites_page.dart';
-import 'package:apk_iman_ba/src/features/home/presentation/home_page.dart';
+import 'package:apk_iman_ba/src/features/home/presentation/screens/home_page.dart';
 import 'package:apk_iman_ba/src/features/navigation/presentation/cubit/navigation_cubit.dart';
 import 'package:apk_iman_ba/src/features/navigation/presentation/cubit/navigation_state.dart';
 import 'package:apk_iman_ba/src/features/profile/presentation/pages/user_page.dart';
