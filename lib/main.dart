@@ -1,4 +1,5 @@
 import 'package:apk_iman_ba/src/features/authentication/presentation/provider/user_state.dart';
+import 'package:apk_iman_ba/src/features/navigation/presentation/cubit/navigation_cubit.dart';
 import 'package:apk_iman_ba/src/features/notifications/data/repositories/notification_repository.dart';
 import 'package:apk_iman_ba/src/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:apk_iman_ba/firebase_options.dart';
@@ -6,6 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -37,6 +39,9 @@ void main() async {
       providers: [
         ChangeNotifierProvider<UserState>(
           create: (_) => UserState(),
+        ),
+        BlocProvider<NavigationCubit>(
+          create: (_) => NavigationCubit(),
         ),
       ],
       child: const MyApp(),

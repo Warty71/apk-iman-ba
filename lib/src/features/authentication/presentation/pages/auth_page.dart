@@ -1,4 +1,4 @@
-import 'package:apk_iman_ba/src/shared/common_widgets/custom_bnb.dart';
+import 'package:apk_iman_ba/src/features/navigation/presentation/widgets/custom_bnb.dart';
 import 'package:apk_iman_ba/src/features/authentication/presentation/pages/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +28,7 @@ class AuthPage extends StatelessWidget {
     if (userState.user == null) {
       return const LoginPage();
     } else {
-      return const CustomBNB();
+      return CustomBNB();
     }
   }
 }
