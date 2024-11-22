@@ -52,11 +52,11 @@ class _HomePageState extends State<HomePage>
           floatingActionButton: const CustomFAB(shouldRebuild: true),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
+          backgroundColor: Colors.white,
           body: SafeArea(
             child: Column(
               children: [
                 _buildTopicTabBar(context),
-                const SizedBox(height: 10),
                 _buildQuestionsList(state),
               ],
             ),
@@ -71,14 +71,15 @@ class _HomePageState extends State<HomePage>
       margin: const EdgeInsets.only(top: 10),
       child: TabBar(
         controller: _tabController,
-        isScrollable: true,
-        splashBorderRadius: BorderRadius.circular(30),
-        labelStyle: _getTabLabelStyle(true),
-        unselectedLabelStyle: _getTabLabelStyle(false),
         dividerColor: Colors.transparent,
-        indicatorSize: TabBarIndicatorSize.tab,
         indicator: _buildTabIndicator(context),
+        indicatorSize: TabBarIndicatorSize.tab,
+        isScrollable: true,
+        labelStyle: _getTabLabelStyle(true),
+        padding: EdgeInsets.zero,
+        splashBorderRadius: BorderRadius.circular(30),
         tabs: _buildTabsList(),
+        unselectedLabelStyle: _getTabLabelStyle(false),
       ),
     );
   }
@@ -101,14 +102,8 @@ class _HomePageState extends State<HomePage>
   List<Widget> _buildTabsList() {
     return Topic.values.map((topic) {
       return Tab(
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 8,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-          ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
           child: Text(topic.label),
         ),
       );
