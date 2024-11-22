@@ -1,12 +1,18 @@
+import 'package:apk_iman_ba/services/database_service.dart';
 import 'package:apk_iman_ba/src/features/authentication/presentation/provider/user_state.dart';
+import 'package:apk_iman_ba/src/features/favorites/presentation/cubit/favorites_cubit.dart';
+import 'package:apk_iman_ba/src/features/navigation/presentation/cubit/navigation_cubit.dart';
 import 'package:apk_iman_ba/src/features/notifications/data/repositories/notification_repository.dart';
 import 'package:apk_iman_ba/src/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:apk_iman_ba/firebase_options.dart';
+import 'package:apk_iman_ba/src/features/questions/cubit/questions_cubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:apk_iman_ba/src/features/search/presentation/cubit/search_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,8 +41,29 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        RepositoryProvider<DatabaseService>(
+          create: (_) => DatabaseService(),
+        ),
         ChangeNotifierProvider<UserState>(
           create: (_) => UserState(),
+        ),
+        BlocProvider<NavigationCubit>(
+          create: (_) => NavigationCubit(),
+        ),
+        BlocProvider<QuestionsCubit>(
+          create: (_) => QuestionsCubit(
+            database: DatabaseService(),
+          ),
+        ),
+        BlocProvider<FavoritesCubit>(
+          create: (_) => FavoritesCubit(
+            database: DatabaseService(),
+          ),
+        ),
+        BlocProvider<SearchCubit>(
+          create: (context) => SearchCubit(
+            database: context.read<DatabaseService>(),
+          ),
         ),
       ],
       child: const MyApp(),

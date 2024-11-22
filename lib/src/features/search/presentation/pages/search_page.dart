@@ -1,11 +1,10 @@
 import 'package:apk_iman_ba/src/shared/common_widgets/custom_shimmer.dart';
-import 'package:apk_iman_ba/src/features/questions/domain/models/question_model.dart';
-import 'package:apk_iman_ba/services/database_service.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:apk_iman_ba/src/features/questions/presentation/pages/details_page.dart';
+import 'package:apk_iman_ba/src/features/search/presentation/cubit/search_cubit.dart';
+import 'package:apk_iman_ba/src/features/search/presentation/cubit/search_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../../questions/presentation/pages/details_page.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -17,13 +16,6 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController searchController = TextEditingController();
   ValueNotifier<bool> isTextFieldEmptyNotifier = ValueNotifier<bool>(true);
-  bool isTextFieldEmpty = true;
-  bool isLoading = true;
-
-  DatabaseReference dbRef = FirebaseDatabase.instance.ref().child("Baza");
-  final DatabaseService _database = DatabaseService();
-
-  List<Question> questionList = [];
 
   @override
   void dispose() {
@@ -33,10 +25,9 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void clearTextFormField() {
-    setState(() {
-      searchController.clear();
-      isTextFieldEmptyNotifier.value = true;
-    });
+    searchController.clear();
+    isTextFieldEmptyNotifier.value = true;
+    context.read<SearchCubit>().clearSearch();
   }
 
   @override
@@ -59,17 +50,9 @@ class _SearchPageState extends State<SearchPage> {
                       Expanded(
                         child: TextFormField(
                           controller: searchController,
-                          onChanged: (value) async {
-                            setState(() {
-                              isLoading = true;
-                            });
+                          onChanged: (value) {
                             isTextFieldEmptyNotifier.value = value.isEmpty;
-                            final result =
-                                await _database.filterBySearch(value);
-                            setState(() {
-                              questionList = result;
-                              isLoading = false;
-                            });
+                            context.read<SearchCubit>().searchQuestions(value);
                           },
                           onFieldSubmitted: (value) {
                             if (value.isNotEmpty) {
@@ -105,13 +88,9 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: 8.0,
-                        ),
+                        padding: const EdgeInsets.only(left: 8.0),
                         child: TextButton(
-                          onPressed: () {
-                            clearTextFormField();
-                          },
+                          onPressed: clearTextFormField,
                           style: TextButton.styleFrom(),
                           child: Container(
                             padding: const EdgeInsets.all(10),
@@ -134,110 +113,114 @@ class _SearchPageState extends State<SearchPage> {
               ValueListenableBuilder<bool>(
                 valueListenable: isTextFieldEmptyNotifier,
                 builder: (context, isTextFieldEmpty, _) {
-                  if (!isTextFieldEmpty && !isLoading) {
-                    return Expanded(
-                      child: ListView.builder(
-                        itemCount: questionList.length,
-                        itemBuilder: (context, index) {
-                          final question = questionList[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 5.0,
-                              horizontal: 8,
-                            ),
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (_) => DetailsPage(
-                                      id: question.id,
-                                      answer: question.answer,
-                                      answeredBy: question.answeredBy,
-                                      title: question.question,
-                                      views: question.views,
-                                    ),
-                                  ),
-                                );
-                              },
-                              splashColor: Colors.blue.withOpacity(0.5),
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
+                  return BlocBuilder<SearchCubit, SearchState>(
+                    builder: (context, state) {
+                      if (!isTextFieldEmpty && !state.isLoading) {
+                        return Expanded(
+                          child: ListView.builder(
+                            itemCount: state.searchResults.length,
+                            itemBuilder: (context, index) {
+                              final question = state.searchResults[index];
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 5.0,
+                                  horizontal: 8,
                                 ),
-                                child: ListTile(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  title: Container(
-                                    color: Colors.transparent,
-                                    margin:
-                                        const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                    child: Text(
-                                      question.question,
-                                      style: GoogleFonts.poppins(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 16,
-                                        letterSpacing: 0.32,
-                                        color: const Color(0xff201d22),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (_) => DetailsPage(
+                                          id: question.id,
+                                          answer: question.answer,
+                                          answeredBy: question.answeredBy,
+                                          title: question.question,
+                                          views: question.views,
+                                        ),
                                       ),
-                                      maxLines: 3,
-                                      overflow: TextOverflow.ellipsis,
+                                    );
+                                  },
+                                  splashColor: Colors.blue.withOpacity(0.5),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: ListTile(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      title: Container(
+                                        color: Colors.transparent,
+                                        margin: const EdgeInsets.fromLTRB(
+                                            0, 5, 0, 5),
+                                        child: Text(
+                                          question.question,
+                                          style: GoogleFonts.poppins(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                            letterSpacing: 0.32,
+                                            color: const Color(0xff201d22),
+                                          ),
+                                          maxLines: 3,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        question.answer,
+                                        maxLines: 5,
+                                        overflow: TextOverflow.fade,
+                                        style: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 14,
+                                          letterSpacing: 0.28,
+                                          color: const Color(0xff626164),
+                                        ),
+                                      ),
+                                      tileColor: const Color(0xffeff2f8),
                                     ),
                                   ),
-                                  subtitle: Text(
-                                    question.answer,
-                                    maxLines: 5,
-                                    overflow: TextOverflow.fade,
-                                    style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14,
-                                      letterSpacing: 0.28,
-                                      color: const Color(0xff626164),
-                                    ),
-                                  ),
-                                  tileColor: const Color(0xffeff2f8),
                                 ),
+                              );
+                            },
+                          ),
+                        );
+                      } else if (state.isLoading && !isTextFieldEmpty) {
+                        return Expanded(
+                          child: ListView.builder(
+                            itemCount: 10,
+                            itemBuilder: (context, index) {
+                              return const CustomShimmer();
+                            },
+                          ),
+                        );
+                      } else {
+                        return Expanded(
+                          child: SingleChildScrollView(
+                            child: Container(
+                              margin: const EdgeInsets.all(25.0),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Tražite neko od već postavljenih pitanja?",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500,
+                                      color: const Color(0xFFA7A7AD),
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  Image.asset(
+                                    "assets/images/compass.png",
+                                  ),
+                                ],
                               ),
                             ),
-                          );
-                        },
-                      ),
-                    );
-                  } else if (isLoading && !isTextFieldEmpty) {
-                    return Expanded(
-                      child: ListView.builder(
-                        itemCount: 10,
-                        itemBuilder: (context, index) {
-                          return const CustomShimmer();
-                        },
-                      ),
-                    );
-                  } else {
-                    return Expanded(
-                      child: SingleChildScrollView(
-                        child: Container(
-                          margin: const EdgeInsets.all(25.0),
-                          child: Column(
-                            children: [
-                              Text(
-                                "Tražite neko od već postavljenih pitanja?",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                  color: const Color(0xFFA7A7AD),
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              Image.asset(
-                                "assets/images/compass.png",
-                              ),
-                            ],
                           ),
-                        ),
-                      ),
-                    );
-                  }
+                        );
+                      }
+                    },
+                  );
                 },
               ),
             ],
