@@ -7,8 +7,27 @@ import 'package:apk_iman_ba/src/shared/enums/topics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +52,11 @@ class HomePage extends StatelessWidget {
                           topic: Topic.values[index].label,
                           isSelected: index == state.selectedTopicIndex,
                           onTap: () {
-                            context.read<QuestionsCubit>().updateCurrentTopic(
-                                  Topic.values[index],
-                                  index,
-                                );
+                            _pageController.animateToPage(
+                              index,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
                           },
                         );
                       },
@@ -44,12 +64,28 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: CustomListView(
-                    loadingFlag: state.isLoading,
-                    itemCount: state.questions.length,
-                    questionList: state.questions,
-                    useSubtitle: true,
-                    detailViewSelector: 1,
+                  child: PageView.builder(
+                    controller: _pageController,
+                    onPageChanged: (index) {
+                      context.read<QuestionsCubit>().updateCurrentTopic(
+                            Topic.values[index],
+                            index,
+                          );
+                    },
+                    itemCount: Topic.values.length,
+                    itemBuilder: (context, index) {
+                      final currentTopic = Topic.values[index];
+                      final questions =
+                          state.questionsByTopic[currentTopic] ?? [];
+
+                      return CustomListView(
+                        loadingFlag: state.isLoading,
+                        itemCount: questions.length,
+                        questionList: questions,
+                        useSubtitle: true,
+                        detailViewSelector: 1,
+                      );
+                    },
                   ),
                 ),
               ],
