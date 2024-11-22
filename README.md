@@ -31,17 +31,6 @@ IMAN is a Flutter-based mobile application that serves as a platform for users t
 - Android SDK 23+ for Android deployment
 - Firebase project setup
 
-## Project Structure
-
-lib/
-├── src/
-│ ├── features/
-│ │ ├── authentication/
-│ │ ├── home/
-│ │ ├── questions/
-│ │ └── profile/
-│ └── shared/
-
 ## Architecture
 
 The app follows a feature-first architecture with BLoC pattern for state management:
