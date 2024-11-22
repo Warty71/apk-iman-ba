@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$QuestionsState {
   List<Question> get questions => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
-  String get currentTopic => throw _privateConstructorUsedError;
+  Topic get currentTopic => throw _privateConstructorUsedError;
   int get selectedTopicIndex => throw _privateConstructorUsedError;
 
   /// Create a copy of QuestionsState
@@ -37,7 +37,7 @@ abstract class $QuestionsStateCopyWith<$Res> {
   $Res call(
       {List<Question> questions,
       bool isLoading,
-      String currentTopic,
+      Topic currentTopic,
       int selectedTopicIndex});
 }
 
@@ -73,7 +73,7 @@ class _$QuestionsStateCopyWithImpl<$Res, $Val extends QuestionsState>
       currentTopic: null == currentTopic
           ? _value.currentTopic
           : currentTopic // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Topic,
       selectedTopicIndex: null == selectedTopicIndex
           ? _value.selectedTopicIndex
           : selectedTopicIndex // ignore: cast_nullable_to_non_nullable
@@ -93,7 +93,7 @@ abstract class _$$QuestionsStateImplCopyWith<$Res>
   $Res call(
       {List<Question> questions,
       bool isLoading,
-      String currentTopic,
+      Topic currentTopic,
       int selectedTopicIndex});
 }
 
@@ -127,7 +127,7 @@ class __$$QuestionsStateImplCopyWithImpl<$Res>
       currentTopic: null == currentTopic
           ? _value.currentTopic
           : currentTopic // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Topic,
       selectedTopicIndex: null == selectedTopicIndex
           ? _value.selectedTopicIndex
           : selectedTopicIndex // ignore: cast_nullable_to_non_nullable
@@ -142,7 +142,7 @@ class _$QuestionsStateImpl implements _QuestionsState {
   const _$QuestionsStateImpl(
       {final List<Question> questions = const [],
       this.isLoading = true,
-      this.currentTopic = "Novo",
+      this.currentTopic = Topic.novo,
       this.selectedTopicIndex = 0})
       : _questions = questions;
 
@@ -160,7 +160,7 @@ class _$QuestionsStateImpl implements _QuestionsState {
   final bool isLoading;
   @override
   @JsonKey()
-  final String currentTopic;
+  final Topic currentTopic;
   @override
   @JsonKey()
   final int selectedTopicIndex;
@@ -207,7 +207,7 @@ abstract class _QuestionsState implements QuestionsState {
   const factory _QuestionsState(
       {final List<Question> questions,
       final bool isLoading,
-      final String currentTopic,
+      final Topic currentTopic,
       final int selectedTopicIndex}) = _$QuestionsStateImpl;
 
   @override
@@ -215,7 +215,7 @@ abstract class _QuestionsState implements QuestionsState {
   @override
   bool get isLoading;
   @override
-  String get currentTopic;
+  Topic get currentTopic;
   @override
   int get selectedTopicIndex;
 

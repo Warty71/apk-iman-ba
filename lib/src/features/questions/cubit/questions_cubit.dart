@@ -1,6 +1,6 @@
 import 'package:apk_iman_ba/services/database_service.dart';
 import 'package:apk_iman_ba/src/features/questions/cubit/questions_state.dart';
-import 'package:apk_iman_ba/src/shared/utils.dart';
+import 'package:apk_iman_ba/src/shared/enums/topics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class QuestionsCubit extends Cubit<QuestionsState> {
@@ -34,17 +34,18 @@ class QuestionsCubit extends Cubit<QuestionsState> {
     ));
   }
 
-  void updateCurrentTopic(String topic, int index) {
-    final cleanTopic = Utils().removeEmojis(topic);
-    emit(state.copyWith(
-      currentTopic: cleanTopic,
-      selectedTopicIndex: index,
-    ));
+  void updateCurrentTopic(Topic topic, int index) {
+    emit(
+      state.copyWith(
+        currentTopic: topic,
+        selectedTopicIndex: index,
+      ),
+    );
 
-    if (cleanTopic == "Novo") {
+    if (topic == Topic.novo) {
       fetchQuestionsByDate();
     } else {
-      fetchQuestionsByTopic(cleanTopic);
+      fetchQuestionsByTopic(topic.withoutEmoji);
     }
   }
 

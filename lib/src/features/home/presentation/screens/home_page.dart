@@ -3,25 +3,9 @@ import 'package:apk_iman_ba/src/features/questions/cubit/questions_cubit.dart';
 import 'package:apk_iman_ba/src/features/questions/cubit/questions_state.dart';
 import 'package:apk_iman_ba/src/shared/common_widgets/custom_fab.dart';
 import 'package:apk_iman_ba/src/shared/common_widgets/custom_listview.dart';
+import 'package:apk_iman_ba/src/shared/enums/topics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-List<String> topics = [
-  "🆕Novo",
-  //"🔥Popularno",
-  "📖Kur'an",
-  "🧎Namaz",
-  "🍽️Post",
-  "💰Zekat",
-  "🕋Hadž i Umra",
-  "💍Bračno Pravo",
-  "🏚Nasljedno Pravo",
-  "📖Liječenje Kur'anom",
-  "💶Trgovina",
-  "🤲Islamsko Vjerovanje",
-  "📜Hadis",
-  "Ostalo",
-];
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -43,14 +27,14 @@ class HomePage extends StatelessWidget {
                     height: 40,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: topics.length,
+                      itemCount: Topic.values.length,
                       itemBuilder: (context, index) {
                         return TopicItem(
-                          topic: topics[index],
+                          topic: Topic.values[index].label,
                           isSelected: index == state.selectedTopicIndex,
                           onTap: () {
                             context.read<QuestionsCubit>().updateCurrentTopic(
-                                  topics[index],
+                                  Topic.values[index],
                                   index,
                                 );
                           },
