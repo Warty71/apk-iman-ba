@@ -1,4 +1,3 @@
-import 'package:apk_iman_ba/src/features/home/presentation/widgets/topic_item.dart';
 import 'package:apk_iman_ba/src/features/questions/cubit/questions_cubit.dart';
 import 'package:apk_iman_ba/src/features/questions/cubit/questions_state.dart';
 import 'package:apk_iman_ba/src/shared/common_widgets/custom_fab.dart';
@@ -6,6 +5,7 @@ import 'package:apk_iman_ba/src/shared/common_widgets/custom_listview.dart';
 import 'package:apk_iman_ba/src/shared/enums/topics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,18 +14,33 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  late PageController _pageController;
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  late final TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController();
+    _initializeTabController();
+  }
+
+  void _initializeTabController() {
+    _tabController = TabController(length: Topic.values.length, vsync: this);
+    _tabController.addListener(_handleTabChange);
+  }
+
+  void _handleTabChange() {
+    if (!_tabController.indexIsChanging) {
+      context.read<QuestionsCubit>().updateCurrentTopic(
+            Topic.values[_tabController.index],
+            _tabController.index,
+          );
+    }
   }
 
   @override
   void dispose() {
-    _pageController.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 
@@ -40,59 +55,81 @@ class _HomePageState extends State<HomePage> {
           body: SafeArea(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                  child: SizedBox(
-                    height: 40,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: Topic.values.length,
-                      itemBuilder: (context, index) {
-                        return TopicItem(
-                          topic: Topic.values[index].label,
-                          isSelected: index == state.selectedTopicIndex,
-                          onTap: () {
-                            _pageController.animateToPage(
-                              index,
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeInOut,
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: PageView.builder(
-                    controller: _pageController,
-                    onPageChanged: (index) {
-                      context.read<QuestionsCubit>().updateCurrentTopic(
-                            Topic.values[index],
-                            index,
-                          );
-                    },
-                    itemCount: Topic.values.length,
-                    itemBuilder: (context, index) {
-                      final currentTopic = Topic.values[index];
-                      final questions =
-                          state.questionsByTopic[currentTopic] ?? [];
-
-                      return CustomListView(
-                        loadingFlag: state.isLoading,
-                        itemCount: questions.length,
-                        questionList: questions,
-                        useSubtitle: true,
-                        detailViewSelector: 1,
-                      );
-                    },
-                  ),
-                ),
+                _buildTopicTabBar(context),
+                const SizedBox(height: 10),
+                _buildQuestionsList(state),
               ],
             ),
           ),
         );
       },
+    );
+  }
+
+  Widget _buildTopicTabBar(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 10),
+      child: TabBar(
+        controller: _tabController,
+        isScrollable: true,
+        splashBorderRadius: BorderRadius.circular(30),
+        labelStyle: _getTabLabelStyle(true),
+        unselectedLabelStyle: _getTabLabelStyle(false),
+        dividerColor: Colors.transparent,
+        indicatorSize: TabBarIndicatorSize.tab,
+        indicator: _buildTabIndicator(context),
+        tabs: _buildTabsList(),
+      ),
+    );
+  }
+
+  TextStyle _getTabLabelStyle(bool isSelected) {
+    return GoogleFonts.poppins(
+      color: isSelected ? Colors.white : Colors.black,
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+    );
+  }
+
+  BoxDecoration _buildTabIndicator(BuildContext context) {
+    return BoxDecoration(
+      borderRadius: BorderRadius.circular(30),
+      color: const Color.fromARGB(255, 31, 12, 71),
+    );
+  }
+
+  List<Widget> _buildTabsList() {
+    return Topic.values.map((topic) {
+      return Tab(
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 8,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Text(topic.label),
+        ),
+      );
+    }).toList();
+  }
+
+  Widget _buildQuestionsList(QuestionsState state) {
+    return Expanded(
+      child: TabBarView(
+        controller: _tabController,
+        children: Topic.values.map((topic) {
+          final questions = state.questionsByTopic[topic] ?? [];
+          return CustomListView(
+            loadingFlag: state.isLoading,
+            itemCount: questions.length,
+            questionList: questions,
+            useSubtitle: true,
+            detailViewSelector: 1,
+          );
+        }).toList(),
+      ),
     );
   }
 }
