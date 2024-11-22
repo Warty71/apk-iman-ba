@@ -47,4 +47,8 @@ class QuestionsCubit extends Cubit<QuestionsState> {
       fetchQuestionsByTopic(cleanTopic);
     }
   }
+
+  Future<void> increaseViewCount(String title, int currentViews) async {
+    await _database.updateViews("pitanje", title, "pregledi", currentViews);
+  }
 }

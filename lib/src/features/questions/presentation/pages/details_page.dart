@@ -1,6 +1,8 @@
 import 'package:apk_iman_ba/services/database_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:apk_iman_ba/src/features/favorites/presentation/cubit/favorites_cubit.dart';
+import 'package:apk_iman_ba/src/features/questions/cubit/questions_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -10,13 +12,14 @@ class DetailsPage extends StatefulWidget {
   final String answeredBy;
   final int views;
 
-  const DetailsPage(
-      {super.key,
-      required this.id,
-      required this.title,
-      required this.answer,
-      required this.answeredBy,
-      required this.views});
+  const DetailsPage({
+    super.key,
+    required this.id,
+    required this.title,
+    required this.answer,
+    required this.answeredBy,
+    required this.views,
+  });
 
   @override
   State<DetailsPage> createState() => _DetailsPageState();
@@ -28,29 +31,17 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   void initState() {
     super.initState();
-    increaseViewCount();
+    context
+        .read<QuestionsCubit>()
+        .increaseViewCount(widget.title, widget.views);
     checkFavoriteStatus();
   }
 
-  void increaseViewCount() async {
-    await DatabaseService()
-        .updateViews("pitanje", widget.title, "pregledi", widget.views);
-  }
-
-  void checkFavoriteStatus() async {
-    try {
-      final User? user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        final bool favoriteStatus =
-            await DatabaseService().checkFavoriteStatus(widget.id);
-
-        setState(() {
-          isFavorite = favoriteStatus;
-        });
-      }
-    } catch (error) {
-      //failed to check favorite status
-    }
+  void checkFavoriteStatus() {
+    final favorites = context.read<FavoritesCubit>().state.favorites;
+    setState(() {
+      isFavorite = favorites.any((question) => question.id == widget.id);
+    });
   }
 
   @override
@@ -184,9 +175,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 25,
-              ),
+              const SizedBox(height: 25),
             ],
           ),
         ),
