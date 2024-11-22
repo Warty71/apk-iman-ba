@@ -35,12 +35,12 @@ IMAN is a Flutter-based mobile application that serves as a platform for users t
 
 lib/
 ├── src/
-│ ├── features/ # Feature-based modules
-│ │ ├── authentication/ # Auth related features
-│ │ ├── home/ # Home screen features
-│ │ ├── questions/ # Question management
-│ │ └── profile/ # User profile features
-│ └── shared/ # Shared utilities and widgets
+│ ├── features/
+│ │ ├── authentication/
+│ │ ├── home/
+│ │ ├── questions/
+│ │ └── profile/
+│ └── shared/
 
 ## Architecture
 
