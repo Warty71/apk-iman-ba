@@ -11,5 +11,6 @@ class QuestionsState with _$QuestionsState {
     @Default(true) bool isLoading,
     @Default(Topic.novo) Topic currentTopic,
     @Default(0) int selectedTopicIndex,
+    @Default({}) Map<Topic, List<Question>> questionsByTopic,
   }) = _QuestionsState;
 }

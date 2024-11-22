@@ -1,5 +1,6 @@
 import 'package:apk_iman_ba/services/database_service.dart';
 import 'package:apk_iman_ba/src/features/questions/cubit/questions_state.dart';
+import 'package:apk_iman_ba/src/features/questions/domain/models/question_model.dart';
 import 'package:apk_iman_ba/src/shared/enums/topics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,27 +10,30 @@ class QuestionsCubit extends Cubit<QuestionsState> {
   QuestionsCubit({required DatabaseService database})
       : _database = database,
         super(const QuestionsState()) {
-    fetchQuestionsByDate();
+    _initializeData();
   }
 
-  Future<void> fetchQuestionsByTopic(String topic) async {
+  Future<void> _initializeData() async {
+    // Show loading state initially
     emit(state.copyWith(isLoading: true));
 
-    final questions = await _database.filterByTopic(topic);
+    // Load all data for each topic
+    final Map<Topic, List<Question>> allData = {};
 
+    // Load "Novo" questions first
+    final newQuestions = await _database.filterByDate();
+    allData[Topic.novo] = newQuestions;
+
+    // Load questions for each topic
+    for (final topic in Topic.values.where((t) => t != Topic.novo)) {
+      final questions = await _database.filterByTopic(topic.withoutEmoji);
+      allData[topic] = questions;
+    }
+
+    // Update state with all data and show initial (Novo) questions
     emit(state.copyWith(
-      questions: questions,
-      isLoading: false,
-    ));
-  }
-
-  Future<void> fetchQuestionsByDate() async {
-    emit(state.copyWith(isLoading: true));
-
-    final questions = await _database.filterByDate();
-
-    emit(state.copyWith(
-      questions: questions,
+      questionsByTopic: allData,
+      questions: allData[Topic.novo] ?? [],
       isLoading: false,
     ));
   }
@@ -39,14 +43,9 @@ class QuestionsCubit extends Cubit<QuestionsState> {
       state.copyWith(
         currentTopic: topic,
         selectedTopicIndex: index,
+        questions: state.questionsByTopic[topic] ?? [],
       ),
     );
-
-    if (topic == Topic.novo) {
-      fetchQuestionsByDate();
-    } else {
-      fetchQuestionsByTopic(topic.withoutEmoji);
-    }
   }
 
   Future<void> increaseViewCount(String title, int currentViews) async {

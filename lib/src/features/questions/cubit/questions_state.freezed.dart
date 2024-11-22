@@ -20,6 +20,8 @@ mixin _$QuestionsState {
   bool get isLoading => throw _privateConstructorUsedError;
   Topic get currentTopic => throw _privateConstructorUsedError;
   int get selectedTopicIndex => throw _privateConstructorUsedError;
+  Map<Topic, List<Question>> get questionsByTopic =>
+      throw _privateConstructorUsedError;
 
   /// Create a copy of QuestionsState
   /// with the given fields replaced by the non-null parameter values.
@@ -38,7 +40,8 @@ abstract class $QuestionsStateCopyWith<$Res> {
       {List<Question> questions,
       bool isLoading,
       Topic currentTopic,
-      int selectedTopicIndex});
+      int selectedTopicIndex,
+      Map<Topic, List<Question>> questionsByTopic});
 }
 
 /// @nodoc
@@ -60,6 +63,7 @@ class _$QuestionsStateCopyWithImpl<$Res, $Val extends QuestionsState>
     Object? isLoading = null,
     Object? currentTopic = null,
     Object? selectedTopicIndex = null,
+    Object? questionsByTopic = null,
   }) {
     return _then(_value.copyWith(
       questions: null == questions
@@ -78,6 +82,10 @@ class _$QuestionsStateCopyWithImpl<$Res, $Val extends QuestionsState>
           ? _value.selectedTopicIndex
           : selectedTopicIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      questionsByTopic: null == questionsByTopic
+          ? _value.questionsByTopic
+          : questionsByTopic // ignore: cast_nullable_to_non_nullable
+              as Map<Topic, List<Question>>,
     ) as $Val);
   }
 }
@@ -94,7 +102,8 @@ abstract class _$$QuestionsStateImplCopyWith<$Res>
       {List<Question> questions,
       bool isLoading,
       Topic currentTopic,
-      int selectedTopicIndex});
+      int selectedTopicIndex,
+      Map<Topic, List<Question>> questionsByTopic});
 }
 
 /// @nodoc
@@ -114,6 +123,7 @@ class __$$QuestionsStateImplCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? currentTopic = null,
     Object? selectedTopicIndex = null,
+    Object? questionsByTopic = null,
   }) {
     return _then(_$QuestionsStateImpl(
       questions: null == questions
@@ -132,6 +142,10 @@ class __$$QuestionsStateImplCopyWithImpl<$Res>
           ? _value.selectedTopicIndex
           : selectedTopicIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      questionsByTopic: null == questionsByTopic
+          ? _value._questionsByTopic
+          : questionsByTopic // ignore: cast_nullable_to_non_nullable
+              as Map<Topic, List<Question>>,
     ));
   }
 }
@@ -143,8 +157,10 @@ class _$QuestionsStateImpl implements _QuestionsState {
       {final List<Question> questions = const [],
       this.isLoading = true,
       this.currentTopic = Topic.novo,
-      this.selectedTopicIndex = 0})
-      : _questions = questions;
+      this.selectedTopicIndex = 0,
+      final Map<Topic, List<Question>> questionsByTopic = const {}})
+      : _questions = questions,
+        _questionsByTopic = questionsByTopic;
 
   final List<Question> _questions;
   @override
@@ -164,10 +180,18 @@ class _$QuestionsStateImpl implements _QuestionsState {
   @override
   @JsonKey()
   final int selectedTopicIndex;
+  final Map<Topic, List<Question>> _questionsByTopic;
+  @override
+  @JsonKey()
+  Map<Topic, List<Question>> get questionsByTopic {
+    if (_questionsByTopic is EqualUnmodifiableMapView) return _questionsByTopic;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_questionsByTopic);
+  }
 
   @override
   String toString() {
-    return 'QuestionsState(questions: $questions, isLoading: $isLoading, currentTopic: $currentTopic, selectedTopicIndex: $selectedTopicIndex)';
+    return 'QuestionsState(questions: $questions, isLoading: $isLoading, currentTopic: $currentTopic, selectedTopicIndex: $selectedTopicIndex, questionsByTopic: $questionsByTopic)';
   }
 
   @override
@@ -182,7 +206,9 @@ class _$QuestionsStateImpl implements _QuestionsState {
             (identical(other.currentTopic, currentTopic) ||
                 other.currentTopic == currentTopic) &&
             (identical(other.selectedTopicIndex, selectedTopicIndex) ||
-                other.selectedTopicIndex == selectedTopicIndex));
+                other.selectedTopicIndex == selectedTopicIndex) &&
+            const DeepCollectionEquality()
+                .equals(other._questionsByTopic, _questionsByTopic));
   }
 
   @override
@@ -191,7 +217,8 @@ class _$QuestionsStateImpl implements _QuestionsState {
       const DeepCollectionEquality().hash(_questions),
       isLoading,
       currentTopic,
-      selectedTopicIndex);
+      selectedTopicIndex,
+      const DeepCollectionEquality().hash(_questionsByTopic));
 
   /// Create a copy of QuestionsState
   /// with the given fields replaced by the non-null parameter values.
@@ -205,10 +232,12 @@ class _$QuestionsStateImpl implements _QuestionsState {
 
 abstract class _QuestionsState implements QuestionsState {
   const factory _QuestionsState(
-      {final List<Question> questions,
-      final bool isLoading,
-      final Topic currentTopic,
-      final int selectedTopicIndex}) = _$QuestionsStateImpl;
+          {final List<Question> questions,
+          final bool isLoading,
+          final Topic currentTopic,
+          final int selectedTopicIndex,
+          final Map<Topic, List<Question>> questionsByTopic}) =
+      _$QuestionsStateImpl;
 
   @override
   List<Question> get questions;
@@ -218,6 +247,8 @@ abstract class _QuestionsState implements QuestionsState {
   Topic get currentTopic;
   @override
   int get selectedTopicIndex;
+  @override
+  Map<Topic, List<Question>> get questionsByTopic;
 
   /// Create a copy of QuestionsState
   /// with the given fields replaced by the non-null parameter values.
